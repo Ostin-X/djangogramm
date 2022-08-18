@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-%wb#^y3w42%w4i^p@x^wuo=2rc!az0ec#%&)y3=qo(^j1l894-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangogramm-ostin.herokuapp.com', '127.0.0.1']
 
 
 # Application definition

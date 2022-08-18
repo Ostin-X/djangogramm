@@ -1,0 +1,1 @@
+web: gununicorn djangogramm.wsgi --log-file -
