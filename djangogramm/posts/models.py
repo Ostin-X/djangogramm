@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from users.models import User
-from tags.models import Tag
+from .tags.models import Tag
 
 
 class Post(models.Model):
