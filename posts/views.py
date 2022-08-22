@@ -1,10 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# Create your views here.
 
 
-
-def posts_here(request, post_id = None):
+def index(request, post_id=None):
     if post_id:
         return HttpResponse(f'Post {post_id} here')
     else:

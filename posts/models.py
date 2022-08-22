@@ -6,8 +6,8 @@ from tags.models import Tag
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    text = models.CharField(max_length=100)
-    date = models.DateTimeField(default=timezone.now)
+    text = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now) #auto_now_add=True
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # , related_name = 'posts'
@@ -21,7 +21,7 @@ class Post(models.Model):
 class ImageFile(models.Model):
     image = models.FileField()
     image_data = models.BinaryField(null=True)
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(auto_now_add=True)
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
