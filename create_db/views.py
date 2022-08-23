@@ -1,9 +1,9 @@
 from django.shortcuts import render
-# from django.utils import timezone
 from django.http import HttpResponse
 import random
 # from lorem_text import lorem
 from faker import Faker
+import pytz as pytz
 
 from users.models import User
 from posts.models import Post, ImageFile, Like
@@ -15,7 +15,7 @@ fake = Faker()
 def create_all_db(request):
     created_users = create_users_table(10)
     created_posts = create_posts_table(30)
-    created_likes = create_likes_table(1000)
+    created_likes = create_likes_table(100)
     # created_images = create_images_table()
     created_tags = create_tags_table(100)
 
@@ -45,10 +45,10 @@ def create_all_db(request):
         tags_return_text = ''
 
     return HttpResponse(f'DB created{users_return_text}{posts_return_text}{likes_return_text}{tags_return_text}'[:-1])
-
+    return render(request, '')
 
 def create_users_table(number_of_users):
-    User.objects.all().delete()
+    # User.objects.all().delete()
 
     count = User.objects.count()
     decreasing_number = number_of_users
@@ -66,7 +66,7 @@ def create_users_table(number_of_users):
 
 
 def create_posts_table(number_of_posts):
-    Post.objects.all().delete()
+    # Post.objects.all().delete()
 
     users_list = list(User.objects.all())
     count = Post.objects.count()
@@ -77,8 +77,9 @@ def create_posts_table(number_of_posts):
         add_title = fake.text(random.randint(5, 20))[:-1]
         # add_text = lorem.paragraph()
         add_text = fake.text()
+        add_date = fake.date_time_between(start_date='-5y', end_date='now', tzinfo=pytz.utc)
 
-        Post(title=add_title, text=add_text, user=random.choice(users_list)).save()
+        Post(title=add_title, text=add_text, user=random.choice(users_list), date=add_date).save()
 
         decreasing_number -= 1
 
@@ -86,7 +87,7 @@ def create_posts_table(number_of_posts):
 
 
 def create_likes_table(number_of_likes):
-    Like.objects.all().delete()
+    # Like.objects.all().delete()
 
     users_list = list(User.objects.all())
     posts_list = list(Post.objects.all())
@@ -99,31 +100,29 @@ def create_likes_table(number_of_likes):
         post = random.choice(posts_list)
         user = random.choice(users_list)
 
+        add_date = fake.date_time_between(start_date=post.date, end_date='now', tzinfo=pytz.utc)
+
         if not list(Like.objects.filter(post=post, user=user).all()):
-            Like(post=post, user=user).save()
+            Like(post=post, user=user, date=add_date).save()
             decreasing_number -= 1
-    # for post in posts_list:
-    # print(post.date)
-    # print('_______________')
-    # print(timezone.now())
 
     return number_of_likes - count
 
 
 def create_tags_table(number_of_tags):
-    Tag.objects.all().delete()
+    # Tag.objects.all().delete()
+
+    Tag.objects.filter(post=None).delete()
 
     posts_list = list(Post.objects.all())
-    print(*Post.objects.all())
-    count = len(posts_list)
+    count = Tag.objects.count()
     decreasing_number = number_of_tags
 
     while decreasing_number > count:
         add_name = fake.word()
+        add_posts_list = random.choices(posts_list, k=random.randint(1, int(len(posts_list) / 2)))
 
-        tag = Tag(name=add_name)
-        tag.save()
-        tag.post_set.set(random.choices(posts_list, k=random.randint(0, int(len(posts_list) / 2))))
+        Tag.objects.create(name=add_name).post_set.set(add_posts_list)
 
         decreasing_number -= 1
 
