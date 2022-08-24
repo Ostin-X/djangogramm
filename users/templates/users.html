@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table id="data" class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>Name</th>
+            <th>Bio</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td>{{ u.avatar }}</td>
+                <td>{{ u.name }}</td>
+                <td>{{ u.bio }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table id="data" class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Text</th>
+            <th>Date</th>
+            <th>User</th>
+            <th>Tags</th>
+            <th>Likes</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in posts %}
+            <tr>
+                <td>{{ p.title }}</td>
+                <td>{{ p.text }}</td>
+                <td>{{ p.date }}</td>
+                <td>{{ p.user.name }}</td>
+                <td>{{ p.tags.count }}</td>
+                <td>{{ p.like_set.count }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+
