@@ -48,7 +48,7 @@ def create_all_db(request):
     return render(request, '')
 
 def create_users_table(number_of_users):
-    # User.objects.all().delete()
+    User.objects.all().delete()
 
     count = User.objects.count()
     decreasing_number = number_of_users
