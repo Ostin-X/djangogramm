@@ -2,12 +2,15 @@
 {% load static %}
 
 {% block content %}
-<body xmlns="http://www.w3.org/1999/html">
-<img src="{% static '/images/Lewis_Hamilton_2016_Malaysia_2.jpg' %}" align="left" height="500" alt="{{ user.name }}">
-<p>{{ user.bio }}</p>
+
+    <h1>{{ user.name }}</h1>
+    <body xmlns="http://www.w3.org/1999/html">
+    <img src="{% static '/images/Lewis_Hamilton_2016_Malaysia_2.jpg' %}" align="left" height="500"
+         alt="{{ user.name }}">
+    <p>{{ user.bio }}</p>
 
     <h2>Posts</h2>
-    <table id="data" class="table table-striped table-hover" >
+    <table id="data" class="table table-striped table-hover">
         <thead>
         <tr>
             <th>Post Title</th>
@@ -27,9 +30,9 @@
         </tbody>
     </table>
 
-<hr>
+    <hr>
     <h2>Likes</h2>
-    <table id="data" class="table table-striped table-hover" >
+    <table id="data" class="table table-striped table-hover">
         <thead>
         <tr>
             <th>Post Title</th>
@@ -49,5 +52,5 @@
         </tbody>
     </table>
 
-</body>
+    </body>
 {% endblock %}
