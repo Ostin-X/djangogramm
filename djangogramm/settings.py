@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-%wb#^y3w42%w4i^p@x^wuo=2rc!az0ec#%&)y3=qo(^j1l894-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')), )
 
 ALLOWED_HOSTS = ['djangogramm-ostin.herokuapp.com', '127.0.0.1']
 
@@ -134,7 +136,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

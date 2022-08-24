@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 from djangogramm import settings
-from users.views import pageNotFound
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +30,8 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, documents_root=settings.MEDIA_ROOT)
 
-handler404 = pageNotFound
+# def pageNotFound(request, exception):
+#     return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
+
+# handler404 = pageNotFound
+

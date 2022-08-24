@@ -5,19 +5,24 @@ from django.urls import reverse
 from templates.settings import menu
 from .models import User
 
-users = User.objects.all()
+users_list = User.objects.all()
 
 
-def users_here(request, user_id: int = None, user_name: str = None):
-    return render(request, 'users.html', {'menu': menu, 'users': users})
-    # if user_id:
-    #     return HttpResponse(f'User id-{user_id} here')
+def index(request):
+    return render(request, 'users.html', {'menu': menu, 'users': users_list})
+
+
+def user_view(request, user_id: int = None, user_name: str = None):
+    if user_id:
+        print(user_id)
+        user = User.objects.get(id=5219)
+        print(user)
     # elif user_name:
     #     print(reverse('user_name_name', args=[user_name]))
     #     return HttpResponse(f'User name-{user_name} here')
     # else:
     #     return HttpResponseNotFound('Users here')
+    return render(request, 'user.html', {'menu': menu, 'user': user})
 
-
-def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
+# def pageNotFound(request, exception):
+#     return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
