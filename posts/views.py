@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from templates.settings import menu
+from templates.menu import menu
 from .models import Post
 
 posts = Post.objects.all()

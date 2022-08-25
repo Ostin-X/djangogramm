@@ -16,22 +16,18 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
-from djangogramm import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('posts.urls')),
-    path('users/', include('users.urls')),
-    path('tags/', include('tags.urls')),
-    path('create_db/', include('create_db.urls')),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, documents_root=settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls),
+                  path('', include('posts.urls')),
+                  path('users/', include('users.urls')),
+                  path('tags/', include('tags.urls')),
+                  path('create_db/', include('create_db.urls')),
+              ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 # def pageNotFound(request, exception):
 #     return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
 
 # handler404 = pageNotFound
-

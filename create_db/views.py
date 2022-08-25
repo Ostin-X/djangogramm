@@ -4,6 +4,8 @@ import random
 # from lorem_text import lorem
 from faker import Faker
 import pytz as pytz
+from django.core.management.color import no_style
+from django.db import connection
 
 from users.models import User
 from posts.models import Post, ImageFile, Like
@@ -13,6 +15,13 @@ fake = Faker()
 
 
 def create_all_db(request):
+    User.objects.all().delete()
+
+    sequence_sql = connection.ops.sequence_reset_sql(no_style(), [User, Post, ImageFile, Like, Tag])
+    with connection.cursor() as cursor:
+        for sql in sequence_sql:
+            cursor.execute(sql)
+
     created_users = create_users_table(10)
     created_posts = create_posts_table(30)
     created_likes = create_likes_table(100)
@@ -48,7 +57,7 @@ def create_all_db(request):
     return render(request, '')
 
 def create_users_table(number_of_users):
-    User.objects.all().delete()
+    # User.objects.all().delete()
 
     count = User.objects.count()
     decreasing_number = number_of_users
@@ -57,8 +66,9 @@ def create_users_table(number_of_users):
         add_email = fake.email()
         add_pass = fake.password()
         add_name = fake.name()
+        add_avatar = 'avatars/Lewis_Hamilton_2016_Malaysia_2.jpg'
 
-        User(email=add_email, password=add_pass, name=add_name, bio=fake.text()).save()
+        User(email=add_email, password=add_pass, name=add_name, bio=fake.text(), avatar=add_avatar).save()
 
         decreasing_number -= 1
 
@@ -78,6 +88,7 @@ def create_posts_table(number_of_posts):
         # add_text = lorem.paragraph()
         add_text = fake.text()
         add_date = fake.date_time_between(start_date='-5y', end_date='now', tzinfo=pytz.utc)
+
 
         Post(title=add_title, text=add_text, user=random.choice(users_list), date=add_date).save()
 

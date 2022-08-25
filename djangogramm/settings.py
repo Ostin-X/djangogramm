@@ -30,6 +30,9 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')), )
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 ALLOWED_HOSTS = ['djangogramm-ostin.herokuapp.com', '127.0.0.1']
 
 
@@ -97,6 +100,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+# 'USER': os.environ.get('DB_USER')
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
@@ -143,6 +147,5 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 

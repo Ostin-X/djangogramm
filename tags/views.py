@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from templates.settings import menu
+from templates.menu import menu
 from .models import Tag
 
 tags = Tag.objects.all()
