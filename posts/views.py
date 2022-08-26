@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from templates.menu import menu
 from .models import Post
 
 posts = Post.objects.all()
 
 def index(request, post_id=None):
-    return render(request, 'posts.html', {'menu': menu, 'posts': posts})
+    return render(request, 'posts.html', {'title': 'Posts', 'posts': posts})
     # if post_id:
     #     return HttpResponse(f'Post {post_id} here')
     # else:

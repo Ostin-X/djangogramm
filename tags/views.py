@@ -1,9 +1,8 @@
 from django.shortcuts import render
 
-from templates.menu import menu
 from .models import Tag
 
 tags = Tag.objects.all()
 
 def index(request, post_id=None):
-    return render(request, 'tags.html', {'menu': menu, 'tags': tags})
+    return render(request, 'tags.html', {'tags': tags})

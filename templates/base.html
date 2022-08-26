@@ -1,4 +1,5 @@
 {% load static %}
+{% load menu_tag %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +22,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
+                        {% get_menu as menu %}
                         {% for m in menu %}
                             <li class="nav-item"><a class="nav-link" href="{{ m.url }}">{{ m.name }}</a></li>
                         {% endfor %}
