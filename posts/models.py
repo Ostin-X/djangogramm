@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-# from django_thumbs.db.models import ImageWithThumbsField
+from django.urls import reverse
 
 from users.models import User
 from tags.models import Tag
@@ -17,14 +17,14 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag)
 
     def __repr__(self):
-        return f'<Post {self.id}>'
+        return f'<Post {self.title}>'
+
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_id': self.id})
 
 
-class ImageFile(models.Model):
-    image = models.FileField()
-    image_data = models.BinaryField(null=True)
-    # image = ImageWithThumbsField(upload_to='images', sizes=((125,125),(200,200)))
-    # thumb = ImageWithThumbsField(upload_to='thumbnails')
+class Image(models.Model):
+    image = models.FileField(upload_to='images/')
     date = models.DateTimeField(auto_now_add=True)
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -32,6 +32,9 @@ class ImageFile(models.Model):
 
     def __repr__(self):
         return f'<Image {self.id}>'
+
+    def get_absolute_url(self):
+        return reverse('image', kwargs={'image_id': self.id})
 
 
 class Like(models.Model):

@@ -8,7 +8,7 @@ from django.core.management.color import no_style
 from django.db import connection
 
 from users.models import User
-from posts.models import Post, ImageFile, Like
+from posts.models import Post, Image, Like
 from tags.models import Tag
 
 fake = Faker()
@@ -17,7 +17,7 @@ fake = Faker()
 def create_all_db(request):
     User.objects.all().delete()
 
-    sequence_sql = connection.ops.sequence_reset_sql(no_style(), [User, Post, ImageFile, Like, Tag])
+    sequence_sql = connection.ops.sequence_reset_sql(no_style(), [User, Post, Image, Like, Tag])
     with connection.cursor() as cursor:
         for sql in sequence_sql:
             cursor.execute(sql)

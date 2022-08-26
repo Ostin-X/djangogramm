@@ -1,12 +1,21 @@
 from django.db import models
+from django.urls import reverse
 
 
 class User(models.Model):
     email = models.EmailField(max_length=100)
-    password = models.CharField(max_length=100)
-    name = models.CharField(max_length=100, null=True, blank=True)
-    bio = models.TextField(null=True, blank=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    password = models.CharField(max_length=100, verbose_name='Пароль')
+    name = models.CharField(max_length=100, null=True, blank=True, verbose_name="Ім'я")
+    bio = models.TextField(null=True, blank=True, verbose_name='Біо')
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Аватар')
 
-    def __repr__(self):
-        return f'<User {self.id}>'
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('user', kwargs={'user_id': self.id})
+
+    class Meta:
+        verbose_name = 'Користувачі'
+        verbose_name_plural = 'Користувачі'
+        ordering = ['id']
