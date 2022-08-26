@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django_thumbs.db.models import ImageWithThumbsField
+# from django_thumbs.db.models import ImageWithThumbsField
 
 from users.models import User
 from tags.models import Tag
@@ -20,7 +20,7 @@ class Post(models.Model):
         return f'<Post {self.id}>'
 
 
-class Image(models.Model):
+class ImageFile(models.Model):
     image = models.FileField()
     image_data = models.BinaryField(null=True)
     # image = ImageWithThumbsField(upload_to='images', sizes=((125,125),(200,200)))
