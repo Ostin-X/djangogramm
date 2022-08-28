@@ -23,15 +23,16 @@ print(BASE_DIR)
 SECRET_KEY = 'django-insecure-%wb#^y3w42%w4i^p@x^wuo=2rc!az0ec#%&)y3=qo(^j1l894-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # STATIC_URL = '/static_root/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 # STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static_dev')),)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static_dev')),)
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -41,7 +42,7 @@ ALLOWED_HOSTS = ['djangogramm-ostin.herokuapp.com', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nostatic",
+    # "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,13 +57,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+
 ]
 
 ROOT_URLCONF = 'djangogramm.urls'
