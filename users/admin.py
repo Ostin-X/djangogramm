@@ -9,6 +9,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('name', 'bio')
     list_editable = ('password',)
     list_filter = ('name',)
+    # prepopulated_fields = {'slug': ('name',)}
 
 
 admin.site.register(User, UserAdmin)

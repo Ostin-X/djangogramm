@@ -14,8 +14,8 @@
         <tbody>
         {% for u in users %}
             <tr>
-                <td><img src="{{ u.avatar.url }}" height="50"/></td>
-                <td><a href="{{u.id}}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
+                <td><img src="{{ u.avatar.url }}" height="50" alt="no photo"/></td>
+                <td><a href="{{u.name}}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
                 <td>{{ u.bio }}</td>
             </tr>
         {% endfor %}

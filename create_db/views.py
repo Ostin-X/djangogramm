@@ -54,7 +54,7 @@ def create_all_db(request):
         tags_return_text = ''
 
     return HttpResponse(f'DB created{users_return_text}{posts_return_text}{likes_return_text}{tags_return_text}'[:-1])
-    return render(request, '')
+
 
 def create_users_table(number_of_users):
     # User.objects.all().delete()
@@ -88,7 +88,6 @@ def create_posts_table(number_of_posts):
         # add_text = lorem.paragraph()
         add_text = fake.text()
         add_date = fake.date_time_between(start_date='-5y', end_date='now', tzinfo=pytz.utc)
-
 
         Post(title=add_title, text=add_text, user=random.choice(users_list), date=add_date).save()
 
