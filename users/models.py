@@ -6,7 +6,7 @@ class User(models.Model):
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100, verbose_name='Пароль')
     name = models.CharField(max_length=100, null=True, blank=True, verbose_name="Ім'я")
-    bio = models.TextField(null=True, blank=True, verbose_name='Біо')
+    bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Аватар')
 
     def __str__(self):

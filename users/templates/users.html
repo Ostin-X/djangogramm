@@ -14,8 +14,13 @@
         <tbody>
         {% for u in users %}
             <tr>
-                <td><img src="{{ u.avatar.url }}" height="50" alt="no photo"/></td>
-                <td><a href="{{u.name}}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
+                {% if u.avatar %}
+                    <td><img src="{{ u.avatar.url }}" height="50" alt="no photo"/></td>
+                {% else %}
+                    <td>no photo</td>
+                {% endif %}
+
+                <td><a href="{{ u.name }}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
                 <td>{{ u.bio }}</td>
             </tr>
         {% endfor %}

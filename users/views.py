@@ -20,15 +20,11 @@ def user_view(request, user_id: int = None, user_name: str = None):
 
 
 def create_user(request):
-    if request.method == 'Post':
-        form = CreateUserForm(request.POST)
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST, request.FILES)
         if form.is_valid():
-            # print(form.cleaned_data)
-            try:
-                User.objects.create(**form.cleaned_data)
-                return redirect ('home')
-            except:
-                form.add_error(None, 'Помилка створення користувача')
+            form.save()
+            return redirect('users')
     else:
         form = CreateUserForm()
     return render(request, 'create_user.html', {'form': form, 'title': 'Create User'})
