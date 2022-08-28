@@ -14,7 +14,6 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -25,13 +24,10 @@ SECRET_KEY = 'django-insecure-%wb#^y3w42%w4i^p@x^wuo=2rc!az0ec#%&)y3=qo(^j1l894-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# STATIC_URL = '/static_root/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-# STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),)
+
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static_dev')),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),)
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -57,7 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
