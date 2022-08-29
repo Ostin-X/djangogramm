@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import random
-# from lorem_text import lorem
 from faker import Faker
 import pytz as pytz
 from django.core.management.color import no_style
@@ -63,9 +62,9 @@ def create_users_table(number_of_users):
     decreasing_number = number_of_users
 
     while decreasing_number > count:
+        add_name = fake.name()
         add_email = fake.email()
         add_pass = fake.password()
-        add_name = fake.name()
         add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
 
         User(email=add_email, password=add_pass, name=add_name, bio=fake.text(), avatar=add_avatar).save()

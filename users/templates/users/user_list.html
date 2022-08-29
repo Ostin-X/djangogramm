@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for u in users %}
+        {% for u in object_list %}
             <tr>
                 {% if u.avatar %}
                     <td><img src="{{ u.avatar.url }}" height="50" alt="no photo"/></td>
@@ -20,7 +20,7 @@
                     <td>no photo</td>
                 {% endif %}
 
-                <td><a href="{{ u.name }}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
+                <td><a href="{{ u.get_absolute_url }}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
                 <td>{{ u.bio }}</td>
             </tr>
         {% endfor %}

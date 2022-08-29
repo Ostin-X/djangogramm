@@ -4,12 +4,12 @@ from .models import User
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'email', 'password', 'avatar')
+    list_display = ('id', 'name', 'email', 'password', 'avatar', 'is_invisible')
     list_display_links = ('id', 'name')
     search_fields = ('name', 'bio')
-    list_editable = ('password',)
-    list_filter = ('name',)
+    list_editable = ('is_invisible',)
     # prepopulated_fields = {'slug': ('name',)}
+    # list_filter = ('name',)
 
 
 admin.site.register(User, UserAdmin)

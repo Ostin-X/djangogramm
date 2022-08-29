@@ -3,11 +3,12 @@
 
 {% block content %}
 
-    <h1>{{ user.name }}</h1>
+    <h1>{{ title }}</h1>
     <body>
-    <img src="{{ user.avatar.url }}" align="left" height="500"
-         alt="{{ user.name }}">
-    <p>{{ user.avatar }}</p>
+    {% if object.avatar %}
+        <img src="{{ object.avatar.url }}" align="left" height="500">
+    {% endif %}
+    <p>{{ user.bio }}</p>
 
     <div>
         <h2>Posts</h2>
@@ -20,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for p in user.post_set.all %}
+            {% for p in object.post_set.all %}
                 <tr>
                     <td>{{ p.title }}</td>
                     <td>{{ p.text }}</td>
@@ -42,7 +43,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for l in user.like_set.all %}
+        {% for l in object.like_set.all %}
             <tr>
                 <td>{{ l.post.title }}</td>
                 <td>{{ l.post.text }}</td>

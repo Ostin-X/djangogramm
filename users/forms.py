@@ -16,9 +16,9 @@ from .models import User
 class CreateUserForm(forms.ModelForm):
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
-        # self.fields['cat'].empty_label = 'Категорія не вибрана'
+    # self.fields['cat'].empty_label = 'Категорія не вибрана'
     class Meta:
         model = User
-        fields = '__all__'
-        # fields = ['email', 'password', 'name', 'bio']
+        # fields = '__all__'
+        fields = ['name', 'email', 'password', 'bio', 'avatar', 'is_invisible']
         # widgets = {}
