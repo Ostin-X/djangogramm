@@ -59,7 +59,6 @@ class UserCreate(CreateView):
         context['title'] = 'Create User'
         return context
 
-
 # def create_user(request):
 #     if request.method == 'POST':
 #         form = CreateUserForm(request.POST, request.FILES)

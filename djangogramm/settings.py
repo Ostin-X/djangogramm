@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'users',
     'posts',
     'tags',
-    'create_db'
+    'imagekit',
 ]
 
 MIDDLEWARE = [

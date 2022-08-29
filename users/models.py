@@ -1,8 +1,11 @@
 from django.db import models
 from django.urls import reverse
 from django.template.defaultfilters import slugify
-import string
+# import string
 import random
+
+
+from .utils import path_and_rename
 
 
 class User(models.Model):
@@ -12,7 +15,7 @@ class User(models.Model):
     password = models.CharField(max_length=100, verbose_name='Пароль')
     bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
     is_invisible = models.BooleanField(default=False, verbose_name="Сором'змива дупа")
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name='Аватар')
+    avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватар')
 
     def __str__(self):
         return self.name
@@ -30,3 +33,6 @@ class User(models.Model):
         verbose_name = 'Користувач'
         verbose_name_plural = 'Користувачі'
         ordering = ['id']
+
+
+
