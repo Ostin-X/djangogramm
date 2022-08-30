@@ -10,6 +10,7 @@ from .utils import DataMixin
 
 
 class UserList(DataMixin, ListView):
+    paginate_by = 3
     model = User
     allow_empty = False
 
