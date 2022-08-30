@@ -65,9 +65,9 @@ def create_users_table(number_of_users):
         add_name = fake.name()
         add_email = fake.email()
         add_pass = fake.password()
-        add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
-        add_avatar = 'https://picsum.photos/200'
-        obj = User.objects.create(email=add_email, password=add_pass, name=add_name, bio=fake.text(), avatar=add_avatar)
+        # add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
+        # add_avatar = 'https://picsum.photos/200'
+        User.objects.create(email=add_email, password=add_pass, name=add_name, bio=fake.text())
 
         decreasing_number -= 1
 

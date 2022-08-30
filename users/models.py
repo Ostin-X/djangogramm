@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.template.defaultfilters import slugify
-# import string
 import random
 
 

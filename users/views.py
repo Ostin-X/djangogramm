@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CreateUserForm
 from .models import User
@@ -50,7 +51,7 @@ class UserDetail(DetailView):
 #     return render(request, 'user.html', {'user': user, 'title': user.name})
 
 
-class UserCreate(CreateView):
+class UserCreate(LoginRequiredMixin, CreateView):
     form_class = CreateUserForm
     template_name = 'users/user_create.html'
 
