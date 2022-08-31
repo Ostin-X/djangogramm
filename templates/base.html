@@ -47,7 +47,9 @@
                 </li>
                 {% for p in page_obj.paginator.page_range %}
                     {% if page_obj.number == p %}
-                        <li class="page-item active">{{ p }}</li>
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{ p }}</span>
+                        </li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
                         <li class="page-link">
                             <a href="?page={{ p }}">{{ p }}</a>
