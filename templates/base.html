@@ -52,6 +52,10 @@
                         <li class="page-item active" aria-current="page">
                             <span class="page-link">{{ p }}</span>
                         </li>
+                    {% elif p == page_obj.number|add:-3 or p == page_obj.number|add:3 %}
+                        <li class="page-link">
+                            <a>...</a>
+                        </li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
                         <li class="page-link">
                             <a href="?page={{ p }}">{{ p }}</a>
