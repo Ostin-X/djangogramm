@@ -57,13 +57,23 @@ class UserDetail(LoginRequiredMixin, DataMixin, DetailView):
 #
 #     return render(request, 'user.html', {'user': user, 'title': user.name})
 
+class RegisterUser(DataMixin, CreateView):
+    # form_class = CreateUserForm
+    form_class = UserCreationForm
+    # success_url = reverse_lazy('users')
+    template_name = 'users/register.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserCreate, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Створити користувача')
+        return dict(list(context.items()) + list(c_def.items()))
+
 
 class UserCreate(DataMixin, CreateView):
     # form_class = CreateUserForm
     form_class = UserCreationForm
     # success_url = reverse_lazy('users')
-    template_name = 'users/user_create.html'
-
+    template_name = 'users/register.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserCreate, self).get_context_data(**kwargs)
@@ -78,4 +88,4 @@ class UserCreate(DataMixin, CreateView):
 #             return redirect('users')
 #     else:
 #         form = CreateUserForm()
-#     return render(request, 'users/user_create.html', {'form': form, 'title': 'Create User'})
+#     return render(request, 'users/register.html', {'form': form, 'title': 'Create User'})

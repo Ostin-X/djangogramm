@@ -6,7 +6,7 @@ from djangogramm.settings import BASE_DIR
 menu = [{"name": "Posts", "url": "/"},
         {"name": "Users", "url": "/users"},
         {"name": "Tags", "url": "/tags"},
-        {"name": "Create User", "url": "/users/create_user"},
+        # {"name": "Create User", "url": "/users/create_user"},
         {"name": "Reset DB", "url": "/create_db"},
         {"name": "Admin", "url": "/admin"},
         ]

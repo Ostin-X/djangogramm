@@ -29,6 +29,9 @@
                         {% for m in menu %}
                             <li class="nav-item"><a class="nav-link" href="{{ m.url }}">{{ m.name }}</a></li>
                         {% endfor %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Регістрація</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users' %}">Логін</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -52,10 +55,6 @@
                         <li class="page-item active" aria-current="page">
                             <span class="page-link">{{ p }}</span>
                         </li>
-                    {% elif p == page_obj.number|add:-3 or p == page_obj.number|add:3 %}
-                        <li class="page-link">
-                            <a>...</a>
-                        </li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
                         <li class="page-link">
                             <a href="?page={{ p }}">{{ p }}</a>
@@ -63,6 +62,10 @@
                     {% elif p == 1 or p == page_obj.paginator.num_pages %}
                         <li class="page-link">
                             <a href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% elif p == page_obj.number|add:-3 or p == page_obj.number|add:3 %}
+                        <li class="page-link">
+                            <a>...</a>
                         </li>
                     {% endif %}
                 {% endfor %}
