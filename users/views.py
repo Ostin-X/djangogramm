@@ -1,17 +1,19 @@
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import CreateUserForm
-from .models import User
+# from django.shortcuts import render, get_object_or_404, redirect
+# from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+
+# from .forms import CreateUserForm
+# from .models import Profile
 from .utils import DataMixin
 
 
 class UserList(DataMixin, ListView):
-    paginate_by = 2
+    paginate_by = 10
     model = User
     allow_empty = False
 
@@ -23,13 +25,8 @@ class UserList(DataMixin, ListView):
         c_def = self.get_user_context(title='Користувачі')
         return dict(list(context.items()) + list(c_def.items()))
 
-    def get_queryset(self):
-        return User.objects.filter(is_invisible=False)
-
-
-# def users(request):
-#     users_list = User.objects.all()
-#     return render(request, 'user_list.html', {'users': users_list, 'title': 'Users'})
+    # def get_queryset(self):
+    #     return User.objects.filter(is_invisible=False)
 
 
 class UserDetail(LoginRequiredMixin, DataMixin, DetailView):
@@ -49,22 +46,25 @@ class UserDetail(LoginRequiredMixin, DataMixin, DetailView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-# def user_view(request, user_id: int = None, slug: str = None):
-#     # if user_id:
-#     #     user = get_object_or_404(User, pk=user_id)
-#     # else:
-#     user = get_object_or_404(User, slug=slug)
-#
-#     return render(request, 'user.html', {'user': user, 'title': user.name})
-
 class RegisterUser(DataMixin, CreateView):
-    # form_class = CreateUserForm
+    form_class = UserCreationForm
+    template_name = 'users/register.html'
+    success_url = reverse_lazy('users')
+
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(RegisterUser, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Створити користувача')
+        return dict(list(context.items()) + list(c_def.items()))
+
+
+class LoginUser(DataMixin, CreateView):
     form_class = UserCreationForm
     # success_url = reverse_lazy('users')
     template_name = 'users/register.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(UserCreate, self).get_context_data(**kwargs)
+        context = super(LoginUser, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title='Створити користувача')
         return dict(list(context.items()) + list(c_def.items()))
 
@@ -72,20 +72,10 @@ class RegisterUser(DataMixin, CreateView):
 class UserCreate(DataMixin, CreateView):
     # form_class = CreateUserForm
     form_class = UserCreationForm
-    # success_url = reverse_lazy('users')
+    success_url = reverse_lazy('login')
     template_name = 'users/register.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserCreate, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title='Створити користувача')
         return dict(list(context.items()) + list(c_def.items()))
-
-# def create_user(request):
-#     if request.method == 'POST':
-#         form = CreateUserForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('users')
-#     else:
-#         form = CreateUserForm()
-#     return render(request, 'users/register.html', {'form': form, 'title': 'Create User'})

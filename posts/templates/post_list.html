@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for p in posts %}
+        {% for p in object_list %}
             <tr>
                 {% if p.1 %}
                     <td><img src="{{ p.1.0.image_thumbnail.url }}" height="50" alt="no photo"/></td>

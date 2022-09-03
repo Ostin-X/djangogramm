@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <small><a href="{% url 'user_detail' post.user.pk %}"> By: {{ post.user }} - {{ post.date }}</a></small>
+    <br/>
+    <hr>
+    {% for image in post.image_set.all %}
+        <img src="{{ image.image.url }}"height="500">
+    {% endfor %}
+    <br/>
+    {{ post.text }}
+
+    <br/><br/>
+    <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}
+

@@ -6,7 +6,9 @@ import pytz as pytz
 from django.core.management.color import no_style
 from django.db import connection
 
-from users.models import User
+from django.contrib.auth.models import User
+
+# from users.models import Profile
 from posts.models import Post, Image, Like
 from tags.models import Tag
 
@@ -66,8 +68,7 @@ def create_users_table(number_of_users):
         add_email = fake.email()
         add_pass = fake.password()
         # add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
-        # add_avatar = 'https://picsum.photos/200'
-        User.objects.create(email=add_email, password=add_pass, name=add_name, bio=fake.text())
+        User.objects.create(email=add_email, password=add_pass, username=add_name)  # , bio=fake.text()
 
         decreasing_number -= 1
 
@@ -82,9 +83,7 @@ def create_posts_table(number_of_posts):
     decreasing_number = number_of_posts
 
     while decreasing_number > count:
-        # add_title = lorem.words(random.randint(1, 5))
         add_title = fake.text(random.randint(5, 20))[:-1]
-        # add_text = lorem.paragraph()
         add_text = fake.text()
         add_date = fake.date_time_between(start_date='-5y', end_date='now', tzinfo=pytz.utc)
 

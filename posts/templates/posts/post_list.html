@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    {% for post in posts %}
+        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a> - {{ post.date }} <small><a
+                href="{% url 'post_update' post.pk %}">Edit</a></small> <br/>
+            {{ post.text }}</li>
+    {% endfor %}
+{% endblock %}
+

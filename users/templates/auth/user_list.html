@@ -17,10 +17,10 @@
                 {% if u.avatar %}
                     <td><img src="{{ u.avatar.url }}" height="50" alt="No Photo"></td>
                 {% else %}
-                    <td>no photo</td>
+                    <td>No Photo</td>
                 {% endif %}
-                <td><a href="{{ u.get_absolute_url }}" target="_blank" rel="nofollow">{{ u.name }}</a></td>
-                <td>{{ u.bio }}</td>
+                <td><a href="{%  url 'user_detail' user.pk %}" target="_blank" rel="nofollow">{{ u.username }}</a></td>
+                <td>{{ u.email }}</td>
             </tr>
         {% endfor %}
 

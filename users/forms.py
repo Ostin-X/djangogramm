@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+# from .models import Profile
 
 
 # class CreateUserForm(forms.Form):
@@ -13,12 +13,12 @@ from .models import User
 #     # cat = forms.ModelChoiceField(queryset=['cool', 'not cool'], empty_label='ijnjn')
 
 
-class CreateUserForm(forms.ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    # self.fields['cat'].empty_label = 'Категорія не вибрана'
-    class Meta:
-        model = User
-        # fields = '__all__'
-        fields = ['name', 'email', 'password', 'bio', 'avatar', 'is_invisible']
-        # widgets = {}
+# class CreateUserForm(forms.ModelForm):
+#     # def __init__(self, *args, **kwargs):
+#     #     super().__init__(*args, **kwargs)
+#     # self.fields['cat'].empty_label = 'Категорія не вибрана'
+#     class Meta:
+#         model = Profile
+#         # fields = '__all__'
+#         fields = ['name', 'email', 'password', 'bio', 'avatar', 'is_invisible']
+#         # widgets = {}
