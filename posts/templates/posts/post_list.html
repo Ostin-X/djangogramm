@@ -4,9 +4,15 @@
     <h1>{{ title }}</h1>
 
     {% for post in posts %}
-        <li><a href="{{ post.get_absolute_url }}">{{ post }}</a> - {{ post.date }} <small><a
-                href="{% url 'post_update' post.pk %}">Edit</a></small> <br/>
-            {{ post.text }}</li>
+        <li><img src="{{ post.image_set.first.image_thumbnail.url }}"> <a
+                href="{{ post.get_absolute_url }}">{{ post }}</a> - {{ post.date }}
+            {% if user.is_authenticated %}
+                {% if user == post.user %}
+                    <small><a href="{% url 'post_update' post.pk %}">Edit</a></small> <br/>
+                {% endif %}
+            {% endif %}
+            <br/>
+            {{ post.text | slice:'100' }}</li>
     {% endfor %}
 {% endblock %}
 

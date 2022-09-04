@@ -2,13 +2,20 @@
 
 {% block content %}
     <h1>{{ post.title }}</h1>
-    <small><a href="{% url 'user_detail' post.user.pk %}"> By: {{ post.user }} - {{ post.date }}</a></small> | <small><a
-        href="{% url 'post_update' post.pk %}">(Edit)</a></small>
+    <small><a href="{% url 'user_detail' post.user.pk %}"> By: {{ post.user }} - {{ post.date }}</a></small>
+    {% if user.is_authenticated %}
+        {% if user == post.user %}
+            | <small><a href="{% url 'post_update' post.pk %}">(Edit)</a></small>
+            | <small><a href="{% url 'post_delete' post.pk %}">(Delete)</a></small>
+            | <small><a href="{% url 'image_create' post.pk %}">(Add image)</a></small>
+        {% endif %}
+    {% endif %}
+
     <br/>
     <hr>
     <div>
         {% for image in post.image_set.all %}
-            <img src="{{ image.image_thumbnail.url }}" align="left">
+            <a href="{{ image.image.url }}"><img src="{{ image.image.url }}" align="left" height="100"></a>
         {% endfor %}
         <br/>
         {{ post.text }}

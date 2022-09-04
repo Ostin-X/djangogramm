@@ -19,7 +19,7 @@
                 {% else %}
                     <td>No Photo</td>
                 {% endif %}
-                <td><a href="{%  url 'user_detail' user.pk %}" target="_blank" rel="nofollow">{{ u.username }}</a></td>
+                <td><a href="{%  url 'user_detail' u.pk %}" target="_blank" rel="nofollow">{{ u.username }}</a></td>
                 <td>{{ u.email }}</td>
             </tr>
         {% endfor %}
