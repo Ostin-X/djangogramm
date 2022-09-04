@@ -47,7 +47,7 @@ class ImageCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.post = Post.objects.get(pk=self.request.path.split('/')[-2])
+        form.instance.post = Post.objects.get(pk=self.request.path.split('/')[-3])
         return super(ImageCreateView, self).form_valid(form)
 
 # class ImageCreateView(InlineFormSetFactory):

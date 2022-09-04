@@ -63,6 +63,9 @@ class LoginUser(DataMixin, CreateView):
     # success_url = reverse_lazy('users')
     template_name = 'users/register.html'
 
+    def get_success_url(self):
+        return reverse('mainapp:profile')
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(LoginUser, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title='Створити користувача')
