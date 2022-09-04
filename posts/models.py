@@ -6,6 +6,7 @@ from django.urls import reverse
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+
 # from users.models import Profile
 from django.contrib.auth.models import User
 from tags.models import Tag

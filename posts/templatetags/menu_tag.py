@@ -6,10 +6,11 @@ register = template.Library()
 @register.simple_tag()
 def get_menu():
     menu = [
-        {"name": "Posts", "url": "/"},
-        {"name": "Create Post", "url": "/posts/create_post"},
-        {"name": "Users", "url": "/users"},
-        {"name": "Tags", "url": "/tags"},
-        {"name": "Create User", "url": "/users/create_user"},
+        {"name": "Posts", "url": "post_list"},
+        {"name": "Create Post", "url": "post_create"},
+        {"name": "Users", "url": "users"},
+        {"name": "Tags", "url": "tag_list"},
+        {"name": "Reset DB", "url": "create_db"},
+        {"name": "Admin", "url": "admin:index"},
     ]
     return menu

@@ -1,9 +1,12 @@
 from django.urls import path
+# from django.contrib import admin
 
 # from .views import index
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView
 
 urlpatterns = [
+    # path('/admin_too/', admin.site.urls, name='admin_path'),
+
     path('', PostListView.as_view(), name='home'),
     path('posts/', PostListView.as_view(), name='post_list'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),

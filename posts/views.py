@@ -1,7 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from extra_views import CreateWithInlinesView, InlineFormSetFactory
+# from extra_views import CreateWithInlinesView, InlineFormSetFactory
 
 from .models import Post, Image
 from .forms import PostForm, ImageForm
@@ -20,10 +20,9 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
-        # print(self.request.user.get_absolute_url)
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        print(context['post'])
-        print(context['post'].image_set.first())
+        # print(context['post'])
+        # print(context['post'].image_set.first())
         context['title'] = context['post']
         return context
 
@@ -43,21 +42,35 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     extra_context = {'title': 'Update Post'}
 
+    def get_queryset(self, *args, **kwargs):
+        print(self.kwargs['pk'])
+        return super().get_queryset().filter(
+            user=self.request.user
+        )
+
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     extra_context = {'title': 'Delete Post'}
     success_url = reverse_lazy('post_list')
 
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset().filter(
+            user=self.request.user
+        )
 
-class ImageCreateView(LoginRequiredMixin, CreateView):
+
+class ImageCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Image
     form_class = ImageForm
     extra_context = {'title': 'Create Image'}
 
+    def test_func(self):
+        return self.request.user.pk == Post.objects.get(pk=self.kwargs['pk']).user_id
+
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.post = Post.objects.get(pk=self.request.path.split('/')[-3])
+        form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super(ImageCreateView, self).form_valid(form)
 
 # class ImageCreateView(InlineFormSetFactory):
