@@ -8,7 +8,7 @@
                 href="{{ post.get_absolute_url }}">{{ post }}</a> - {{ post.date }}
             {% if user.is_authenticated %}
                 {% if user == post.user %}
-                    <small><a href="{% url 'post_update' post.pk %}">Edit</a></small> <br/>
+                    <small><a href="{% url 'post_update' post.pk %}">Edit</a></small>
                 {% endif %}
             {% endif %}
             <br/>
