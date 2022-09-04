@@ -43,12 +43,11 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 class ImageCreateView(LoginRequiredMixin, CreateView):
     model = Image
     form_class = ImageForm
-    # fields = '__all__'
     extra_context = {'title': 'Create Image'}
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.post = Post.objects.get(pk=self.request.path.split('/')[2])
+        form.instance.post = Post.objects.get(pk=self.request.path.split('/')[-2])
         return super(ImageCreateView, self).form_valid(form)
 
 # class ImageCreateView(InlineFormSetFactory):

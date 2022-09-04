@@ -43,10 +43,14 @@ class Image(models.Model):
 
     image = models.FileField(upload_to=image_dir)
     image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(70, 100)], format='JPEG',
-                                     options={'quality': 60})
+                                     options={'quality': 60}, )
 
     # post = models.ForeignKey(Post, on_delete=models.CASCADE)
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def delete(self, *args, **kwargs):
+        self.image.delete()
+        super(Image, self).delete(*args, **kwargs)
 
     def __repr__(self):
         return f'<Image {self.id}>'
