@@ -7,8 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # from django.shortcuts import render, get_object_or_404, redirect
 # from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
-# from .forms import CreateUserForm
-# from .models import Profile
+from .forms import CreateUserForm
+from .models import Profile
 from .utils import DataMixin
 
 
@@ -16,6 +16,7 @@ class UserList(DataMixin, ListView):
     paginate_by = 10
     model = User
     allow_empty = False
+    ordering = ['-pk']
 
     # template_name = 'users.html'
     # extra_context = {'title': 'Users'}
@@ -46,15 +47,21 @@ class UserDetail(LoginRequiredMixin, DataMixin, DetailView):
 
 
 class RegisterUser(DataMixin, CreateView):
-    form_class = UserCreationForm
+    # form_class = UserCreationForm
+    form_class = CreateUserForm
     template_name = 'users/register.html'
     success_url = reverse_lazy('users')
-
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(RegisterUser, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title='Створити користувача')
         return dict(list(context.items()) + list(c_def.items()))
+
+    # def form_valid(self, form):
+    #     print(form.fields)
+    #     print(form.instance)
+    #     Profile.objects.create(user=form.instance, bio=form.fields['bio'])
+    #     return super(RegisterUser, self).form_valid(form)
 
 
 class LoginUser(DataMixin, CreateView):

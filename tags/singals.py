@@ -1,5 +1,4 @@
 import os
-import shutil
 
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
@@ -20,23 +19,36 @@ def auto_delete_empty_tags(sender, **kwargs):
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     get_cache().clear()
     root = MEDIA_ROOT
-    print(root+'\CACHE')
-    os.rmdir(root+'\CACHE')
-    print(root+'\CACHE')
     folders = list(os.walk(root))[1:]
-    for folder in folders:
-        print(folder)
-        # folder example: ('FOLDER/3', [], ['file'])
-        if not folder[2] and not folder[1]:
-            shutil.rmtree(folder[0])
-            # os.rmdir(folder[0])
+
     """
     Deletes file from filesystem
     when corresponding `MediaFile` object is deleted.
     """
-    if instance.image:
-        if os.path.isfile(instance.image.path):
-            os.remove(instance.image.path)
+    try:
+        if instance.image:
+
+            # if os.path.isfile(instance.image.path):
+            if os.path.exists(instance.image.path):
+                os.remove(instance.image.path)
+    except:
+        pass
+    try:
+        if instance.image_thumbnail:
+            # if os.path.isfile(instance.image_thumbnail.path):
+            if os.path.exists(instance.image_thumbnail.path):
+                os.remove(instance.image_thumbnail.path)
+    except:
+        pass
+
+    for folder in folders:
+        # folder example: ('FOLDER/3', [], ['file'])
+        if not folder[2] and not folder[1]:
+            try:
+                os.rmdir(folder[0])
+            except:
+                print(f'ERROR IN {folder}')
+                pass
 
 
 @receiver(post_delete, sender=Profile)

@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'posts',
     'tags',
     'imagekit',
-    'extra_views'
+    'extra_views',
+    # 'django.contrib.sites',
 ]
+# SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
