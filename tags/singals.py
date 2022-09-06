@@ -1,5 +1,5 @@
 import os
-from django.db.models.signals import post_delete, post_save, post_init
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from imagekit.utils import get_cache
 
