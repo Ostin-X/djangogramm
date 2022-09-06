@@ -1,13 +1,19 @@
 import os
-
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from imagekit.utils import get_cache
 
+from create_db.views import fake
 from djangogramm.settings import MEDIA_ROOT
+from django.contrib.auth.models import User
 from users.models import Profile
 from .models import Tag
 from posts.models import Post, Image
+
+
+@receiver(post_save, sender=User)
+def auto_create_profile(sender, instance, **kwargs):
+    Profile.objects.create(user=instance, bio=fake.text())
 
 
 @receiver(post_delete, sender=Post)

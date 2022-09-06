@@ -23,10 +23,10 @@ class ImageForm(forms.ModelForm):
         model = Image
         fields = ['image']
 
-        widgets = {
-            # 'image': forms.ImageField,
-            # 'post': forms.Select(attrs={'class': 'form-control'}),
-        }
+        # widgets = {
+        #     'image': forms.ImageField,
+        #     'post': forms.Select(attrs={'class': 'form-control'}),
+        # }
         labels = {
             'image': 'Картинка'
         }

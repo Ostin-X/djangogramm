@@ -57,12 +57,6 @@ class RegisterUser(DataMixin, CreateView):
         c_def = self.get_user_context(title='Створити користувача')
         return dict(list(context.items()) + list(c_def.items()))
 
-    # def form_valid(self, form):
-    #     print(form.fields)
-    #     print(form.instance)
-    #     Profile.objects.create(user=form.instance, bio=form.fields['bio'])
-    #     return super(RegisterUser, self).form_valid(form)
-
 
 class LoginUser(DataMixin, CreateView):
     form_class = UserCreationForm
