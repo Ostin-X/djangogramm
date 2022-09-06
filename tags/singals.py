@@ -6,14 +6,14 @@ from imagekit.utils import get_cache
 from create_db.views import fake
 from djangogramm.settings import MEDIA_ROOT
 from django.contrib.auth.models import User
-# from users.models import Profile
+from users.models import Profile
 from .models import Tag
 from posts.models import Post, Image
 
 
-# @receiver(post_save, sender=User)
-# def auto_create_profile(sender, instance, **kwargs):
-#     Profile.objects.create(user=instance, bio=fake.text())
+@receiver(post_save, sender=User)
+def auto_create_profile(sender, instance, **kwargs):
+    Profile.objects.create(user=instance, bio=fake.text())
 
 
 @receiver(post_delete, sender=Post)
@@ -57,13 +57,13 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
                 pass
 
 
-# @receiver(post_delete, sender=Profile)
-# def auto_delete_file_on_delete(sender, instance, **kwargs):
-#     get_cache().clear()
-#     """
-#     Deletes file from filesystem
-#     when corresponding `MediaFile` object is deleted.
-#     """
-#     if instance.avatar:
-#         if os.path.isfile(instance.avatar.path):
-#             os.remove(instance.avatar.path)
+@receiver(post_delete, sender=Profile)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    get_cache().clear()
+    """
+    Deletes file from filesystem
+    when corresponding `MediaFile` object is deleted.
+    """
+    if instance.avatar:
+        if os.path.isfile(instance.avatar.path):
+            os.remove(instance.avatar.path)
