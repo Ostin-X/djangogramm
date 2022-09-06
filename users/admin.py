@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Profile
+# from .models import Profile
 
 
 # class UserAdmin(admin.ModelAdmin):
@@ -12,4 +12,4 @@ from .models import Profile
 #     # list_filter = ('name',)
 
 
-admin.site.register(Profile) #, UserAdmin
+# admin.site.register(Profile) #, UserAdmin
