@@ -1,5 +1,5 @@
 import os
-from django.db.models.signals import post_delete, post_save
+from django.db.models.signals import post_delete, post_save, post_init
 from django.dispatch import receiver
 from imagekit.utils import get_cache
 
@@ -13,7 +13,8 @@ from posts.models import Post, Image
 
 @receiver(post_save, sender=User)
 def auto_create_profile(sender, instance, **kwargs):
-    Profile.objects.create(user=instance, bio=fake.text())
+    if not Profile.objects.filter(user=instance).exists():
+        Profile.objects.create(user=instance, bio=fake.text())
 
 
 @receiver(post_delete, sender=Post)
