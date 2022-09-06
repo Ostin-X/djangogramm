@@ -12,7 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
-    image_thumbnail = ImageSpecField(source='avatar', processors=[ResizeToFill(70, 100)], format='JPEG',
+    avatar_thumbnail = ImageSpecField(source='avatar', processors=[ResizeToFill(70, 100)], format='JPEG',
                                      options={'quality': 60}, )
 
     is_invisible = models.BooleanField(default=False, verbose_name="Сором'змива дупа")

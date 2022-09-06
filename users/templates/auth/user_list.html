@@ -15,7 +15,7 @@
         {% for u in object_list %}
             <tr>
                 {% if u.profile.avatar %}
-                    <td><img src="{{ u.profile.avatar.url }}" height="50" alt="No Photo"></td>
+                    <td><img src="{{ u.profile.avatar_thumbnail.url }}" height="50" alt="No Photo"></td>
                 {% else %}
                     <td>No Photo</td>
                 {% endif %}
