@@ -1,13 +1,22 @@
 from django.test import TestCase
 import pytest
+from create_db.views import fake
+
 from posts.models import Post
+from users.models import Profile
 from django.contrib.auth.models import User
 
 
-class AnimalTestCase(TestCase):
-    @pytest.mark.skip
-    def test_animals_can_speak(self):
-        assert Post.objects.count() == 0
+class UsersTestCase(TestCase):
+    def setUp(self):
+        for i in range(5):
+            User.objects.create(username=fake.name(), email=fake.email(), password=fake.password())
+
+    def test_create_user_objects(self):
+        assert User.objects.count() == 5
+
+    def test_auto_create_profile_objects(self):
+        assert Profile.objects.count() == 5
 
 
 @pytest.fixture(scope='session')
