@@ -4,6 +4,13 @@
 {% block content %}
 
     <h1>{{ title }}</h1>
+    {% if request.user == object %}
+        <small><a href="{% url 'user_update' object.pk %}">(Edit)</a></small>
+        | <small><a href="{% url 'user_delete' object.pk %}">(Delete)</a></small>
+    {% endif %}
+    <br/>
+    <br/>
+
     <body>
     {% if object.avatar %}
         <img src="{{ object.avatar.url }}" align="left" height="500">

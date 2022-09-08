@@ -1,26 +1,43 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from django.contrib.auth.models import User
+
+
 # from .models import Profile
 
 
-class CreateUserForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    # bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 3}),
-    #                       label='Біографія')
 
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
-        super(CreateUserForm, self).__init__(*args, **kwargs)
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
 
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['password1'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
 
+
+class ProfileForm(UserChangeForm):
+    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 3}),
+                          label='Про себе')
+    avatar = forms.ImageField(label='Аватарка')
+    is_invisible = forms.BooleanField(required=False, label="Сором'змива дупа")
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть заголовок'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+
+        }
 
 # class CreateUserForm(forms.Form):
 #     email = forms.EmailField(max_length=100)

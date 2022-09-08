@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 # from extra_views import CreateWithInlinesView, InlineFormSetFactory
 
+from djangogramm.utils import DataMixin
+
 from .models import Post, Image
 from .forms import PostForm, ImageForm
 
@@ -15,16 +17,14 @@ class PostListView(ListView):
     extra_context = {'title': 'Posts'}
 
 
-class PostDetailView(LoginRequiredMixin, DetailView):
+class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
     model = Post
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        # print(context['post'])
-        # print(context['post'].image_set.first())
-        context['title'] = context['post']
-        return context
+        c_def = self.get_user_context(title=context['post'])
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

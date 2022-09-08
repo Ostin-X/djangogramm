@@ -26,4 +26,4 @@
 #             return redirect('users')
 #     else:
 #         form = CreateUserForm()
-#     return render(request, 'users/register.html', {'form': form, 'title': 'Create User'})
+#     return render(request, 'users/user_register.html', {'form': form, 'title': 'Create User'})

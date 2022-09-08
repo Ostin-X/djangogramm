@@ -151,5 +151,6 @@ IMAGEKIT_CACHEFILE_DIR = 'CACHE'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'users'
-LOGOUT_REDIRECT_URL = 'users'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'user_list'
+LOGOUT_REDIRECT_URL = 'user_list'

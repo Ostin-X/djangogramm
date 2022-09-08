@@ -6,9 +6,9 @@ import pytz as pytz
 from django.core.management.color import no_style
 from django.db import connection
 
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
-from users.models import Profile
+from users.models import User, Profile
 from posts.models import Post, Image, Like
 from tags.models import Tag
 
@@ -68,7 +68,8 @@ def create_users_table(number_of_users):
         add_email = fake.email()
         add_pass = fake.password()
         # add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
-        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name)  # , bio=fake.text()
+        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name,
+                                          bio=fake.text())  # , bio=fake.text()
         Profile.objects.get(user=user_object).bio=fake.text()
         decreasing_number -= 1
 

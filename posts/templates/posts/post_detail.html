@@ -3,40 +3,38 @@
 {% block content %}
     <h1>{{ post.title }}</h1>
     <small><a href="{% url 'user_detail' post.user.pk %}"> By: {{ post.user }} - {{ post.date }}</a></small>
-    {% if user.is_authenticated %}
-        {% if user == post.user %}
-            | <small><a href="{% url 'post_update' post.pk %}">(Edit)</a></small>
-            | <small><a href="{% url 'post_delete' post.pk %}">(Delete)</a></small>
-            | <small><a href="{% url 'image_create' post.pk %}">(Add image)</a></small>
-        {% endif %}
+    {% if user == post.user %}
+        | <small><a href="{% url 'post_update' post.pk %}">(Edit)</a></small>
+        | <small><a href="{% url 'post_delete' post.pk %}">(Delete)</a></small>
+        | <small><a href="{% url 'image_create' post.pk %}">(Add image)</a></small>
     {% endif %}
 
     <br/>
     <hr>
-{#    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="width:50%">#}
-{#        <div class="carousel-inner">#}
-{#            {% for image in post.image_set.all %}#}
-{#                <div class="carousel-item active">#}
-{#                    <img src="{{ image.image.url }}" class="d-block w-100" alt="...">#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">#}
-{#            <span class="carousel-control-prev-icon" aria-hidden="true"></span>#}
-{#            <span class="sr-only">Previous</span>#}
-{#        </a>#}
-{#        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">#}
-{#            <span class="carousel-control-next-icon" aria-hidden="true"></span>#}
-{#            <span class="sr-only">Next</span>#}
-{#        </a>#}
-{#    </div>#}
-        <div>
-            {% for image in post.image_set.all %}
-                <a href="{{ image.image.url }}"><img src="{{ image.image.url }}" align="left" height="100"></a>
-            {% endfor %}
-            <br/>
-            {{ post.text }}
-        </div>
+    {#    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="width:50%">#}
+    {#        <div class="carousel-inner">#}
+    {#            {% for image in post.image_set.all %}#}
+    {#                <div class="carousel-item active">#}
+    {#                    <img src="{{ image.image.url }}" class="d-block w-100" alt="...">#}
+    {#                </div>#}
+    {#            {% endfor %}#}
+    {#        </div>#}
+    {#        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">#}
+    {#            <span class="carousel-control-prev-icon" aria-hidden="true"></span>#}
+    {#            <span class="sr-only">Previous</span>#}
+    {#        </a>#}
+    {#        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">#}
+    {#            <span class="carousel-control-next-icon" aria-hidden="true"></span>#}
+    {#            <span class="sr-only">Next</span>#}
+    {#        </a>#}
+    {#    </div>#}
+    <div>
+        {% for image in post.image_set.all %}
+            <a href="{{ image.image.url }}"><img src="{{ image.image.url }}" align="left" height="100"></a>
+        {% endfor %}
+        <br/>
+        {{ post.text }}
+    </div>
     <br/><br/>
     <hr>
     <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>

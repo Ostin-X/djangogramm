@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
+    <h1>Вхід</h1>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Створити</button>
+        <div class="mb-3">
+            <input type="text" class="form-control" name="username" placeholder="Ім'я користувача">
+        </div>
+        <div class="mb-3">
+            <input type="password" class="form-control" name="password" placeholder="Пароль">
+        </div>
+        <button type="submit" class="btn btn-secondary">Увійти</button>
     </form>
+<br/>
 
+
+     Зареєструйся <a href="{% url 'register' %}">тут</a>
 {% endblock %}
 
