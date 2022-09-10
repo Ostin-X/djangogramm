@@ -17,7 +17,7 @@
                 {% if u.profile.avatar %}
                     <td><img src="{{ u.profile.avatar_thumbnail.url }}" height="50" alt="No Photo"></td>
                 {% else %}
-                    <td><img src="https://picsum.photos/50" alt="No Photo"></td>
+                    <td><img src="https://picsum.photos/50?random={{ u.id }}" alt="No Photo"></td>
                 {% endif %}
                 <td><a href="{{ u.profile.get_absolute_url }}">{{ u.username }}</a></td>
 {#             target="_blank" rel="nofollow"#}
