@@ -1,10 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 
-from django.contrib.auth.models import User
-
-
-# from .models import Profile
+from .models import User, Profile
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -16,28 +13,48 @@ class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+        # self.fields['username'].widget.attrs['class'] = 'form-control'
+        # self.fields['password1'].widget.attrs['class'] = 'form-control'
+        # self.fields['password2'].widget.attrs['class'] = 'form-control'
 
-        self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
 
-
-class ProfileForm(UserChangeForm):
-    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 3}),
-                          label='Про себе')
-    avatar = forms.ImageField(label='Аватарка')
-    is_invisible = forms.BooleanField(required=False, label="Сором'змива дупа")
-
+class UserForm(UserChangeForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        password = None
+        fields = ('username', 'email')
 
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть заголовок'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
-
         }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('bio', 'avatar', 'is_invisible')
+
+        widgets = {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'cols': 60, 'rows': 3}),
+            # 'avatar': forms.FileInput(),
+            'is_invisible': forms.CheckboxInput(attrs={'class': 'form-check'}),
+        }
+
+
+class PasswordChangeCustomForm(PasswordChangeForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeCustomForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['type'] = 'password'
+            field.help_text = None
 
 # class CreateUserForm(forms.Form):
 #     email = forms.EmailField(max_length=100)

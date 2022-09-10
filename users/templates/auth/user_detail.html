@@ -5,7 +5,8 @@
 
     <h1>{{ title }}</h1>
     {% if request.user == object %}
-        <small><a href="{% url 'user_update' object.pk %}">(Edit)</a></small>
+        <small><a href="{% url 'user_update' object.pk %}">(Edit User)</a></small>
+        | <small><a href="{% url 'profile_update' object.profile.pk %}">(Edit Profile)</a></small>
         | <small><a href="{% url 'user_delete' object.pk %}">(Delete)</a></small>
     {% endif %}
     <br/>

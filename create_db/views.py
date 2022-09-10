@@ -18,7 +18,7 @@ fake = Faker()
 def create_all_db(request):
     User.objects.all().delete()
 
-    sequence_sql = connection.ops.sequence_reset_sql(no_style(), [User, Post, Image, Like, Tag])
+    sequence_sql = connection.ops.sequence_reset_sql(no_style(), [User, Profile, Post, Image, Like, Tag])
     with connection.cursor() as cursor:
         for sql in sequence_sql:
             cursor.execute(sql)
@@ -68,9 +68,8 @@ def create_users_table(number_of_users):
         add_email = fake.email()
         add_pass = fake.password()
         # add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
-        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name,
-                                          bio=fake.text())  # , bio=fake.text()
-        Profile.objects.get(user=user_object).bio=fake.text()
+        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name)  # , bio=fake.text()
+        Profile.objects.get(user=user_object).bio = fake.text()
         decreasing_number -= 1
 
     return number_of_users - count

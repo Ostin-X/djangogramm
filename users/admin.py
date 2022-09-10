@@ -1,24 +1,36 @@
 from django.contrib import admin
 from django.contrib.admin import display
+from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
-from .models import Profile
+from .models import User, Profile
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'get_user', 'avatar', 'is_invisible')  # , 'user.name', 'email', 'password'
-    list_display_links = ('id', 'get_user')
-    search_fields = ('get_user', 'bio')
+    list_display = ('id', 'user', 'avatar', 'is_invisible')  # , 'user.name', 'email', 'password'
+    list_display_links = ('id', 'user')
+    search_fields = ('user', 'bio')
     list_editable = ('is_invisible',)
+    readonly_fields = ('user', 'get_email')
 
     # ordering = ('id',)
     # list_filter = ('is_invisible',)
     # prepopulated_fields = {'slug': ('name',)}
 
-    @display(ordering='book__author', description='Користувач')
-    def get_user(self, obj):
-        return obj.user
+    @display(description='Email')
+    def get_email(self, obj):
+        return obj.user.email
 
-    get_user.admin_order_field = 'user'
+
+class ProfileAdminInline(admin.TabularInline):
+    model = Profile
+    max_num = 1
+    can_delete = False
+
+
+class UserAdmin(AuthUserAdmin):
+    inlines = [ProfileAdminInline]
 
 
 admin.site.register(Profile, ProfileAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

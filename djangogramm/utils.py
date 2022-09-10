@@ -1,3 +1,7 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.http import HttpResponseRedirect, request
+from django.views import View
+
 menu = [
     {"name": "Пости", "url": "post_list"},
     {"name": "Новий пост", "url": "post_create"},
@@ -17,3 +21,10 @@ class DataMixin:
             user_menu = menu[:1] + menu[2:-2]
         context['menu'] = user_menu
         return context
+
+
+class NotLoggedAllow(UserPassesTestMixin):
+    # login_url = '/profile/'
+
+    def test_func(self):
+        return not self.request.user.is_authenticated

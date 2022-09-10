@@ -43,7 +43,6 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     extra_context = {'title': 'Update Post'}
 
     def get_queryset(self, *args, **kwargs):
-        print(self.kwargs['pk'])
         return super().get_queryset().filter(
             user=self.request.user
         )
