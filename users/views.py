@@ -1,33 +1,14 @@
-from django.contrib import messages
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView, TemplateView
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
 from .forms import CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
 from .models import User, Profile
 from djangogramm.utils import DataMixin, NotLoggedAllow
-
-
-class PasswordChangeCustomView(DataMixin, PasswordChangeView):
-    form_class = PasswordChangeCustomForm
-    template_name = 'registration/change_password.html'
-
-    def get_success_url(self):
-        return reverse_lazy('password_success', kwargs={'pk': self.kwargs['pk']})
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(PasswordChangeCustomView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title=f"Зміна пароля {self.request.user}")
-        return {**context, **c_def}
-
-
-def password_success(request, *args, **kwargs):
-    return render(request, 'registration/password_success.html', {'pk': kwargs['pk']})
 
 
 class UserListView(DataMixin, ListView):
@@ -59,14 +40,12 @@ class UserUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
     second_form_class = ProfileForm
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset().filter(
-            pk=self.request.user.pk
-        )
+        return super().get_queryset().filter(pk=self.request.user.pk)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         form2 = ProfileForm(self.request.POST or None, instance=self.request.user.profile)
-        c_def = self.get_user_context(title=f"Редагування профілю {context['user']}", form2=form2)
+        c_def = self.get_user_context(title=f"Редагування юзера {context['user']}", form2=form2)
         return {**context, **c_def}
 
     def get_success_url(self):
@@ -86,7 +65,7 @@ class ProfileUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProfileUpdateView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Редагування профілю')
+        c_def = self.get_user_context(title=f'Редагування профілю {self.request.user}')
         return {**context, **c_def}
 
     def get_queryset(self, *args, **kwargs):
@@ -103,9 +82,29 @@ class UserDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
         return {**context, **c_def}
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset().filter(
-            pk=self.request.user.pk
-        )
+        return super().get_queryset().filter(pk=self.request.user.pk)
+
+
+class PasswordChangeCustomView(DataMixin, PasswordChangeView):
+    form_class = PasswordChangeCustomForm
+    template_name = 'registration/change_password.html'
+
+    def get_success_url(self):
+        return reverse_lazy('password_success', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PasswordChangeCustomView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f"Зміна пароля {self.request.user}")
+        return {**context, **c_def}
+
+
+class PasswordChangeSuccess(LoginRequiredMixin, DataMixin, TemplateView):
+    template_name = 'registration/password_success.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PasswordChangeSuccess, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f"Пароль оновлено {self.request.user}")
+        return {**context, **c_def}
 
 
 class UserRegisterView(NotLoggedAllow, DataMixin, CreateView):

@@ -6,7 +6,7 @@ from .models import User, Profile
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'avatar', 'is_invisible')  # , 'user.name', 'email', 'password'
+    list_display = ('id', 'user', 'avatar', 'is_invisible')
     list_display_links = ('id', 'user')
     search_fields = ('user', 'bio')
     list_editable = ('is_invisible',)
@@ -21,7 +21,7 @@ class ProfileAdmin(admin.ModelAdmin):
         return obj.user.email
 
 
-class ProfileAdminInline(admin.TabularInline):
+class ProfileAdminInline(admin.StackedInline):
     model = Profile
     max_num = 1
     can_delete = False
