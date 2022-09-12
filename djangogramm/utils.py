@@ -7,7 +7,7 @@ menu = [
     {"name": "Новий пост", "url": "post_create"},
     {"name": "Користувачі", "url": "user_list"},
     {"name": "Таги", "url": "tag_list"},
-    {"name": "Reset DB", "url": "create_db"},
+    # {"name": "Reset DB", "url": "create_db"},
     {"name": "Admin", "url": "admin:index"},
 ]
 

@@ -11,7 +11,7 @@ class Post(models.Model):
     text = models.TextField(null=True, blank=True)
     date = models.DateTimeField(default=timezone.now)  # auto_now_add=True
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)    # , related_name = 'posts'
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # , related_name = 'posts'
 
     tags = models.ManyToManyField(Tag)
 
@@ -32,7 +32,8 @@ class Post(models.Model):
 class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
-    image = models.FileField(upload_to='images/')
+    image = models.FileField(upload_to='images/', verbose_name='Зображення')
+    image_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
     # image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(70, 100)], format='JPEG',
     #                                  options={'quality': 60}, )
 

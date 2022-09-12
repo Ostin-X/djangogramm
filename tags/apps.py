@@ -6,4 +6,4 @@ class TagsConfig(AppConfig):
     name = 'tags'
 
     def ready(self):
-        from . import singals
+        from . import signals

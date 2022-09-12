@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import PasswordChangeView, TemplateView
 
@@ -32,6 +32,24 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['user'])
         return {**context, **c_def}
+
+
+class UserRegisterView(NotLoggedAllow, DataMixin, CreateView):
+    form_class = CustomUserCreationForm
+    template_name = 'registration/register.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserRegisterView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Створити користувача')
+        return {**context, **c_def}
+
+    def form_valid(self, form):
+        form.save()
+        username = self.request.POST['username']
+        password = self.request.POST['password1']
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
+        return HttpResponseRedirect(form.instance.profile.get_absolute_url())
 
 
 class UserUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
@@ -98,28 +116,13 @@ class PasswordChangeCustomView(DataMixin, PasswordChangeView):
         return {**context, **c_def}
 
 
-class PasswordChangeSuccess(LoginRequiredMixin, DataMixin, TemplateView):
+class PasswordChangeSuccess(LoginRequiredMixin, UserPassesTestMixin, DataMixin, TemplateView):
     template_name = 'registration/password_success.html'
+
+    def test_func(self):
+        return self.request.user.pk == self.kwargs['pk']
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PasswordChangeSuccess, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title=f"Пароль оновлено {self.request.user}")
         return {**context, **c_def}
-
-
-class UserRegisterView(NotLoggedAllow, DataMixin, CreateView):
-    form_class = CustomUserCreationForm
-    template_name = 'registration/register.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(UserRegisterView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Створити користувача')
-        return {**context, **c_def}
-
-    def form_valid(self, form):
-        form.save()
-        username = self.request.POST['username']
-        password = self.request.POST['password1']
-        user = authenticate(username=username, password=password)
-        login(self.request, user)
-        return HttpResponseRedirect(form.instance.profile.get_absolute_url())

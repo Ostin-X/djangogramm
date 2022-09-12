@@ -3,7 +3,7 @@ from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 
 from create_db.views import fake
-from users.models import User, Profile
+from .models import User, Profile
 
 
 @receiver(post_save, sender=User)

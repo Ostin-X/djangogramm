@@ -8,4 +8,4 @@ class UsersConfig(AppConfig):
     verbose_name_plural = 'Профілі'
 
     def ready(self):
-        from . import singals
+        from . import signals
