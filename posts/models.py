@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from django.contrib.auth.models import User
 from tags.models import Tag
+from users.models import path_and_rename
 
 
 class Post(models.Model):
@@ -22,28 +23,14 @@ class Post(models.Model):
         return reverse('post_detail', kwargs={'pk': self.pk})
 
 
-# def image_dir(instance, filename):
-#     upload_to = 'images/'
-#     inst_pk = instance.post.pk
-#     upload_to += str(inst_pk)
-#     return os.path.join(upload_to, filename)
-
-
 class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
-    image = models.FileField(upload_to='images/', verbose_name='Зображення')
+    image = models.FileField(upload_to=path_and_rename, verbose_name='Зображення')
     image_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
-    # image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(70, 100)], format='JPEG',
-    #                                  options={'quality': 60}, )
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # def delete(self, *args, **kwargs):
-    #     self.image.delete()
-    #     self.image_thumbnail.delete()
-    #     super(Image, self).delete(*args, **kwargs)
 
     def __repr__(self):
         return f'<Image {self.pk}>'

@@ -5,9 +5,10 @@
     <br/><br/>
 
     <div class="form-group">
-        <form method="POST"  enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
+            <h3>Профіль</h3>
             {{ form2.as_p }}
             <button class="btn btn-secondary">Зберегти</button>
         </form>

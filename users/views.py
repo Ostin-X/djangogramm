@@ -70,6 +70,7 @@ class UserUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
         return self.object.profile.get_absolute_url()
 
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         form2 = self.second_form_class(request.POST, request.FILES, instance=request.user.profile)
         if form2.is_valid():
             form2.save()
