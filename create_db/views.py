@@ -9,8 +9,7 @@ from django.db import connection
 # from django.contrib.auth.models import User
 
 from users.models import User, Profile
-from posts.models import Post, Image, Like
-from tags.models import Tag
+from posts.models import Post, Image, Like, Tag
 
 fake = Faker()
 

@@ -3,8 +3,18 @@ from django.utils import timezone
 from django.urls import reverse
 
 from django.contrib.auth.models import User
-from tags.models import Tag
+# from posts.models import Tag
 from users.models import path_and_rename
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('tag', kwargs={'pk': self.pk})
 
 
 class Post(models.Model):
@@ -32,8 +42,8 @@ class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __repr__(self):
-        return f'<Image {self.pk}>'
+    def __str__(self):
+        return f'Image {self.pk} of Post {self.post}'
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'pk': self.post.pk})
@@ -45,5 +55,5 @@ class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __repr__(self):
-        return f'<Like {self.id}>'
+    def __str__(self):
+        return f'Like {self.id} for Post {self.post}'

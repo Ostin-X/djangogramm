@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     # own
     'users',
     'posts',
-    'tags',
-    # 'django.contrib.sites',
 ]
 # SITE_ID = 1
 

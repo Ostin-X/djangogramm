@@ -2,7 +2,7 @@ from django.urls import path
 # from django.contrib import admin
 
 # from .views import index
-from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView
+from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView, index
 
 urlpatterns = [
     # path('/admin_too/', admin.site.urls, name='admin_path'),
@@ -14,5 +14,5 @@ urlpatterns = [
     path('posts/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
     path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
     path('posts/<int:pk>/create_image/', ImageCreateView.as_view(), name='image_create'),
-
+    path('posts/tags/', index, name='tag_list'),
 ]

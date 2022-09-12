@@ -18,7 +18,7 @@ class DataMixin:
 
         user_menu = menu.copy()
         if not self.request.user.is_authenticated:
-            user_menu = menu[:1] + menu[2:-2]
+            user_menu = menu[:1] + menu[2:-1]
         context['menu'] = user_menu
         return context
 

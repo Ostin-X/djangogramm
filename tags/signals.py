@@ -3,8 +3,7 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 from djangogramm.settings import MEDIA_ROOT
-from .models import Tag
-from posts.models import Post, Image
+from posts.models import Post, Image, Tag
 
 
 @receiver(post_delete, sender=Post)

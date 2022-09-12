@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from djangogramm.utils import DataMixin
 
-from .models import Post, Image
+from .models import Post, Image, Tag
 from .forms import PostForm, ImageForm
 
 
@@ -133,3 +133,8 @@ class ImageCreateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Create
         form.instance.user = self.request.user
         form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super(ImageCreateView, self).form_valid(form)
+
+
+def index(request, post_id=None):
+    tags = Tag.objects.all()
+    return render(request, 'posts/tags.html', {'tags': tags, 'title': 'Tags'})
