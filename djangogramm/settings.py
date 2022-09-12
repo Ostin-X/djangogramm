@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'users',
     'posts',
     'tags',
-    'imagekit',
     'extra_views',
     # 'django.contrib.sites',
 ]

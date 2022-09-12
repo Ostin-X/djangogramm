@@ -22,7 +22,7 @@ class PasswordChangeCustomView(DataMixin, PasswordChangeView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PasswordChangeCustomView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title=f"Зміна пароля")
+        c_def = self.get_user_context(title=f"Зміна пароля {self.request.user}")
         return {**context, **c_def}
 
 
@@ -75,7 +75,7 @@ class UserUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         form2 = self.second_form_class(request.POST, request.FILES, instance=request.user.profile)
         if form2.is_valid():
-            obj = form2.save()
+            form2.save()
         return super().post(request, *args, **kwargs)
 
 
@@ -90,9 +90,7 @@ class ProfileUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
         return {**context, **c_def}
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset().filter(
-            pk=self.request.user.pk
-        )
+        return super().get_queryset().filter(pk=self.request.user.pk)
 
 
 class UserDeleteView(LoginRequiredMixin, DataMixin, DeleteView):

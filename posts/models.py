@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
 
 from django.contrib.auth.models import User
 from tags.models import Tag
@@ -35,8 +33,8 @@ class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     image = models.FileField(upload_to='images/')
-    image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(70, 100)], format='JPEG',
-                                     options={'quality': 60}, )
+    # image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(70, 100)], format='JPEG',
+    #                                  options={'quality': 60}, )
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

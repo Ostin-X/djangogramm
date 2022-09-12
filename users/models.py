@@ -1,7 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
 import os
 import glob
 
@@ -30,8 +28,7 @@ class Profile(models.Model):
     bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
 
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
-    avatar_thumbnail = ImageSpecField(source='avatar', processors=[ResizeToFill(70, 100)], format='JPEG',
-                                      options={'quality': 60}, )
+    avatar_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
 
     is_invisible = models.BooleanField(default=False, verbose_name="Сором'язлива дупа")
 

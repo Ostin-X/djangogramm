@@ -65,14 +65,3 @@ class PasswordChangeCustomForm(PasswordChangeForm):
 #     # avatar = forms.ImageField(label='Аватарка')
 #     # is_invisible = forms.BooleanField(label="Сором'язливість", required=False)
 #     # cat = forms.ModelChoiceField(queryset=['cool', 'not cool'], empty_label='ijnjn')
-
-
-# class CreateUserForm(forms.ModelForm):
-#     # def __init__(self, *args, **kwargs):
-#     #     super().__init__(*args, **kwargs)
-#     # self.fields['cat'].empty_label = 'Категорія не вибрана'
-#     class Meta:
-#         model = Profile
-#         # fields = '__all__'
-#         fields = ['name', 'email', 'password', 'bio', 'avatar', 'is_invisible']
-#         # widgets = {}
