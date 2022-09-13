@@ -2,13 +2,22 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import PasswordChangeView, TemplateView
+from django.contrib.auth.views import PasswordChangeView, TemplateView, LoginView
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
 from .forms import CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
 from .models import User, Profile
 from djangogramm.utils import DataMixin, NotLoggedAllow
+
+
+class LoginCustomView(DataMixin, LoginView):
+    extra_context = {'title': 'Posts'}
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(LoginCustomView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Користувачі')
+        return {**context, **c_def}
 
 
 class UserListView(DataMixin, ListView):
