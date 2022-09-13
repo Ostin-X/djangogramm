@@ -14,7 +14,7 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('tag', kwargs={'pk': self.pk})
+        return reverse('tag_detail', kwargs={'pk': self.pk})
 
 
 class Post(models.Model):

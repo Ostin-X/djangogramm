@@ -137,4 +137,28 @@ class ImageCreateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Create
 
 def index(request, post_id=None):
     tags = Tag.objects.all()
-    return render(request, 'posts/tags.html', {'tags': tags, 'title': 'Tags'})
+    return render(request, 'posts/tag_list.html', {'tags': tags, 'title': 'Tags'})
+
+
+class TagListView(DataMixin, ListView):
+    model = Tag
+    paginate_by = 10
+    context_object_name = 'tags'
+    ordering = ['name']
+
+    def get_context_data(self, **kwargs):
+        context = super(TagListView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Теги')
+        return {**context, **c_def}
+    #
+    # def get_queryset(self):
+    #     return Tag.objects.filter().order_by('name')
+
+
+class TagDetailView(LoginRequiredMixin, DataMixin, DetailView):
+    model = Tag
+
+    def get_context_data(self, **kwargs):
+        context = super(TagDetailView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title='#'+str(context['tag']))
+        return {**context, **c_def}

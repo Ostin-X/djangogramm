@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table id="data" class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Тег</th>
+            <th>Кількість</th>
+            <th>Пости</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for t in tags %}
+            <tr>
+                <td><a href="{{ t.get_absolute_url }}">{{ t.name }}</a></td>
+                <td>{{ t.post_set.count }}</td>
+                <td>
+                    {% for post in t.post_set.all %}
+
+                        <ul>
+                            <li><small><a href="{{ post.get_absolute_url }}">{{ post }}</a></small></li>
+                        </ul>
+
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
+
