@@ -4,9 +4,12 @@
     <h1>{{ post.title }}</h1>
     <small><a href="{% url 'user_detail' post.user.pk %}"> By: {{ post.user }} - {{ post.date }}</a></small>
     {% if user == post.user %}
-        | <small><a href="{% url 'post_update' post.pk %}">(Edit)</a></small>
-        | <small><a href="{% url 'post_delete' post.pk %}">(Delete)</a></small>
-        | <small><a href="{% url 'image_create' post.pk %}">(Add image)</a></small>
+        | <small><a href="{% url 'post_update' post.pk %}">(Редагувати)</a></small>
+        | <small><a href="{% url 'post_delete' post.pk %}">(Видалити)</a></small>
+        | <small><a href="{% url 'image_create' post.pk %}">(Додати зображення)</a></small>
+        {% if post.image_set.all %}
+            | <small><a href="{% url 'image_update' post.pk %}">(Керувати зображеннями)</a></small>
+        {% endif %}
     {% endif %}
 
     <br/>

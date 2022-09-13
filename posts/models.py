@@ -3,7 +3,6 @@ from django.utils import timezone
 from django.urls import reverse
 
 from django.contrib.auth.models import User
-# from posts.models import Tag
 from users.models import path_and_rename
 
 
@@ -25,6 +24,8 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # , related_name = 'posts'
 
     tags = models.ManyToManyField(Tag)
+
+    first_image = models.PositiveIntegerField(null=True, blank=True, verbose_name='pk першого зображення')
 
     def __str__(self):
         return f'{self.title} | {str(self.user)}'

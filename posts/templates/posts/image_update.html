@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <br/><br/>
+
+    <div class="form-group">
+        <form method="GET">
+            {% csrf_token %}
+            <a href="{% url 'post_detail' pk=pk %}" class="btn btn-secondary">Назад</a>
+            <br/><br/>
+            {% for image in object.image_set.all %}
+                <img src="{{ image.image.url }}" height="300">
+                <a href="{% url 'image_delete' post_pk=pk pk=image.pk %}">
+                    <button class="btn btn-secondary">Видалити</button>
+                </a>
+                &emsp;
+                <button class="btn btn-secondary">Зробити першим</button>
+                <br/><br/>
+            {% endfor %}
+        </form>
+    </div>
+{% endblock %}
+

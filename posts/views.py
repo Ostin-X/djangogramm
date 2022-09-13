@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from djangogramm.utils import DataMixin
 
@@ -133,6 +133,38 @@ class ImageCreateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Create
         form.instance.user = self.request.user
         form.instance.post = Post.objects.get(pk=self.kwargs['pk'])
         return super(ImageCreateView, self).form_valid(form)
+
+
+class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, TemplateView):
+    template_name = 'posts/image_update.html'
+
+    def test_func(self):
+        return self.request.user.pk == Post.objects.get(pk=self.kwargs['pk']).user_id
+
+    def get_context_data(self, **kwargs):
+        context = super(ImageUpdateView, self).get_context_data(**kwargs)
+        post_object = Post.objects.get(pk=self.kwargs['pk'])
+        print(post_object.image_set.all())
+        c_def = self.get_user_context(
+            title=f"Редагувати зображення поста {Post.objects.get(pk=self.kwargs['pk']).title}", object=post_object)
+        return {**context, **c_def}
+
+
+class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
+    model = Image
+    # success_url = reverse_lazy('post_detail', kwargs={'pk': self.pk})
+    template_name = 'posts/image_delete.html'
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset().filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(ImageDeleteView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f'Видалити зображення до поста "{self.object.post.title}"')
+        return {**context, **c_def}
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
 
 
 class TagListView(DataMixin, ListView):
