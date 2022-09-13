@@ -33,6 +33,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'pk': self.pk})
 
+    def make_first(self, image_pk):
+        self.first_image = image_pk
+
 
 class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
