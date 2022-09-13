@@ -2,7 +2,7 @@ from PIL import Image
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 
-from create_db.views import fake
+from posts.views_create_db import fake
 from .models import User, Profile
 
 
