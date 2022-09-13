@@ -1,7 +1,7 @@
 import random
 from django.test import TestCase
 import pytest
-from create_db.views import fake
+from .views_create_db import fake
 
 from posts.models import Post
 from users.models import Profile
