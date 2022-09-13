@@ -7,8 +7,8 @@
         <thead>
         <tr>
             <th>Тег</th>
-            <th>Кількість</th>
-            <th>Пости</th>
+            <th>Кількість постів</th>
+{#            <th>Пости</th>#}
 
         </tr>
         </thead>
@@ -17,15 +17,15 @@
             <tr>
                 <td><a href="{{ t.get_absolute_url }}">{{ t.name }}</a></td>
                 <td>{{ t.post_set.count }}</td>
-                <td>
-                    {% for post in t.post_set.all %}
-
-                        <ul>
-                            <li><small><a href="{{ post.get_absolute_url }}">{{ post }}</a></small></li>
-                        </ul>
-
-                    {% endfor %}
-                </td>
+{#                <td>#}
+{#                    {% for post in t.post_set.all %}#}
+{##}
+{#                        <ul>#}
+{#                            <li><small><a href="{{ post.get_absolute_url }}">{{ post }}</a></small></li>#}
+{#                        </ul>#}
+{##}
+{#                    {% endfor %}#}
+{#                </td>#}
             </tr>
         {% endfor %}
 
