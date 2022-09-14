@@ -25,7 +25,7 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(Tag)
 
-    first_image = models.PositiveIntegerField(null=True, blank=True, verbose_name='pk першого зображення')
+    # first_image = models.PositiveIntegerField(null=True, blank=True, verbose_name='pk першого зображення')
 
     def __str__(self):
         return f'{self.title} | {str(self.user)}'
@@ -33,8 +33,15 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'pk': self.pk})
 
-    def make_first(self, image_pk):
-        self.first_image = image_pk
+    def make_first(self, new_img_object):
+        print('make_first(self, new_img_object)')
+        if new_img_object in self.image_set.all():
+            if hasattr(self, 'first_image'):
+                old_img_obj = self.first_image
+                old_img_obj.is_first = None
+                old_img_obj.save()
+            self.first_image = new_img_object
+            new_img_object.save()
 
 
 class Image(models.Model):
@@ -45,6 +52,8 @@ class Image(models.Model):
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    is_first = models.OneToOneField(Post, null=True, blank=True, related_name='first_image', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Image {self.pk} of Post {self.post}'

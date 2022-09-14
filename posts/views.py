@@ -144,10 +144,14 @@ class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Templa
     def get_context_data(self, **kwargs):
         context = super(ImageUpdateView, self).get_context_data(**kwargs)
         post_object = Post.objects.get(pk=self.kwargs['pk'])
-        print(post_object.image_set.all())
+        # post_object.make_first(Post.objects.get(pk=self.kwargs['pk']).image_set.get(pk=1))
         c_def = self.get_user_context(
             title=f"Редагувати зображення поста {Post.objects.get(pk=self.kwargs['pk']).title}", object=post_object)
         return {**context, **c_def}
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        return self.get(request, *args, **kwargs)
 
 
 class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):

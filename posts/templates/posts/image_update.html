@@ -5,20 +5,23 @@
     <br/><br/>
 
     <div class="form-group">
-        <form method="GET">
+        <form action="{{ object.make_first }}" method="POST">
             {% csrf_token %}
             <a href="{% url 'post_detail' pk=pk %}" class="btn btn-secondary">Назад</a>
             <br/><br/>
             {% for image in object.image_set.all %}
                 <img src="{{ image.image.url }}" height="300">
-                <a href="{% url 'image_delete' post_pk=pk pk=image.pk %}">
-                    <button class="btn btn-secondary">Видалити</button>
-                </a>
-{#                <a href="{{  }}"#}
-                <button class="btn btn-secondary">Зробити першим</button>
+                <a class="btn btn-secondary" href="{% url 'image_delete' post_pk=pk pk=image.pk %}"> Видалити </a>
+                {% if image != image.post.first_image %}
+                    <button type="submit" , name="image_pk" , value="{{ image.pk }}" , class="btn btn-secondary">Зробити
+                        першим
+                    </button>
+                {% else %}
+                    <a class="btn btn-secondary">Це перше</a>
+                {% endif %}
+                </form>
                 <br/><br/>
             {% endfor %}
-        </form>
     </div>
 {% endblock %}
 
