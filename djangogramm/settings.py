@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
 
     # own
-    'users',
+    # 'users',
     'posts',
 ]
 # SITE_ID = 1

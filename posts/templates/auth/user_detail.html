@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h1>{{ title }}</h1>
+    {% if request.user == object %}
+        <small><a href="{% url 'user_update' object.pk %}">(Edit User)</a></small>
+        | <small><a href="{% url 'profile_update' object.profile.pk %}">(Edit Profile)</a></small>
+        | <small><a href="{% url 'user_delete' object.pk %}">(Delete)</a></small>
+    {% endif %}
+    <br/>
+    <br/>
+
+    <body>
+    {% if object.avatar %}
+        <img src="{{ object.avatar.url }}" align="left" height="500">
+    {% endif %}
+    <p>{{ object.profile.bio }}</p>
+
+    <div>
+        <h2>Posts</h2>
+        <table id="data" class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Post Title</th>
+                <th>Post Text</th>
+                <th>Post Likes</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for p in object.post_set.all %}
+                <tr>
+                    <td>{{ p.title }}</td>
+                    <td>{{ p.text }}</td>
+                    <td>{{ p.like_set.count }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <h2>Likes</h2>
+    <table id="data" class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Post Title</th>
+            <th>Post Text</th>
+            <th>Post Likes</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for l in object.like_set.all %}
+            <tr>
+                <td>{{ l.post.title }}</td>
+                <td>{{ l.post.text }}</td>
+                <td>{{ l.post.like_set.count }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    </body>
+{% endblock %}

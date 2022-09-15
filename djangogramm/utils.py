@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponseRedirect, request
-from django.views import View
+
 
 menu = [
     {"name": "Пости", "url": "post_list"},

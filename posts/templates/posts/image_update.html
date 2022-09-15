@@ -13,9 +13,7 @@
                 <img src="{{ image.image.url }}" height="300">
                 <a class="btn btn-secondary" href="{% url 'image_delete' post_pk=pk pk=image.pk %}"> Видалити </a>
                 {% if image != image.post.first_image %}
-                    <button type="submit" , name="image_pk" , value="{{ image.pk }}" , class="btn btn-secondary">Зробити
-                        першим
-                    </button>
+                    <input type="submit" , name="image_pk {{ image.pk }}" , value="{{ image.pk }}" , class="btn btn-secondary">Зробити першим
                 {% else %}
                     <a class="btn btn-secondary">Це перше</a>
                 {% endif %}

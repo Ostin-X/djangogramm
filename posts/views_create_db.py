@@ -1,17 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import random
-from faker import Faker
 import pytz as pytz
 from django.core.management.color import no_style
 from django.db import connection
 
-# from django.contrib.auth.models import User
-
-from users.models import User, Profile
-from posts.models import Post, Image, Like, Tag
-
-fake = Faker()
+from posts.models import Post, Image, Like, Tag,User, Profile
+from posts.signals import fake
 
 
 def create_all_db(request):
