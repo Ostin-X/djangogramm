@@ -31,7 +31,14 @@ class UserAdmin(AuthUserAdmin):
     inlines = [ProfileAdminInline]
 
 
+class ImageAdminInline(admin.StackedInline):
+    model = Image
+    can_delete = True
+    fk_name = 'post'
+
+
 class PostAdmin(admin.ModelAdmin):
+    inlines = [ImageAdminInline]
     list_display = ('id', 'title', 'user')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'user')
