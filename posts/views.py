@@ -3,12 +3,13 @@ from django.contrib.auth.views import PasswordChangeView, TemplateView, LoginVie
 
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from posts.utils import DataMixin, NotLoggedAllow
 
-from .models import Post, Image, Tag, User, Profile
+from .models import Post, Image, Tag, User, Profile, Like
 from .forms import PostForm, ImageForm, CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
 
 
@@ -155,13 +156,30 @@ class PostListView(DataMixin, ListView):
         return Post.objects.filter().order_by('-date')  # post__is_invisible=False
 
 
+def like_post(request, pk):
+    post_object = get_object_or_404(Post, id=request.POST.get('post_pk'))
+    like_object = Like.objects.filter(user=request.user, post=post_object)
+    if like_object.exists():
+        like_object.delete()
+    else:
+        Like.objects.create(user=request.user, post=post_object)
+    return HttpResponseRedirect(reverse('post_detail', args=[str(pk)]))
+
+
+def image_make_first(request, post_pk, pk):
+    post_object = get_object_or_404(Post, id=post_pk)
+    image_object = get_object_or_404(Image, id=pk)
+    post_object.make_first(image_object)
+    return HttpResponseRedirect(reverse('image_update', args=[str(post_pk)]))
+
+
 class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
     model = Post
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['post'])
+        c_def = self.get_user_context(title=context['post'].title)
         return {**context, **c_def}
 
 

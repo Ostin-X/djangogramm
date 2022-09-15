@@ -3,7 +3,7 @@ from django.urls import path
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView, \
     TagListView, TagDetailView, ImageUpdateView, ImageDeleteView, UserListView, UserDetailView, UserUpdateView, \
     ProfileUpdateView, UserRegisterView, UserDeleteView, PasswordChangeCustomView, PasswordChangeSuccess, \
-    LoginCustomView
+    LoginCustomView, like_post, image_make_first
 
 from .views_create_db import create_all_db
 
@@ -19,8 +19,11 @@ urlpatterns = [
     path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
     path('posts/<int:pk>/create_image/', ImageCreateView.as_view(), name='image_create'),
 
+    path('posts/<int:pk>/like/', like_post, name='post_like'),
+
     path('posts/<int:pk>/images/', ImageUpdateView.as_view(), name='image_update'),
-    path('posts/<int:post_pk>/images/<int:pk>', ImageDeleteView.as_view(), name='image_delete'),
+    path('posts/<int:post_pk>/images/<int:pk>/first', image_make_first, name='image_make_first'),
+    path('posts/<int:post_pk>/images/<int:pk>/delete', ImageDeleteView.as_view(), name='image_delete'),
 
     path('posts/tags/', TagListView.as_view(), name='tag_list'),
     path('posts/tags/<int:pk>/', TagDetailView.as_view(), name='tag_detail'),

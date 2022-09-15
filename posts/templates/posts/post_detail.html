@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ post.title }}</h1>
+    <h1>{{ title }}</h1>
     <small><a href="{% url 'user_detail' post.user.pk %}"> By: {{ post.user }} - {{ post.date }}</a></small>
     {% if user == post.user %}
         | <small><a href="{% url 'post_update' post.pk %}">(Редагувати)</a></small>
@@ -40,6 +40,14 @@
     </div>
     <br/><br/>
     <hr>
+    <form action="{% url 'post_like' post.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" , name="post_pk" , value="{{ post.pk }}" , class="btn btn-primary btn-sm">like
+            - {{ post.total_likes }}</button>
+    </form>
+    <br/><br/>
     <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>
+
+
 {% endblock %}
 

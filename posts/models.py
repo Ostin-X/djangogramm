@@ -66,16 +66,16 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(Tag)
 
-    # first_image = models.PositiveIntegerField(null=True, blank=True, verbose_name='pk першого зображення')
-
     def __str__(self):
         return f'{self.title} | {str(self.user)}'
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'pk': self.pk})
 
+    def total_likes(self):
+        return self.like_set.count()
+
     def make_first(self, new_img_object):
-        print('make_first(self, new_img_object)')
         if new_img_object in self.image_set.all():
             if hasattr(self, 'first_image'):
                 old_img_obj = self.first_image

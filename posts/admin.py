@@ -42,7 +42,11 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'user')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'user')
-    readonly_fields = ('user',)
+    readonly_fields = ('user', 'get_likes_count')
+
+    @display(description='Likes')
+    def get_likes_count(self, obj):
+        return obj.like_set.count()
 
 
 class LikeAdmin(admin.ModelAdmin):
