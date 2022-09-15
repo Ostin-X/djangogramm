@@ -156,7 +156,6 @@ class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Templa
 
 class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
     model = Image
-    # success_url = reverse_lazy('post_detail', kwargs={'pk': self.pk})
     template_name = 'posts/image_delete.html'
 
     def get_queryset(self, *args, **kwargs):
