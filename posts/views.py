@@ -301,8 +301,8 @@ class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Templa
     #     print(request.POST)
     #     return self.get(request, *args, **kwargs)
 
-    def from_valid(self, form):
-        print(self.request.POST)
+    # def from_valid(self, form):
+    #     print(self.request.POST)
 
 
 class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
@@ -318,7 +318,7 @@ class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
         return {**context, **c_def}
 
     def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
+        return reverse_lazy('image_update', kwargs={'pk': self.object.post.pk})
 
 
 class TagListView(DataMixin, ListView):
