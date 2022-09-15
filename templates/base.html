@@ -67,15 +67,15 @@
                             <span class="page-link">{{ p }}</span>
                         </li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-                        <li class="page-link">
-                            <a href="?page={{ p }}">{{ p }}</a>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
                         </li>
                     {% elif p == 1 or p == page_obj.paginator.num_pages %}
-                        <li class="page-link">
-                            <a href="?page={{ p }}">{{ p }}</a>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
                         </li>
                     {% elif p == page_obj.number|add:-3 or p == page_obj.number|add:3 %}
-                        <li class="page-link">
+                        <li class="page-item">
                             <a>...</a>
                         </li>
                     {% endif %}
