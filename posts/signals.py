@@ -29,7 +29,7 @@ def auto_create_thumbnail(sender, instance, **kwargs):
 
     if avatar:
         thumbnail_path = add_thumbnail_to_name(avatar.path)
-        img = Image.open(avatar.path)
+        img = ImagePIL.open(avatar.path)
         # if img.height > 300 or img.width > 300:
         output_size = (300, 300)
         img.thumbnail(output_size)
