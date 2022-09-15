@@ -31,10 +31,33 @@ class UserAdmin(AuthUserAdmin):
     inlines = [ProfileAdminInline]
 
 
-admin.site.register(Profile, ProfileAdmin)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'user')
+    list_display_links = ('id', 'title')
+    search_fields = ('title', 'user')
+    readonly_fields = ('user',)
+
+
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'user')
+    search_fields = ('post', 'user')
+
+
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'user')
+    search_fields = ('post', 'user')
+
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
+
+
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-admin.site.register(Post)
-admin.site.register(Like)
-admin.site.register(Image)
-admin.site.register(Tag)
+
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Post, PostAdmin)
+admin.site.register(Like, LikeAdmin)
+admin.site.register(Image, ImageAdmin)
+admin.site.register(Tag, TagAdmin)

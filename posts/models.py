@@ -51,6 +51,11 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return reverse('tag_detail', kwargs={'pk': self.pk})
 
+    class Meta:
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
+        ordering = ['id']
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
@@ -79,6 +84,11 @@ class Post(models.Model):
             self.first_image = new_img_object
             new_img_object.save()
 
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Пости'
+        ordering = ['id']
+
 
 class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
@@ -97,6 +107,11 @@ class Image(models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'pk': self.post.pk})
 
+    class Meta:
+        verbose_name = 'Картинка'
+        verbose_name_plural = 'Картинки'
+        ordering = ['id']
+
 
 class Like(models.Model):
     date = models.DateTimeField(default=timezone.now)
@@ -106,3 +121,8 @@ class Like(models.Model):
 
     def __str__(self):
         return f'Like {self.id} for Post {self.post}'
+
+    class Meta:
+        verbose_name = 'Лайк'
+        verbose_name_plural = 'Лайки'
+        ordering = ['id']
