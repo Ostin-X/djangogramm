@@ -6,8 +6,7 @@ menu = [
     {"name": "Новий пост", "url": "post_create"},
     {"name": "Користувачі", "url": "user_list"},
     {"name": "Таги", "url": "tag_list"},
-    # {"name": "Reset DB", "url": "create_db"},
-    {"name": "Admin", "url": "admin:index"},
+    # {"name": "Admin", "url": "admin:index"},
 ]
 
 
@@ -23,7 +22,6 @@ class DataMixin:
 
 
 class NotLoggedAllow(UserPassesTestMixin):
-    # login_url = '/profile/'
 
     def test_func(self):
         return not self.request.user.is_authenticated

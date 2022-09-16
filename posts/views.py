@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from posts.utils import DataMixin, NotLoggedAllow
+from .utils import DataMixin, NotLoggedAllow
 
 from .models import Post, Image, Tag, User, Profile, Like
 from .forms import PostForm, ImageForm, CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
