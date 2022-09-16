@@ -93,7 +93,7 @@ class Post(models.Model):
 class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
-    image = models.FileField(upload_to=path_and_rename, verbose_name='Зображення')
+    image = models.ImageField(upload_to=path_and_rename, verbose_name='Зображення')
     image_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

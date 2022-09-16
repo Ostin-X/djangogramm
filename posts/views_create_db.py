@@ -5,7 +5,7 @@ import pytz as pytz
 from django.core.management.color import no_style
 from django.db import connection
 
-from posts.models import Post, Image, Like, Tag,User, Profile
+from posts.models import Post, Image, Like, Tag, User, Profile
 from posts.signals import fake
 
 
@@ -61,8 +61,7 @@ def create_users_table(number_of_users):
         add_name = fake.name()
         add_email = fake.email()
         add_pass = fake.password()
-        # add_avatar = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
-        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name)  # , bio=fake.text()
+        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name)
         Profile.objects.get(user=user_object).bio = fake.text()
         decreasing_number -= 1
 
@@ -129,3 +128,17 @@ def create_tags_table(number_of_tags):
         decreasing_number -= 1
 
     return number_of_tags - count
+
+
+def create_images_table(number_of_images):
+    posts_list = list(Post.objects.all())
+    count = Image.objects.count()
+    decreasing_number = number_of_images
+
+    while decreasing_number > count:
+        post = random.choice(posts_list)
+        user = post.user
+
+        add_date = fake.date_time_between(start_date=post.date, end_date='now', tzinfo=pytz.utc)
+        add_image = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
+        Image(date=add_date, post=post, user=user, image=add_image).save()
