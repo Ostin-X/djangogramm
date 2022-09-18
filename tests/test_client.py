@@ -1,12 +1,9 @@
-import json
-
 from django.test import TestCase, Client
-
-import pytest
 from django.urls import reverse
 
-from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_tags_table
+import pytest
 
+from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_tags_table
 from posts.models import Post, Profile, Like, Tag, User
 
 
@@ -28,10 +25,6 @@ class PostViewsTestCase(TestCase):
                                               user=self.user_ostin)
 
         self.client = Client()
-
-        # self.list_url = reverse('post_list')
-        # self.detail_login_url = reverse('post_detail', kwargs={'pk': self.post_ostin.pk})
-        # self.detail_url = reverse('post_detail', kwargs={'pk': self.post_ostin.pk})
 
     def test_post_list_GET(self):
         response = self.client.get(reverse('post_list'))
