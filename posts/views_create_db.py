@@ -1,3 +1,4 @@
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 import random
 import pytz as pytz
@@ -137,7 +138,11 @@ def create_images_table(number_of_images):
     while decreasing_number > count:
         post = random.choice(posts_list)
         user = post.user
+        image_path = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
+        add_image = SimpleUploadedFile(name='test_image.jpg', content=open(image_path, 'rb').read(),
+                                            content_type='image/jpeg')
 
         add_date = fake.date_time_between(start_date=post.date, end_date='now', tzinfo=pytz.utc)
-        add_image = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
         Image(date=add_date, post=post, user=user, image=add_image).save()
+
+        decreasing_number -= 1

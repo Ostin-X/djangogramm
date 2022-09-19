@@ -1,10 +1,10 @@
-from django.test import TestCase
-import pytest
-
-@pytest.fixture(scope='session')
-def fixture_1():
-    print('run_fixture_1')
-    return 1
+# from django.test import TestCase
+# import pytest
+#
+# @pytest.fixture(scope='session')
+# def fixture_1():
+#     print('run_fixture_1')
+#     return 1
 
 # @pytest.mark.django_db
 # def test_example_db1():
