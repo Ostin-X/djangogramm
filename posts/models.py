@@ -1,3 +1,5 @@
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -63,6 +65,9 @@ class Post(models.Model):
     date = models.DateTimeField(default=timezone.now)  # auto_now_add=True
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # , related_name = 'posts'
+    content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.RESTRICT)
+    image_id = models.PositiveIntegerField(null=True, blank=True)
+    first_image = GenericForeignKey('content_type', 'image_id')
 
     tags = models.ManyToManyField(Tag)
 
@@ -77,12 +82,9 @@ class Post(models.Model):
 
     def make_first(self, new_img_object):
         if new_img_object in self.image_set.all():
-            if hasattr(self, 'first_image'):
-                old_img_obj = self.first_image
-                old_img_obj.is_first = None
-                old_img_obj.save()
-            self.first_image = new_img_object
-            new_img_object.save()
+            if hasattr(self, 'first_image') and new_img_object != self.first_image:
+                self.first_image = new_img_object
+                self.save()
 
     class Meta:
         verbose_name = 'Пост'
@@ -99,7 +101,8 @@ class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    is_first = models.OneToOneField(Post, null=True, blank=True, related_name='first_image', on_delete=models.CASCADE)
+    # is_first = models.OneToOneField(Post, null=True, blank=True, related_name='first_image_new',
+    #                                 on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Image {self.pk} of Post {self.post}'
