@@ -318,7 +318,6 @@ class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
         return {**context, **c_def}
 
     def get_success_url(self):
-        print(self.object.post.image_set.count())
         if self.object.post.image_set.count() > 1:
             return reverse_lazy('image_update', kwargs={'pk': self.object.post.pk})
         else:
