@@ -318,7 +318,10 @@ class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
         return {**context, **c_def}
 
     def get_success_url(self):
-        return reverse_lazy('image_update', kwargs={'pk': self.object.post.pk})
+        if self.object.post.image_set.count() > 1:
+            return reverse_lazy('image_update', kwargs={'pk': self.object.post.pk})
+        else:
+            return reverse_lazy('post_detail', kwargs={'pk': self.object.post.pk})
 
 
 class TagListView(DataMixin, ListView):

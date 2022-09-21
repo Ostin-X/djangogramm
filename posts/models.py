@@ -65,7 +65,7 @@ class Post(models.Model):
     date = models.DateTimeField(default=timezone.now)  # auto_now_add=True
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # , related_name = 'posts'
-    first_image = models.ForeignKey('Image', null=True, blank=True, on_delete=models.RESTRICT, related_name='+')
+    first_image = models.ForeignKey('Image', null=True, blank=True, on_delete=models.SET(''), related_name='+')
     # content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.RESTRICT)
     # image_id = models.PositiveIntegerField(null=True, blank=True)
     # first_image = GenericForeignKey('content_type', 'image_id')
