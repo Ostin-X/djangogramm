@@ -1,43 +1,50 @@
-from django.test import TestCase, Client
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase, Client, override_settings
+import tempfile
 from django.urls import reverse
 
 import pytest
 
-from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_tags_table
-from posts.models import Post, Profile, Like, Tag, User
+from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_tags_table, \
+    create_images_table
+from posts.models import Post, Profile, Like, Tag, User, Image
 
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class PostViewsTestCase(TestCase):
     def setUp(self):
         self.users_number = 5
         self.posts_number = 8
         self.likes_number = 20
         self.tags_number = 20
-        # self.images_number = 10
+        self.images_number = 10
 
         create_users_table(self.users_number)
         create_posts_table(self.posts_number)
         create_likes_table(self.likes_number)
         create_tags_table(self.tags_number)
+        create_images_table(self.images_number)
+
         self.user_ostin = User.objects.create(email='and@and.gmail.com', password='qwe', username='ostin')
         self.post_ostin = Post.objects.create(title='Мій тестовий тайтл',
                                               text='Дуже багато тексту ' + '1234567890' * 10,
                                               user=self.user_ostin)
+        self.image_path = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
+        self.add_image = SimpleUploadedFile(name='test_image.jpg', content=open(self.image_path, 'rb').read(),
+                                            content_type='image/jpeg')
+        Image.objects.create(post=self.post_ostin, user=self.user_ostin, image=self.add_image)
 
         self.client = Client()
 
     def test_post_list_GET(self):
         response = self.client.get(reverse('post_list'))
 
-        # assert response.__dict__ == 'posts/post_list.html2'
-
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual((response.context_data['object_list']), (Post.objects.order_by('-date').all()))
         self.assertTemplateUsed(response, 'posts/post_list.html')
         self.assertTemplateNotUsed(response, 'posts/post_detail.html')
         self.assertContains(response, 'Мій тестовий тайтл')
-        self.assertContains(response,
-                            'Дуже багато тексту ' + '1234567890' * 8 + '1')
+        self.assertContains(response, 'Дуже багато тексту ' + '1234567890' * 8 + '1')
 
     def test_post_detail_GET_loggedin(self):
         # self.client.force_login(User.objects.get_or_create(username='testuser')[0])
@@ -51,6 +58,7 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(response.context_data['object'], self.post_ostin)
         self.assertTemplateUsed(response, 'posts/post_detail.html')
         self.assertContains(response, 'Додати зображення')
+        self.assertContains(response, 'Керувати зображеннями')
 
     def test_post_create_POST(self):
         self.client.force_login(self.user_ostin)
@@ -108,3 +116,15 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.headers['Location'], f'/users/login/?next=/posts/{post_object.pk}/')
         self.assertTemplateNotUsed(response, 'posts/post_detail.html')
+
+    def test_image_create_POST(self):
+        self.client.force_login(self.user_ostin)
+        old_image_count = Image.objects.count()
+        response = self.client.post(reverse('image_create', kwargs={'pk': self.post_ostin.pk}),
+                                    {'image': 'C:/Users/Andre/Google Диск/!Python/DjangoGramm/tests/Lewis_Hamilton_2016_Malaysia_2.jpg'})
+        print()
+        print(response.__dict__['context_data'])
+        print(response.__dict__.keys())
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(old_image_count + 1, Image.objects.count())

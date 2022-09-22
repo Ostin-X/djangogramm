@@ -24,16 +24,9 @@ class UsersTestCase(TestCase):
         create_images_table(self.images_number)
 
     def test_create_objects(self):
-        self.assertEqual(User.objects.count(), self.users_number)
-        self.assertEqual(User.objects.count(), 5)
-
-        self.assertNotEqual(User.objects.count(), self.users_number + 1)
         self.assertEqual(Profile.objects.count(), self.users_number)
-        self.assertEqual(Post.objects.count(), self.posts_number)
-        self.assertEqual(Like.objects.count(), self.likes_number)
-        self.assertEqual(Tag.objects.count(), self.tags_number)
-        self.assertEqual(Image.objects.count(), self.images_number)
-        self.assertFalse(Image.objects.filter(image_thumbnail='').all())
+
+        self.assertFalse(Image.objects.filter(Q(image_thumbnail='') | Q(image_thumbnail=None)).all())
         self.assertIn(f'images_{Image.objects.first().post.pk}', str(Image.objects.first().image))
         self.assertIn(f'images_{Image.objects.first().post.pk}_thumbnail', str(Image.objects.first().image_thumbnail))
 
@@ -46,7 +39,7 @@ class UsersTestCase(TestCase):
         image_path = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
         add_image = SimpleUploadedFile(name='test_image.jpg', content=open(image_path, 'rb').read(),
                                        content_type='image/jpeg')
-        image_object = Image.objects.create(post=post_object, user=user_object, image=add_image)
+        Image.objects.create(post=post_object, user=user_object, image=add_image)
 
         self.assertEqual(1, post_object.image_set.count())
 
