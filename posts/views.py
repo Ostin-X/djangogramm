@@ -157,7 +157,8 @@ class PostListView(DataMixin, ListView):
 
 
 def like_post(request, pk):
-    post_object = get_object_or_404(Post, id=request.POST.get('post_pk'))
+    post_object = get_object_or_404(Post, id=pk)
+
     like_object = Like.objects.filter(user=request.user, post=post_object)
     if like_object.exists():
         like_object.delete()
