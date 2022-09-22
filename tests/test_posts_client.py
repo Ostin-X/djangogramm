@@ -168,6 +168,7 @@ class PostViewsTestCase(TestCase):
         post_likes_count = self.post_ostin.like_set.count()
         other_post_likes_count = Post.objects.first().like_set.count()
         user_likes_count = self.user_ostin.like_set.count()
+        likes_count = Like.objects.count()
 
         response = self.client.get(reverse('post_like', kwargs={'pk': self.post_ostin.pk}))
         response2 = self.client.get(reverse('post_like', kwargs={'pk': Post.objects.first().pk}))
@@ -177,6 +178,7 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(post_likes_count + 1, Post.objects.get(pk=self.post_ostin.pk).like_set.count())
         self.assertEqual(other_post_likes_count + 1, Post.objects.first().like_set.count())
         self.assertEqual(user_likes_count + 2, User.objects.get(pk=self.user_ostin.pk).like_set.count())
+        self.assertEqual(likes_count + 2, Like.objects.count())
 
         # response3 = self.client.get(reverse('post_like', kwargs={'pk': self.post_ostin.pk}))
         response4 = self.client.get(reverse('post_like', kwargs={'pk': Post.objects.first().pk}))
@@ -186,3 +188,4 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(post_likes_count + 1, Post.objects.get(pk=self.post_ostin.pk).like_set.count())
         self.assertEqual(other_post_likes_count, Post.objects.first().like_set.count())
         self.assertEqual(user_likes_count + 1, User.objects.get(pk=self.user_ostin.pk).like_set.count())
+        self.assertEqual(likes_count + 1, Like.objects.count())
