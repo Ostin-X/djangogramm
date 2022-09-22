@@ -128,10 +128,11 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(old_image_count + 1, Image.objects.count())
         self.assertEqual(2, self.post_ostin.image_set.count())
         self.assertEqual(2, self.user_ostin.image_set.count())
-        self.assertEqual('images/images_9.jpg', self.post_ostin.image_set.first().image)
-        self.assertEqual('images/images_9_thumbnail.jpg', self.post_ostin.image_set.first().image_thumbnail)
-        self.assertIn('images/images_9', str(self.post_ostin.image_set.last().image))
-        self.assertIn('images/images_9', str(self.post_ostin.image_set.last().image_thumbnail))
+        self.assertEqual(f'images/images_{self.post_ostin.pk}.jpg', self.post_ostin.image_set.first().image)
+        self.assertEqual(f'images/images_{self.post_ostin.pk}_thumbnail.jpg',
+                         self.post_ostin.image_set.first().image_thumbnail)
+        self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image))
+        self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image_thumbnail))
         self.assertIn('_thumbnail.jpg', str(self.post_ostin.image_set.last().image_thumbnail))
 
     def test_image_delete_DELETE(self):
