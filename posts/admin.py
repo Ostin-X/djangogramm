@@ -35,6 +35,7 @@ class ImageAdminInline(admin.StackedInline):
     model = Image
     can_delete = True
     fk_name = 'post'
+    extra = 1
 
 
 class PostAdmin(admin.ModelAdmin):
