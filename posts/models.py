@@ -66,9 +66,6 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # , related_name = 'posts'
     first_image = models.ForeignKey('Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
-    # content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.RESTRICT)
-    # image_id = models.PositiveIntegerField(null=True, blank=True)
-    # first_image = GenericForeignKey('content_type', 'image_id')
 
     tags = models.ManyToManyField(Tag)
 
@@ -101,9 +98,6 @@ class Image(models.Model):
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # is_first = models.OneToOneField(Post, null=True, blank=True, related_name='first_image_new',
-    #                                 on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Image {self.pk} of Post {self.post}'
