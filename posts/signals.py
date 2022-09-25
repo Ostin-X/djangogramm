@@ -1,4 +1,5 @@
 from PIL import Image as ImagePIL
+from django.db import IntegrityError
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from faker import Faker
@@ -14,8 +15,10 @@ def auto_create_profile(sender, instance, **kwargs):
     Create Profile object
     when User is created
     '''
-    if not Profile.objects.filter(user=instance).exists():
+    try:
         Profile.objects.create(user=instance, bio=fake.text())
+    except IntegrityError:
+        pass
 
 
 @receiver(post_save, sender=Profile)

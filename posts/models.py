@@ -10,7 +10,7 @@ from django.conf import settings
 
 
 def path_and_rename(instance, filename):
-    if 'Profile' in str(instance):
+    if isinstance(instance, Profile):
         upload_to = 'avatars/'
         inst_pk = instance.pk
     else:
