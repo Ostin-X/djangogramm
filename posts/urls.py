@@ -5,12 +5,7 @@ from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView,
     ProfileUpdateView, UserRegisterView, UserDeleteView, PasswordChangeCustomView, PasswordChangeSuccess, \
     LoginCustomView, like_post, image_make_first
 
-# from .views_create_db import create_all_db
-
 urlpatterns = [
-    # path('/admin_too/', admin.site.urls, name='admin_path'),
-    # path('create_db/', create_all_db, name='create_db'),
-
     path('', PostListView.as_view(), name='home'),
     path('posts/', PostListView.as_view(), name='post_list'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
