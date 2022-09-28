@@ -80,11 +80,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         # 'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASS'),
+        # 'USER': env('DATABASE_USER'),
+        # 'PASSWORD': env('DATABASE_PASS'),
         'NAME': 'djangogramm',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'qwe',
+        'USER': 'postgres',
+        'PASSWORD': 'qwe',
         'HOST': 'localhost',
         'PORT': '',
     }
