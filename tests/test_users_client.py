@@ -155,6 +155,7 @@ class PostViewsTestCase(TestCase):
         self.assertFalse(user2.is_authenticated)
 
         login2 = self.client.login(username='ostin', password=new_password)
+        self.assertTrue(login2)
         user3 = auth.get_user(self.client)
         self.assertTrue(user3.is_authenticated)
         self.assertEqual(user3, self.user_ostin)
@@ -196,6 +197,9 @@ class PostViewsTestCase(TestCase):
 
         self.user_ostin.refresh_from_db()
 
+        self.assertEqual(302, response2.status_code)
+        self.assertEqual(user_query_count, User.objects.count())
+        self.assertEqual(profile_query_count, Profile.objects.count())
         self.assertFalse(self.user_ostin.profile.avatar)
         self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
 
@@ -238,49 +242,3 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(302, response.status_code)
         self.assertEqual(response.headers['Location'], f'/users/login/?next=/users/{user_object.pk}/')
         self.assertTemplateNotUsed(response, 'auth/user_detail.html')
-
-    # def test_image_create_POST(self):
-    #     self.client.force_login(self.user_ostin)
-    #     old_image_count = Image.objects.count()
-    #
-    #     with open(self.image_path, 'rb') as fp:
-    #         response = self.client.post(reverse('image_create', kwargs={'pk': self.post_ostin.pk}), {'image': fp})
-    #
-    #     self.assertEqual(302, response.status_code)
-    #     self.assertEqual(old_image_count + 1, Image.objects.count())
-    #     self.assertEqual(2, self.post_ostin.image_set.count())
-    #     self.assertEqual(2, self.user_ostin.image_set.count())
-    #     self.assertEqual(f'images/images_{self.post_ostin.pk}.jpg', self.post_ostin.image_set.first().image)
-    #     self.assertEqual(f'images/images_{self.post_ostin.pk}_thumbnail.jpg',
-    #                      self.post_ostin.image_set.first().image_thumbnail)
-    #     self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image))
-    #     self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image_thumbnail))
-    #     self.assertIn('_thumbnail.jpg', str(self.post_ostin.image_set.last().image_thumbnail))
-    #
-    # def test_image_delete_DELETE(self):
-    #     self.client.force_login(self.user_ostin)
-    #     old_image_count = Image.objects.count()
-    #
-    #     response = self.client.delete(
-    #         reverse('image_delete', kwargs={'post_pk': self.post_ostin.pk, 'pk': self.post_ostin.image_set.first().pk}))
-    #
-    #     self.assertEqual(302, response.status_code)
-    #     self.assertEqual(old_image_count - 1, Image.objects.count())
-    #     self.assertEqual(0, self.post_ostin.image_set.count())
-    #     self.assertEqual(0, self.user_ostin.image_set.count())
-    #
-    # def test_image_make_first_GET(self):
-    #     self.client.force_login(self.user_ostin)
-    #
-    #     self.assertIsNone(Post.objects.get(pk=self.post_ostin.pk).first_image)
-    #     response = self.client.get(
-    #         reverse('image_make_first',
-    #                 kwargs={'post_pk': self.post_ostin.pk, 'pk': self.post_ostin.image_set.first().pk}))
-    #
-    #     self.assertEqual(302, response.status_code)
-    #     self.assertIsNotNone(Post.objects.get(pk=self.post_ostin.pk).first_image)
-    #     self.assertEqual(self.post_ostin.image_set.first(), Post.objects.get(pk=self.post_ostin.pk).first_image)
-    #
-    #     response2 = self.client.get(reverse('post_list'))
-    #
-    #     self.assertContains(response2, Post.objects.get(pk=self.post_ostin.pk).first_image.image_thumbnail)
