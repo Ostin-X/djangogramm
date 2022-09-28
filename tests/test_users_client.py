@@ -73,7 +73,7 @@ class PostViewsTestCase(TestCase):
 
         self.assertTrue(user2.is_authenticated)
         self.assertEqual(user2, self.user_ostin)
-        self.assertEqual(response.url, '/users/')
+        self.assertEqual(response.url, reverse('user_list'))
 
     def test_user_register_POST(self):
         user_query_count = User.objects.count()
@@ -94,7 +94,7 @@ class PostViewsTestCase(TestCase):
 
         self.assertTrue(user.is_authenticated)
         self.assertEqual(user, User.objects.get(username='NewUser'))
-        self.assertEqual(response.url, f'/users/{User.objects.get(username="NewUser").pk}/')
+        self.assertEqual(response.url, reverse('user_detail', kwargs={'pk': User.objects.get(username="NewUser").pk}))
 
     def test_user_update_POST(self):
         self.client.force_login(self.user_ostin)
@@ -116,32 +116,48 @@ class PostViewsTestCase(TestCase):
         self.assertEqual('ostinNEW', self.user_ostin.username)
         self.assertEqual(user_query_count, User.objects.count())
         self.assertEqual(profile_query_count, Profile.objects.count())
-        self.assertEqual(response.url, f'/users/{self.user_ostin.pk}/')
+        self.assertEqual(response.url, reverse('user_detail', kwargs={'pk': self.user_ostin.pk}))
 
-    def test_1user_password_update_POST(self):
-        login = self.client.login(username='ostin', password='qwe')
+    def test_user_password_update_POST(self):
+        old_password = 'qwe'
+        old_password_encrypted = self.user_ostin.password
+        new_password = 'bjkndfsbkndfbklj09468234jnbdkf'
+        login = self.client.login(username='ostin', password=old_password)
 
         self.assertTrue(login)
         self.assertTrue(self.user_ostin.password)
+
+        user = auth.get_user(self.client)
+        self.assertTrue(old_password_encrypted, user.password)
+
         user_query_count = User.objects.count()
         profile_query_count = Profile.objects.count()
 
-        self.assertNotEqual('qwe', self.user_ostin.password)
+        self.assertNotEqual(old_password, self.user_ostin.password)
+        self.assertNotEqual(new_password, self.user_ostin.password)
 
-        new_password = 'bjkndfsbkndfbklj09468234jnbdkf'
         response = self.client.post(
             reverse('user_password', kwargs={'pk': self.user_ostin.pk}),
-            {'password1': new_password, 'password2': new_password})
-        #
-        # self.user_ostin.refresh_from_db()
-        assert response.__dict__ == 4
+            {'old_password': old_password, 'new_password1': new_password, 'new_password2': new_password})
+
+        self.user_ostin.refresh_from_db()
+
         self.assertEqual(302, response.status_code)
-        # self.assertIn(User.objects.get(username='ostinNEW'), User.objects.all())
-        # self.assertFalse(User.objects.filter(username='ostin').exists())
-        # self.assertEqual('ostinNEW', self.user_ostin.username)
-        # self.assertEqual(user_query_count, User.objects.count())
-        # self.assertEqual(profile_query_count, Profile.objects.count())
-        # self.assertEqual(response.url, f'/users/{self.user_ostin.pk}/')
+        self.assertNotEqual(old_password, self.user_ostin.password)
+        self.assertNotEqual(new_password, self.user_ostin.password)
+        self.assertNotEqual(old_password_encrypted, self.user_ostin.password)
+        self.assertEqual(user_query_count, User.objects.count())
+        self.assertEqual(profile_query_count, Profile.objects.count())
+        self.assertEqual(response.url, reverse('password_success', kwargs={'pk': self.user_ostin.pk}))
+
+        self.client.logout()
+        user2 = auth.get_user(self.client)
+        self.assertFalse(user2.is_authenticated)
+
+        login2 = self.client.login(username='ostin', password=new_password)
+        user3 = auth.get_user(self.client)
+        self.assertTrue(user3.is_authenticated)
+        self.assertEqual(user3, self.user_ostin)
 
     def test_profile_update_POST(self):
         self.client.force_login(self.user_ostin)
@@ -152,9 +168,12 @@ class PostViewsTestCase(TestCase):
         self.assertEqual('Тестова БІО', self.user_ostin.profile.bio)
         self.assertTrue(self.user_ostin.profile.bio)
         self.assertFalse(Profile.objects.filter(bio='Нова БбІо').exists())
+        self.assertFalse(self.user_ostin.profile.avatar)
+        self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
 
-        response = self.client.post(
-            reverse('profile_update', kwargs={'pk': self.user_ostin.pk}), {'bio': 'Нова БбІо'})
+        with open(self.image_path, 'rb') as fp:
+            response = self.client.post(reverse('profile_update', kwargs={'pk': self.user_ostin.pk}),
+                                        {'bio': 'Нова БбІо', 'avatar': fp})
 
         self.user_ostin.refresh_from_db()
 
@@ -165,7 +184,20 @@ class PostViewsTestCase(TestCase):
         self.assertFalse(Profile.objects.filter(bio='Тестова БІО').exists())
         self.assertEqual(user_query_count, User.objects.count())
         self.assertEqual(profile_query_count, Profile.objects.count())
-        self.assertEqual(response.url, f'/users/{self.user_ostin.pk}/')
+        self.assertEqual(response.url, reverse('user_detail', kwargs={'pk': self.user_ostin.pk}))
+
+        self.assertTrue(self.user_ostin.profile.avatar)
+        self.assertEqual('avatars/avatars_6.jpg', self.user_ostin.profile.avatar)
+        self.assertTrue(self.user_ostin.profile.avatar_thumbnail)
+        self.assertEqual('avatars/avatars_6_thumbnail.jpg', self.user_ostin.profile.avatar_thumbnail)
+
+        response2 = self.client.post(reverse('profile_update', kwargs={'pk': self.user_ostin.pk}),
+                                     {'avatar-clear': True})
+
+        self.user_ostin.refresh_from_db()
+
+        self.assertFalse(self.user_ostin.profile.avatar)
+        self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
 
     def test_user_delete_DELETE(self):
         self.client.force_login(self.user_ostin)
@@ -188,7 +220,7 @@ class PostViewsTestCase(TestCase):
         user = auth.get_user(self.client)
 
         self.assertFalse(user.is_authenticated)
-        self.assertEqual(response.url, '/users/')
+        self.assertEqual(response.url, reverse('user_list'))
 
     def test_user_detail_GET_other_loggedin(self):
         self.client.force_login(self.user_ostin)
@@ -252,31 +284,3 @@ class PostViewsTestCase(TestCase):
     #     response2 = self.client.get(reverse('post_list'))
     #
     #     self.assertContains(response2, Post.objects.get(pk=self.post_ostin.pk).first_image.image_thumbnail)
-    #
-    # def test_like_POST(self):
-    #     self.client.force_login(self.user_ostin)
-    #
-    #     post_likes_count = self.post_ostin.like_set.count()
-    #     other_post_likes_count = Post.objects.first().like_set.count()
-    #     user_likes_count = self.user_ostin.like_set.count()
-    #     likes_count = Like.objects.count()
-    #
-    #     response = self.client.get(reverse('post_like', kwargs={'pk': self.post_ostin.pk}))
-    #     response2 = self.client.get(reverse('post_like', kwargs={'pk': Post.objects.first().pk}))
-    #
-    #     self.assertEqual(302, response.status_code)
-    #     self.assertEqual(302, response2.status_code)
-    #     self.assertEqual(post_likes_count + 1, Post.objects.get(pk=self.post_ostin.pk).like_set.count())
-    #     self.assertEqual(other_post_likes_count + 1, Post.objects.first().like_set.count())
-    #     self.assertEqual(user_likes_count + 2, User.objects.get(pk=self.user_ostin.pk).like_set.count())
-    #     self.assertEqual(likes_count + 2, Like.objects.count())
-    #
-    #     # response3 = self.client.get(reverse('post_like', kwargs={'pk': self.post_ostin.pk}))
-    #     response4 = self.client.get(reverse('post_like', kwargs={'pk': Post.objects.first().pk}))
-    #
-    #     # self.assertEqual(302, response3.status_code)
-    #     self.assertEqual(302, response4.status_code)
-    #     self.assertEqual(post_likes_count + 1, Post.objects.get(pk=self.post_ostin.pk).like_set.count())
-    #     self.assertEqual(other_post_likes_count, Post.objects.first().like_set.count())
-    #     self.assertEqual(user_likes_count + 1, User.objects.get(pk=self.user_ostin.pk).like_set.count())
-    #     self.assertEqual(likes_count + 1, Like.objects.count())
