@@ -15,11 +15,11 @@ def auto_create_profile(sender, instance, created, **kwargs):
     Create Profile object
     when User is created
     '''
-    try:
-    # if created:
+    # try:
+    if created:
         Profile.objects.create(user=instance)  # , bio=fake.text()
-    except IntegrityError:
-        pass
+    # except IntegrityError:
+    #     pass
 
 
 @receiver(post_save, sender=Profile)

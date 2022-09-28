@@ -52,9 +52,9 @@ class PostViewsTestCase(TestCase):
 
     def test_post_detail_GET_loggedin(self):
         # self.client.force_login(User.objects.get_or_create(username='testuser')[0])
-        # self.client.force_login(self.user_ostin)
-        login = self.client.login(username='ostin', password='qwe')
-        assert login == True
+        self.client.force_login(self.user_ostin)
+        # login = self.client.login(username='ostin', password='qwe')
+        # assert login == True
         response = self.client.get(reverse('post_detail', kwargs={'pk': self.post_ostin.pk}))
 
         # assert response.__dict__ == 'posts/post_list.html2'
