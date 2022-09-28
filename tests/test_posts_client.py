@@ -26,9 +26,8 @@ class PostViewsTestCase(TestCase):
         create_images_table(self.images_number)
 
         # self.user_ostin = User.objects.create(email='and@and.gmail.com', password='qwe', username='ostin')
-        self.user_ostin = User.objects.create_user(email='and@and.gmail.com', password='qwe', username='ostin')
-
         # self.user_ostin.set_password('qwe')
+        self.user_ostin = User.objects.create_user(email='and@and.gmail.com', password='qwe', username='ostin')
 
         self.post_ostin = Post.objects.create(title='Мій тестовий тайтл',
                                               text='Дуже багато тексту ' + '1234567890' * 10,

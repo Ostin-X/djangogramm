@@ -61,7 +61,7 @@ def create_users_table(number_of_users):
         add_name = fake.name()
         add_email = fake.email()
         add_pass = fake.password()
-        user_object = User.objects.create(email=add_email, password=add_pass, username=add_name)
+        user_object = User.objects.create_user(email=add_email, password=add_pass, username=add_name)
         Profile.objects.get(user=user_object).bio = fake.text()
         decreasing_number -= 1
 
