@@ -29,9 +29,8 @@ class PostViewsTestCase(TestCase):
         # self.user_ostin.set_password('qwe')
         self.user_ostin = User.objects.create_user(email='and@and.gmail.com', password='qwe', username='ostin')
 
-        self.post_ostin = Post.objects.create(title='Мій тестовий тайтл',
-                                              text='Дуже багато тексту ' + '1234567890' * 10,
-                                              user=self.user_ostin)
+        self.post_ostin = Post.objects.create(title='Мій тестовий тайтл', user=self.user_ostin,
+                                              text='Дуже багато тексту ' + '1234567890' * 10)
         self.image_path = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
         self.add_image = SimpleUploadedFile(name='test_image.jpg', content=open(self.image_path, 'rb').read(),
                                             content_type='image/jpeg')
