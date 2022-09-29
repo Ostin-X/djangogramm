@@ -188,9 +188,9 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(response.url, reverse('user_detail', kwargs={'pk': self.user_ostin.pk}))
 
         self.assertTrue(self.user_ostin.profile.avatar)
-        self.assertEqual('avatars/avatars_6.jpg', self.user_ostin.profile.avatar)
+        self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}.jpg', self.user_ostin.profile.avatar)
         self.assertTrue(self.user_ostin.profile.avatar_thumbnail)
-        self.assertEqual('avatars/avatars_6_thumbnail.jpg', self.user_ostin.profile.avatar_thumbnail)
+        self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}_thumbnail.jpg', self.user_ostin.profile.avatar_thumbnail)
 
         response2 = self.client.post(reverse('profile_update', kwargs={'pk': self.user_ostin.pk}),
                                      {'avatar-clear': True})
