@@ -1,3 +1,5 @@
+import urllib.request
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 import random
@@ -20,8 +22,8 @@ def create_all_db(request):
     created_users = create_users_table(10)
     created_posts = create_posts_table(30)
     created_likes = create_likes_table(100)
-    # created_images = create_images_table()
-    created_tags = create_tags_table(100)
+    created_images = create_images_table(1)
+    # created_tags = create_tags_table(100)
 
     if created_users:
         users_return_text = f' {created_users} users,'
@@ -38,17 +40,17 @@ def create_all_db(request):
     else:
         likes_return_text = ''
 
-    # if created_images:
-    #     images_return_text = f' {created_images} likes,'
-    # else:
-    #     images_return_text = ''
-
-    if created_tags:
-        tags_return_text = f' {created_tags} tags,'
+    if created_images:
+        images_return_text = f' {created_images} images,'
     else:
-        tags_return_text = ''
+        images_return_text = ''
 
-    return HttpResponse(f'DB created{users_return_text}{posts_return_text}{likes_return_text}{tags_return_text}'[:-1])
+    # if created_tags:
+    #     tags_return_text = f' {created_tags} tags,'
+    # else:
+    #     tags_return_text = ''
+
+    return HttpResponse(f'DB created{users_return_text}{posts_return_text}{likes_return_text}{images_return_text}'[:-1])
 
 
 def create_users_table(number_of_users):
@@ -74,10 +76,11 @@ def create_posts_table(number_of_posts):
     users_list = list(User.objects.all())
     count = Post.objects.count()
     decreasing_number = number_of_posts
+    tags_list = ['#' + word for word in fake.words(10)]
 
     while decreasing_number > count:
         add_title = fake.text(random.randint(5, 20))[:-1]
-        add_text = fake.text()
+        add_text = ' '.join(random.choices(tags_list, k=random.randint(0, 3))) + ' ' + fake.text()
         add_date = fake.date_time_between(start_date='-5y', end_date='now', tzinfo=pytz.utc)
 
         Post(title=add_title, text=add_text, user=random.choice(users_list), date=add_date).save()
@@ -110,24 +113,24 @@ def create_likes_table(number_of_likes):
     return number_of_likes - count
 
 
-def create_tags_table(number_of_tags):
-    # Tag.objects.all().delete()
-
-    Tag.objects.filter(post=None).delete()
-
-    posts_list = list(Post.objects.all())
-    count = Tag.objects.count()
-    decreasing_number = number_of_tags
-
-    while decreasing_number > count:
-        add_name = fake.word()
-        add_posts_list = random.choices(posts_list, k=random.randint(1, int(len(posts_list) / 2)))
-
-        Tag.objects.create(name=add_name).post_set.set(add_posts_list)
-
-        decreasing_number -= 1
-
-    return number_of_tags - count
+# def create_tags_table(number_of_tags):
+#     # Tag.objects.all().delete()
+#
+#     Tag.objects.filter(post=None).delete()
+#
+#     posts_list = list(Post.objects.all())
+#     count = Tag.objects.count()
+#     decreasing_number = number_of_tags
+#
+#     while decreasing_number > count:
+#         add_name = fake.word()
+#         add_posts_list = random.choices(posts_list, k=random.randint(1, int(len(posts_list) / 2)))
+#
+#         Tag.objects.create(name=add_name).post_set.set(add_posts_list)
+#
+#         decreasing_number -= 1
+#
+#     return number_of_tags - count
 
 
 def create_images_table(number_of_images):
@@ -138,11 +141,14 @@ def create_images_table(number_of_images):
     while decreasing_number > count:
         post = random.choice(posts_list)
         user = post.user
-        image_path = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
-        add_image = SimpleUploadedFile(name='test_image.jpg', content=open(image_path, 'rb').read(),
-                                            content_type='image/jpeg')
-
+        # image_path = 'https://picsum.photos/200/300?random=1'
+        # add_image = SimpleUploadedFile(name='test_image.jpg', content=open(image_path, 'rb').read(),
+        #                                content_type='image/jpeg')
+        with urllib.request.urlopen("https://picsum.photos/300/200") as url:
+            add_image = SimpleUploadedFile(name='test_image.jpg', content=url.read())
         add_date = fake.date_time_between(start_date=post.date, end_date='now', tzinfo=pytz.utc)
         Image(date=add_date, post=post, user=user, image=add_image).save()
 
         decreasing_number -= 1
+
+    return number_of_images - count

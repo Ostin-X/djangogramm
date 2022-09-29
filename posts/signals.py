@@ -1,3 +1,6 @@
+import random
+import re
+
 from PIL import Image as ImagePIL
 from django.db import IntegrityError
 from django.db.models.signals import post_delete, post_save, pre_save
@@ -7,6 +10,20 @@ from faker import Faker
 from .models import Image, Post, Tag, User, Profile
 
 fake = Faker()
+
+
+@receiver(post_delete, sender=Post)
+def auto_delete_empty_tags(sender, **kwargs):
+    Tag.objects.filter(post=None).delete()
+
+
+@receiver(post_save, sender=Post)
+def auto_fill_tags(sender, instance, **kwargs):
+    regex = "#(\w+)"
+    instance.tags.clear()
+    for tag in re.findall(regex, instance.text):
+        instance.tags.add(Tag.objects.get_or_create(name=tag.lower())[0])
+    auto_delete_empty_tags(Post)
 
 
 @receiver(post_save, sender=User)
@@ -48,11 +65,6 @@ def add_thumbnail_to_name(path):
     path_splited = path.split('.')
     path_splited[-2] += '_thumbnail'
     return '.'.join(path_splited)
-
-
-@receiver(post_delete, sender=Post)
-def auto_delete_empty_tags(sender, **kwargs):
-    Tag.objects.filter(post=None).delete()
 
 
 @receiver(post_save, sender=Image)

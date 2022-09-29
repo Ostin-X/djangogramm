@@ -7,8 +7,7 @@ from django.urls import reverse
 
 import pytest
 
-from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_tags_table, \
-    create_images_table
+from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_images_table
 from posts.models import Post, Profile, Like, Tag, User, Image
 
 
@@ -18,13 +17,13 @@ class PostViewsTestCase(TestCase):
         self.users_number = 5
         self.posts_number = 8
         self.likes_number = 20
-        self.tags_number = 20
+        # self.tags_number = 20
         self.images_number = 10
 
         create_users_table(self.users_number)
         create_posts_table(self.posts_number)
         create_likes_table(self.likes_number)
-        create_tags_table(self.tags_number)
+        # create_tags_table(self.tags_number)
         create_images_table(self.images_number)
 
         # self.user_ostin = User.objects.create(email='and@and.gmail.com', password='qwe', username='ostin')
@@ -190,7 +189,8 @@ class PostViewsTestCase(TestCase):
         self.assertTrue(self.user_ostin.profile.avatar)
         self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}.jpg', self.user_ostin.profile.avatar)
         self.assertTrue(self.user_ostin.profile.avatar_thumbnail)
-        self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}_thumbnail.jpg', self.user_ostin.profile.avatar_thumbnail)
+        self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}_thumbnail.jpg',
+                         self.user_ostin.profile.avatar_thumbnail)
 
         response2 = self.client.post(reverse('profile_update', kwargs={'pk': self.user_ostin.pk}),
                                      {'avatar-clear': True})

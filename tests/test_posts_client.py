@@ -5,8 +5,7 @@ from django.urls import reverse
 
 import pytest
 
-from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_tags_table, \
-    create_images_table
+from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_images_table
 from posts.models import Post, Profile, Like, Tag, User, Image
 
 
@@ -16,13 +15,13 @@ class PostViewsTestCase(TestCase):
         self.users_number = 5
         self.posts_number = 8
         self.likes_number = 20
-        self.tags_number = 20
+        # self.tags_number = 20
         self.images_number = 10
 
         create_users_table(self.users_number)
         create_posts_table(self.posts_number)
         create_likes_table(self.likes_number)
-        create_tags_table(self.tags_number)
+        # create_tags_table(self.tags_number)
         create_images_table(self.images_number)
 
         # self.user_ostin = User.objects.create(email='and@and.gmail.com', password='qwe', username='ostin')
@@ -75,21 +74,42 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(Post.objects.get(title='New title').user, self.user_ostin)
         self.assertIn(Post.objects.get(title='New title'), Post.objects.all())
 
-    def test_post_update_POST(self):
+    def test_1post_and_tags_update_POST(self):
         self.client.force_login(self.user_ostin)
         post_query_count = Post.objects.count()
+        tags_query_count = Tag.objects.count()
+
+        self.assertFalse(self.post_ostin.tags.all())
+
         self.assertIn(Post.objects.get(title='Мій тестовий тайтл'), Post.objects.all())
         self.assertEqual('Мій тестовий тайтл', Post.objects.get(pk=self.post_ostin.pk).title)
         self.assertFalse(Post.objects.filter(title='Новий змінений тайтл').exists())
 
         response = self.client.post(
-            reverse('post_update', kwargs={'pk': self.post_ostin.pk}), {'title': 'Новий змінений тайтл'})
+            reverse('post_update', kwargs={'pk': self.post_ostin.pk}),
+            {'title': 'Новий змінений тайтл', 'text': '#tag #TAG #first #last Новий змінений тайтл'})
+
+        self.post_ostin.refresh_from_db()
 
         self.assertEqual(302, response.status_code)
         self.assertIn(Post.objects.get(title='Новий змінений тайтл'), Post.objects.all())
         self.assertFalse(Post.objects.filter(title='Мій тестовий тайтл').exists())
         self.assertEqual('Новий змінений тайтл', Post.objects.get(pk=self.post_ostin.pk).title)
         self.assertEqual(post_query_count, Post.objects.count())
+
+        self.assertTrue(self.post_ostin.tags.all())
+        self.assertEqual([('tag',), ('first',), ('last',)], list(self.post_ostin.tags.values_list('name')))
+        self.assertEqual(tags_query_count + 3, Tag.objects.count())
+
+        response2 = self.client.post(
+            reverse('post_update', kwargs={'pk': self.post_ostin.pk}),
+            {'title': 'Новий змінений тайтл', 'text': '#tag #TAG Новий змінений тайтл'})
+
+        self.post_ostin.refresh_from_db()
+
+        self.assertTrue(self.post_ostin.tags.all())
+        self.assertEqual([('tag',)], list(self.post_ostin.tags.values_list('name')))
+        self.assertEqual(tags_query_count + 1, Tag.objects.count())
 
     def test_post_delete_DELETE(self):
         self.client.force_login(self.user_ostin)
