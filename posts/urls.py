@@ -3,7 +3,7 @@ from django.urls import path
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView, \
     TagListView, TagDetailView, ImageUpdateView, ImageDeleteView, UserListView, UserDetailView, UserUpdateView, \
     ProfileUpdateView, UserRegisterView, UserDeleteView, PasswordChangeCustomView, PasswordChangeSuccess, \
-    LoginCustomView, like_post, image_make_first
+    LoginCustomView, like_post, image_make_first, activate
 
 urlpatterns = [
     path('', PostListView.as_view(), name='home'),
@@ -33,4 +33,7 @@ urlpatterns = [
     path('users/<int:pk>/password_success/', PasswordChangeSuccess.as_view(), name='password_success'),
     path('users/<int:pk>/update_profile/', ProfileUpdateView.as_view(), name='profile_update'),
     path('users/<int:pk>/delete/', UserDeleteView.as_view(), name='user_delete'),
+
+    path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
+         activate, name='activate'),
 ]

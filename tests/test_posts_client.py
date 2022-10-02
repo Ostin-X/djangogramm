@@ -74,7 +74,7 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(Post.objects.get(title='New title').user, self.user_ostin)
         self.assertIn(Post.objects.get(title='New title'), Post.objects.all())
 
-    def test_1post_and_tags_update_POST(self):
+    def test_post_and_tags_update_POST(self):
         self.client.force_login(self.user_ostin)
         post_query_count = Post.objects.count()
         tags_query_count = Tag.objects.count()

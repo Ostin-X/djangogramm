@@ -29,7 +29,8 @@ class ProfileAdminInline(admin.StackedInline):
 
 class UserAdmin(AuthUserAdmin):
     inlines = [ProfileAdminInline]
-
+    list_display = ('id', 'username', 'is_active',)
+    list_editable = ('is_active',)
 
 class ImageAdminInline(admin.StackedInline):
     model = Image
