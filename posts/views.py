@@ -3,11 +3,11 @@ from django.contrib.auth.views import PasswordChangeView, TemplateView, LoginVie
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -48,6 +48,11 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['user'])
         return {**context, **c_def}
+
+    def post(self, request, *args, **kwargs):
+        print(self)
+        print(request)
+        return self.get(request, *args, **kwargs)
 
 
 class TokenGenerator(PasswordResetTokenGenerator):
@@ -123,21 +128,6 @@ class UserActivationView(DataMixin, TemplateView):
         else:
             context['message'] = 'Activation link is invalid!'
             return self.render_to_response(context)
-
-
-# def activate(request, uidb64, token):
-#     # user = get_user_model()
-#     try:
-#         uid = force_str(urlsafe_base64_decode(uidb64))
-#         user = User.objects.get(pk=uid)
-#     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
-#         user = None
-#     if user is not None and account_activation_token.check_token(user, token):
-#         user.is_active = True
-#         user.save()
-#         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
-#     else:
-#         return HttpResponse('Activation link is invalid!')
 
 
 class UserUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
@@ -233,32 +223,24 @@ class PostListView(DataMixin, ListView):
         return Post.objects.filter().order_by('-date')  # post__is_invisible=False
 
 
-def like_post(request, pk):
-    post_object = get_object_or_404(Post, id=pk)
-
-    like_object = Like.objects.filter(user=request.user, post=post_object)
-    if like_object.exists():
-        like_object.delete()
-    else:
-        Like.objects.create(user=request.user, post=post_object)
-    return HttpResponseRedirect(reverse('post_detail', args=[str(pk)]))
-
-
-def image_make_first(request, post_pk, pk):
-    post_object = get_object_or_404(Post, id=post_pk)
-    image_object = get_object_or_404(Image, id=pk)
-    post_object.make_first(image_object)
-    return HttpResponseRedirect(reverse('image_update', args=[str(post_pk)]))
-
-
 class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
     model = Post
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['post'].title)
+        c_def = self.get_user_context(title=context['post'].title,
+                                      like_exists=self.object.like_exists(self.request.user))
         return {**context, **c_def}
+
+    def post(self, request, *args, **kwargs):
+        post_object = self.get_object()
+        user_object = request.user
+        try:
+            Like.objects.get(user=user_object, post=post_object).delete()
+        except Like.DoesNotExist:
+            Like.objects.create(user=user_object, post=post_object)
+        return self.get(request, *args, **kwargs)
 
 
 class PostCreateView(LoginRequiredMixin, DataMixin, CreateView):
@@ -375,12 +357,11 @@ class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Templa
             title=f"Редагувати зображення поста {Post.objects.get(pk=self.kwargs['pk']).title}", object=post_object)
         return {**context, **c_def}
 
-    # def post(self, request, *args, **kwargs):
-    #     print(request.POST)
-    #     return self.get(request, *args, **kwargs)
-
-    # def from_valid(self, form):
-    #     print(self.request.POST)
+    def post(self, request, *args, **kwargs):
+        post_object = get_object_or_404(Post, id=kwargs['pk'])
+        image_object = get_object_or_404(Image, id=request.POST['image_pk'])
+        post_object.make_first(image_object)
+        return self.get(request, *args, **kwargs)
 
 
 class ImageDeleteView(LoginRequiredMixin, DataMixin, DeleteView):

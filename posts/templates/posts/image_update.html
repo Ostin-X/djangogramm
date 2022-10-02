@@ -5,21 +5,25 @@
     <br/><br/>
 
     <div class="form-group">
-        {#        <form action="{% url 'image_make_first' post_pk=pk pk=image_pk%}" method="POST">#}
-        {% csrf_token %}
-        <a href="{% url 'post_detail' pk=pk %}" class="btn btn-secondary">Назад</a>
-        <br/><br/>
-        {% for image in object.image_set.all %}
-            <img src="{{ image.image.url }}" height="300">
-            <a class="btn btn-secondary" href="{% url 'image_delete' post_pk=pk pk=image.pk %}"> Видалити </a>
-            {% if image != image.post.first_image %}
-                <a class="btn btn-primary" href="{% url 'image_make_first' post_pk=pk pk=image.pk %}"> Зробити першим </a>
-            {% else %}
-                <a class="btn btn-secondary">Це перше</a>
-            {% endif %}
-            {#                </form>#}
+        {#        <form action="{% url 'image_make_first' post_pk=pk pk=image_pk %}" method="POST">#}
+        <form method="POST">
+
+            {% csrf_token %}
+            <a href="{% url 'post_detail' pk=pk %}" class="btn btn-secondary">Назад</a>
             <br/><br/>
-        {% endfor %}
+            {% for image in object.image_set.all %}
+                <img src="{{ image.image.url }}" height="300">
+                <a class="btn btn-secondary" href="{% url 'image_delete' post_pk=pk pk=image.pk %}"> Видалити </a>
+                {% if image != image.post.first_image %}
+                    <button type="submit" name="image_pk" value="{{ image.pk }}" class="btn btn-primary">Зробити
+                        першим
+                    </button>
+                {% else %}
+                    <button class="btn btn-secondary">Це перше</button>
+                {% endif %}
+                <br/><br/>
+            {% endfor %}
+        </form>
     </div>
 {% endblock %}
 

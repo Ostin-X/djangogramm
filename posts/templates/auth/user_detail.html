@@ -11,13 +11,21 @@
     {% endif %}
     <br/>
     <br/>
-
+    <form method="POST">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-sm">Followers - {{ object.profile.followers.count }}</a>
+        <button type="submit" name="user_pk" value="{{ object.profile.pk }}"
+                class="btn btn-primary btn-sm">
+            Following- {{ object.profile.following.count }}</button>
+    </form>
     <body>
     {% if object.avatar %}
         <img src="{{ object.avatar.url }}" align="left" height="500">
     {% endif %}
-    <p>{{ object.profile.bio }}</p>
-
+    {% if object.profile.bio %}
+        <p>{{ object.profile.bio }}</p>
+    {% endif %}
+    <br/><br/>
     <div>
         <h2>Posts</h2>
         <table id="data" class="table table-striped table-hover">

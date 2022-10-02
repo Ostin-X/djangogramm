@@ -30,6 +30,8 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
     avatar_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
 
+    following = models.ManyToManyField('Profile', symmetrical=False, null=True, blank=True, related_name='followers')
+
     is_invisible = models.BooleanField(default=False, verbose_name="Сором'язлива дупа")
 
     def __str__(self):
@@ -64,10 +66,10 @@ class Post(models.Model):
     text = models.TextField(null=True, blank=True)
     date = models.DateTimeField(default=timezone.now)  # auto_now_add=True
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # , related_name = 'posts'
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_image = models.ForeignKey('Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
 
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, null=True, blank=True)
 
     def __str__(self):
         return f'{self.title} | {str(self.user)}'
@@ -83,6 +85,9 @@ class Post(models.Model):
             if hasattr(self, 'first_image') and new_img_object != self.first_image:
                 self.first_image = new_img_object
                 self.save()
+
+    def like_exists(self, user_object):
+        return Like.objects.filter(post=self, user=user_object).exists()
 
     class Meta:
         verbose_name = 'Пост'
