@@ -127,7 +127,6 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'user_list'
 LOGOUT_REDIRECT_URL = 'user_list'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'Rainx81'
