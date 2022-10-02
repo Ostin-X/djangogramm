@@ -50,8 +50,9 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
         return {**context, **c_def}
 
     def post(self, request, *args, **kwargs):
-        print(self)
-        print(request)
+        print(request.user)
+        print(request.POST['user_pk'])
+        request.user.profile.following.add(request.POST['user_pk'])
         return self.get(request, *args, **kwargs)
 
 
