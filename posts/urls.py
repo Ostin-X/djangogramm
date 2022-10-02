@@ -3,7 +3,7 @@ from django.urls import path
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView, \
     TagListView, TagDetailView, ImageUpdateView, ImageDeleteView, UserListView, UserDetailView, UserUpdateView, \
     ProfileUpdateView, UserRegisterView, UserDeleteView, PasswordChangeCustomView, PasswordChangeSuccess, \
-    LoginCustomView, like_post, image_make_first, activate
+    LoginCustomView, like_post, image_make_first, activate, UserActivationView
 
 urlpatterns = [
     path('', PostListView.as_view(), name='home'),
@@ -35,5 +35,5 @@ urlpatterns = [
     path('users/<int:pk>/delete/', UserDeleteView.as_view(), name='user_delete'),
 
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
-         activate, name='activate'),
+         UserActivationView.as_view(), name='activate'),
 ]

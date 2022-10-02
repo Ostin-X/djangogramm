@@ -73,15 +73,16 @@ class UserRegisterView(NotLoggedAllow, DataMixin, CreateView):
         return {**context, **c_def}
 
     def form_valid(self, form):
-        user = form.save(commit=False)
-        user.is_active = False
-        user.save()
         # form.save()
         # username = self.request.POST['username']
         # password = self.request.POST['password1']
         # user = authenticate(username=username, password=password)
         # login(self.request, user)
         # return HttpResponseRedirect(form.instance.profile.get_absolute_url())
+
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
 
         current_site = get_current_site(self.request)
         mail_subject = 'Activation link has been sent to your email id'
@@ -97,6 +98,34 @@ class UserRegisterView(NotLoggedAllow, DataMixin, CreateView):
         )
         email.send()
         return HttpResponse('Please confirm your email address to complete the registration')
+
+
+class UserActivationView(DataMixin, TemplateView):
+    template_name = 'registration/auth_token.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserActivationView, self).get_context_data(**kwargs)
+        c_def = self.get_user_context(title=f"Email confirmation")
+        return {**context, **c_def}
+
+    def get(self, request, uidb64, token, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        # return self.render_to_response(context)
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and account_activation_token.check_token(user, token):
+            user.is_active = True
+            user.save()
+            # return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+            context['message'] = 'Thank you for your email confirmation. Now you can login your account.'
+            return self.render_to_response(context)
+        else:
+            # return HttpResponse('Activation link is invalid!')
+            context['message'] = 'Activation link is invalid!'
+            return self.render_to_response(context)
 
 
 def activate(request, uidb64, token):
