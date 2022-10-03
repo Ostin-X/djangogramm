@@ -13,10 +13,17 @@
     <br/>
     <form method="POST">
         {% csrf_token %}
-        <a class="btn btn-primary btn-sm">Followers - {{ object.profile.followers.count }}</a>
-        <button type="submit" name="user_pk" value="{{ object.profile.pk }}"
-                class="btn btn-primary btn-sm">
-            Following- {{ object.profile.following.count }}</button>
+        {% if profile == user %}
+            <a href="{% url 'sub_list' user.pk %}" class="btn btn-primary btn-sm">Followers - {{ object.profile.followers.count }}</a>
+        {% else %}
+            {% if sub_exists %}
+                <button type="submit" name="user_pk" value="{{ object.profile.pk }}"
+                        class="btn btn-primary btn-sm">Following- {{ object.profile.followers.count }}</button>
+            {% else %}
+                <button type="submit" name="user_pk" value="{{ object.profile.pk }}"
+                        class="btn btn-outline-primary btn-sm">Follow- {{ object.profile.followers.count }}</button>
+            {% endif %}
+        {% endif %}
     </form>
     <body>
     {% if object.avatar %}

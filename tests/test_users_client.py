@@ -81,19 +81,20 @@ class PostViewsTestCase(TestCase):
                                                           'password1': 'poiqwe123908123',
                                                           'password2': 'poiqwe123908123'})
 
-        self.assertEqual(302, response.status_code)
+        self.assertEqual(200, response.status_code)
         self.assertEqual(user_query_count + 1, User.objects.count())
         self.assertEqual(profile_query_count + 1, Profile.objects.count())
         self.assertEqual(User.objects.get(username='NewUser'), User.objects.last())
         self.assertEqual(Profile.objects.last().user, User.objects.get(username='NewUser'))
         self.assertTrue(User.objects.get(username='NewUser').profile)
         self.assertIn(User.objects.get(username='NewUser'), User.objects.all())
+        self.assertFalse(User.objects.get(username='NewUser').is_active)
 
-        user = auth.get_user(self.client)
+        # user = auth.get_user(self.client)
 
-        self.assertTrue(user.is_authenticated)
-        self.assertEqual(user, User.objects.get(username='NewUser'))
-        self.assertEqual(response.url, reverse('user_detail', kwargs={'pk': User.objects.get(username="NewUser").pk}))
+        # self.assertTrue(user.is_authenticated)
+        # self.assertEqual(user, User.objects.get(username='NewUser'))
+        # self.assertEqual(response.url, reverse('user_detail', kwargs={'pk': User.objects.get(username="NewUser").pk}))
 
     def test_user_update_POST(self):
         self.client.force_login(self.user_ostin)

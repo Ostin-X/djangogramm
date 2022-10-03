@@ -2,6 +2,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.views import PasswordChangeView, TemplateView, LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.db.models import Count
 
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -43,16 +44,21 @@ class UserListView(DataMixin, ListView):
 
 class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
     model = User
+    context_object_name = 'profile'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['user'])
+        c_def = self.get_user_context(title=context['profile'],
+                                      sub_exists=self.request.user.profile.sub_exists(self.object.profile))
         return {**context, **c_def}
 
     def post(self, request, *args, **kwargs):
-        print(request.user)
-        print(request.POST['user_pk'])
-        request.user.profile.following.add(request.POST['user_pk'])
+        profile_followed_object = self.get_object().profile
+        profile_follower_object = request.user.profile
+        if profile_follower_object.sub_exists(profile_followed_object):
+            profile_follower_object.following.remove(profile_followed_object)
+        else:
+            profile_follower_object.following.add(profile_followed_object)
         return self.get(request, *args, **kwargs)
 
 
@@ -403,3 +409,19 @@ class TagDetailView(LoginRequiredMixin, DataMixin, DetailView):
         context = super(TagDetailView, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title='#' + str(context['tag']))
         return {**context, **c_def}
+
+
+class SubListView(DataMixin, DetailView):
+    model = Profile
+    paginate_by = 10
+    context_object_name = 'subs'
+    template_name = 'posts/sub_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SubListView, self).get_context_data(**kwargs)
+        context['subs'] = self.object.followers.annotate(post_count=Count('user__post')).order_by('-post_count')
+        c_def = self.get_user_context(title='Підписки')
+        return {**context, **c_def}
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset().filter(user=self.request.user)

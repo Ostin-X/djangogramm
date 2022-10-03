@@ -3,7 +3,7 @@ from django.urls import path
 from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ImageCreateView, \
     TagListView, TagDetailView, ImageUpdateView, ImageDeleteView, UserListView, UserDetailView, UserUpdateView, \
     ProfileUpdateView, UserRegisterView, UserDeleteView, PasswordChangeCustomView, PasswordChangeSuccess, \
-    LoginCustomView, UserActivationView
+    LoginCustomView, UserActivationView, SubListView
 
 urlpatterns = [
     path('', PostListView.as_view(), name='home'),
@@ -23,6 +23,8 @@ urlpatterns = [
     path('users/', UserListView.as_view(), name='user_list'),
     path('users/login/', LoginCustomView.as_view(), name='login'),
     path('users/register/', UserRegisterView.as_view(), name='register'),
+
+    path('users/subs/<int:pk>/', SubListView.as_view(), name='sub_list'),
 
     path('users/<int:pk>/', UserDetailView.as_view(), name='user_detail'),
     path('users/<int:pk>/update_user/', UserUpdateView.as_view(), name='user_update'),

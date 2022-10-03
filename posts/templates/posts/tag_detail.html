@@ -19,7 +19,7 @@
             <tbody>
             {% for p in object.post_set.all %}
                 <tr>
-                    <td><a href="{{ post.get_absolute_url }}">{{ p.title }}</a></td>
+                    <td><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></td>
                     <td>{{ p.text | slice:'100'  }}</td>
                     <td>{{ p.like_set.count }}</td>
                     <td>

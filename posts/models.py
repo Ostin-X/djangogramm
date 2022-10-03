@@ -40,6 +40,9 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('user_detail', kwargs={'pk': self.user.pk})
 
+    def sub_exists(self, user_object):
+        return self.following.contains(user_object)
+
     class Meta:
         verbose_name = 'Профіль'
         verbose_name_plural = 'Профілі'
