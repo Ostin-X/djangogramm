@@ -27,7 +27,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
 
-    avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
+    # avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
+    avatar = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name='Аватарка')
     avatar_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
 
     following = models.ManyToManyField('Profile', symmetrical=False, null=True, blank=True, related_name='followers')
