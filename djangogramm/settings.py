@@ -117,7 +117,7 @@ STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static')),)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-IMAGEKIT_CACHEFILE_DIR = 'CACHE'
+# IMAGEKIT_CACHEFILE_DIR = 'CACHE'
 
 # Default primary key field type
 
