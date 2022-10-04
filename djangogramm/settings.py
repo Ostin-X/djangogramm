@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'cloudinary_storage',
     'cloudinary',
-    'imagekit',
     # own
     'posts',
 ]
