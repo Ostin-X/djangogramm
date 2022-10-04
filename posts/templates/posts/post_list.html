@@ -5,9 +5,9 @@
 
     {% for post in posts %}
         {% if post.first_image %}
-            <li><img src="{{ post.first_image.image_thumbnail.url }}">
+            <li><img src="{{ post.first_image.image.url }}" height="50" >
                 {% else %}
-            <li><img src="{{ post.image_set.first.image_thumbnail.url }}">
+            <li><img src="{{ post.image_set.first.image.url }}" height="50" >
         {% endif %}
     <a href="{{ post.get_absolute_url }}">{{ post }}</a> - {{ post.date }}
     {% if user.is_authenticated %}

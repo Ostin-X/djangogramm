@@ -15,12 +15,14 @@
         {% for u in object_list %}
             <tr>
                 {% if u.profile.avatar %}
-                    <td><img src="{{ u.profile.avatar_thumbnail.url }}" height="50" alt="No Photo"></td>
+                    {{ u.profile.avatar}}
+                    <td><img src="{{ u.profile.avatar.url }}" height="50" alt="No Photo"></td>
+{#                    <td><img src="{{ u.profile.avatar_thumbnail.url }}" alt="No Photo"></td>#}
                 {% else %}
                     <td><img src="https://picsum.photos/50?random={{ u.id }}" alt="No Photo"></td>
                 {% endif %}
                 <td><a href="{{ u.profile.get_absolute_url }}">{{ u.username }}</a></td>
-{#             target="_blank" rel="nofollow"#}
+                {#             target="_blank" rel="nofollow"#}
                 <td>{{ u.profile.bio | slice:'50' }}</td>
             </tr>
         {% endfor %}

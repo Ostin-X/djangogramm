@@ -18,12 +18,9 @@ def path_and_rename(instance, filename):
         inst_pk = instance.post_id
     ext = filename.split('.')[-1]
     filename = f'{upload_to[:-1]}_{inst_pk}.{ext}'
-    if upload_to == 'avatars/' and os.path.exists(os.path.join(settings.MEDIA_ROOT, upload_to, filename)):
-        os.remove(os.path.join(settings.MEDIA_ROOT, upload_to, filename))
-    print(os.path.join(upload_to, filename))
-    print(os.path.join(settings.MEDIA_ROOT, upload_to, filename))
+    # if upload_to == 'avatars/' and os.path.exists(os.path.join(settings.MEDIA_ROOT, upload_to, filename)):
+    #     os.remove(os.path.join(settings.MEDIA_ROOT, upload_to, filename))
     return os.path.join(upload_to, filename)
-    # return os.path.join(settings.MEDIA_ROOT, upload_to, filename)
 
 
 class Profile(models.Model):
@@ -32,7 +29,7 @@ class Profile(models.Model):
 
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
     # avatar = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name='Аватарка')
-    avatar_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
+    # avatar_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
 
     following = models.ManyToManyField('Profile', symmetrical=False, null=True, blank=True, related_name='followers')
 
@@ -106,7 +103,7 @@ class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     image = models.ImageField(upload_to=path_and_rename, verbose_name='Зображення')
-    image_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
+    # image_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

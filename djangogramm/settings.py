@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+
+import cloudinary
 import environ
 import dj_database_url
 
@@ -25,7 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     "django.contrib.staticfiles",
     'django_cleanup.apps.CleanupConfig',
-
+    'cloudinary_storage',
+    'cloudinary',
+    'imagekit',
     # own
     'posts',
 ]
@@ -68,9 +72,6 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        # 'NAME': 'djangogramm',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'qwe',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -129,6 +130,20 @@ LOGOUT_REDIRECT_URL = 'user_list'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'Rainx81'
-EMAIL_HOST_PASSWORD = 'bdvhukziirwyakee'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('API_KEY'),
+    'API_SECRET': env('API_SECRET')
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# cloudinary.config(
+#     cloud_name=env('CLOUD_NAME'),
+#     api_key=env('API_KEY'),
+#     api_secret=env('API_SECRET')
+# )

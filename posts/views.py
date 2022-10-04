@@ -17,6 +17,7 @@ from .utils import DataMixin, NotLoggedAllow
 
 from .models import Post, Image, Tag, User, Profile, Like
 from .forms import PostForm, ImageForm, CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
+from PIL import Image as ImagePIL
 
 
 class LoginCustomView(DataMixin, LoginView):
@@ -174,6 +175,12 @@ class ProfileUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset().filter(pk=self.request.user.pk)
+
+
+def add_thumbnail_to_name(path):
+    path_splited = path.split('.')
+    path_splited[-2] += '_thumbnail'
+    return '.'.join(path_splited)
 
 
 class UserDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
