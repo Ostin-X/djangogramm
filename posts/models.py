@@ -28,8 +28,7 @@ class Profile(models.Model):
     bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
 
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
-    # avatar = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name='Аватарка')
-    # avatar_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
+    # avatar_thumbnail = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name='Тамбнейл')
 
     following = models.ManyToManyField('Profile', symmetrical=False, null=True, blank=True, related_name='followers')
 

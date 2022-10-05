@@ -17,7 +17,6 @@ from .utils import DataMixin, NotLoggedAllow
 
 from .models import Post, Image, Tag, User, Profile, Like
 from .forms import PostForm, ImageForm, CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
-from PIL import Image as ImagePIL
 
 
 class LoginCustomView(DataMixin, LoginView):

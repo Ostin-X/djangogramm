@@ -1,7 +1,9 @@
 import random
 import re
+import urllib
 
 from PIL import Image as ImagePIL
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import IntegrityError
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
@@ -47,15 +49,26 @@ def auto_create_profile(sender, instance, created, **kwargs):
 #     '''
 #     avatar = instance.avatar
 #     thumbnail = instance.avatar_thumbnail
-#
+#     print(avatar.url)
+#     print(sender.MultipleObjectsReturned.__dict__)
+#     print(instance.avatar)
 #     if avatar:
-#         thumbnail_path = add_thumbnail_to_name(avatar.path)
-#         img = ImagePIL.open(avatar.path)
-#         # if img.height > 300 or img.width > 300:
-#         output_size = (300, 300)
-#         img.thumbnail(output_size)
-#         img.save(thumbnail_path)
-#         Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail=add_thumbnail_to_name(avatar.name))
+#         with urllib.request.urlopen(avatar.url) as url:
+#             add_thumbnail = SimpleUploadedFile(name=f'avatar_thumbnail_{instance.user.pk}.jpg', content=url.read())
+#             print(add_thumbnail.name)
+#         # print(instance)
+#         instance.avatar_thumbnail = add_thumbnail
+#         Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail='media/avatars/' + add_thumbnail.name)
+#         # instance.save()
+#         # Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail=add_thumbnail)
+#         print(instance.avatar_thumbnail.url)
+#     #         thumbnail_path = add_thumbnail_to_name(avatar.path)
+#     #         img = ImagePIL.open(avatar.path)
+#     #         # if img.height > 300 or img.width > 300:
+#     #         output_size = (300, 300)
+#     #         img.thumbnail(output_size)
+#     #         img.save(thumbnail_path)
+#     #         Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail=add_thumbnail_to_name(avatar.name))
 #     elif thumbnail:
 #         instance.avatar_thumbnail = ''
 #         instance.save()
