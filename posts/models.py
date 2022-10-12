@@ -108,7 +108,8 @@ class Image(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     image = models.ImageField(upload_to=path_and_rename, verbose_name='Зображення')
-    # image_thumbnail = models.ImageField(null=True, blank=True, verbose_name='Тамбнейл')
+    image_thumbnail = models.ImageField(upload_to=path_and_rename_thumbnail, null=True, blank=True,
+                                        verbose_name='Тамбнейл')
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

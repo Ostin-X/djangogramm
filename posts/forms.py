@@ -10,6 +10,26 @@ from PIL import Image as PilImage
 from .models import Post, Image, User, Profile
 
 
+def resize_uploaded_image(image, max_width=100, max_height=50):
+    size = (max_width, max_height)
+
+    # Uploaded file is in memory
+    if isinstance(image, InMemoryUploadedFile):
+        # memory_image = BytesIO(image.read())
+        pil_image = PilImage.open(image)
+        img_format = os.path.splitext(image.name)[1][1:].upper()
+        img_format = 'JPEG' if img_format == 'JPG' else img_format
+
+        if pil_image.width > max_width or pil_image.height > max_height:
+            pil_image.thumbnail(size)
+
+        new_image = BytesIO()
+        pil_image.save(new_image, format=img_format)
+
+        new_image = ContentFile(new_image.getvalue())
+        return InMemoryUploadedFile(new_image, None, image.name, image.content_type, None, None)
+
+
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
@@ -38,26 +58,6 @@ class UserForm(UserChangeForm):
         }
 
 
-def resize_uploaded_image(image, max_width=100, max_height=50):
-    size = (max_width, max_height)
-
-    # Uploaded file is in memory
-    if isinstance(image, InMemoryUploadedFile):
-        # memory_image = BytesIO(image.read())
-        pil_image = PilImage.open(image)
-        img_format = os.path.splitext(image.name)[1][1:].upper()
-        img_format = 'JPEG' if img_format == 'JPG' else img_format
-
-        if pil_image.width > max_width or pil_image.height > max_height:
-            pil_image.thumbnail(size)
-
-        new_image = BytesIO()
-        pil_image.save(new_image, format=img_format)
-
-        new_image = ContentFile(new_image.getvalue())
-        return InMemoryUploadedFile(new_image, None, image.name, image.content_type, None, None)
-
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -75,6 +75,9 @@ class ProfileForm(forms.ModelForm):
         if 'avatar' in self.files:
             image_uploaded = self.files['avatar']
             obj.avatar_thumbnail = resize_uploaded_image(image_uploaded)
+            obj.save(update_fields=["avatar_thumbnail"])
+        elif not obj.avatar and obj.avatar_thumbnail:
+            obj.avatar_thumbnail = ''
             obj.save(update_fields=["avatar_thumbnail"])
         return obj
 
@@ -120,3 +123,19 @@ class ImageForm(forms.ModelForm):
         labels = {
             'image': 'Картинка'
         }
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        obj.save()
+        if 'image' in self.files:
+            image_uploaded = self.files['image']
+            print(image_uploaded)
+            print(resize_uploaded_image(image_uploaded))
+            obj.image_thumbnail = resize_uploaded_image(image_uploaded)
+            print(obj.image_thumbnail)
+            print(obj.__dict__)
+            obj.save(update_fields=["image_thumbnail"])
+        elif not obj.image and obj.image_thumbnail:
+            obj.image_thumbnail = ''
+            obj.save(update_fields=["image_thumbnail"])
+        return obj
