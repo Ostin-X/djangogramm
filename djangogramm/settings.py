@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'cloudinary_storage',
     'cloudinary',
+
     # own
     'posts',
 ]

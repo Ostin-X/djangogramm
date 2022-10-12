@@ -6,7 +6,6 @@ from django.urls import reverse
 import os
 
 from django.contrib.auth.models import User
-from django.conf import settings
 
 
 def path_and_rename(instance, filename):
@@ -23,12 +22,19 @@ def path_and_rename(instance, filename):
     return os.path.join(upload_to, filename)
 
 
+def path_and_rename_thumbnail(instance, filename):
+    filepath_list = path_and_rename(instance, filename).split('.')
+    filepath_list[0] += '_thumbnail'
+    return ''.join(filepath_list)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True, verbose_name='Про себе')
 
     avatar = models.ImageField(upload_to=path_and_rename, null=True, blank=True, verbose_name='Аватарка')
-    # avatar_thumbnail = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name='Тамбнейл')
+    avatar_thumbnail = models.ImageField(upload_to=path_and_rename_thumbnail, null=True, blank=True,
+                                         verbose_name='Тамбнейл')
 
     following = models.ManyToManyField('Profile', symmetrical=False, null=True, blank=True, related_name='followers')
 

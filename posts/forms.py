@@ -1,5 +1,11 @@
+import os
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from six import BytesIO
+from PIL import Image as PilImage
 
 from .models import Post, Image, User, Profile
 
@@ -32,6 +38,26 @@ class UserForm(UserChangeForm):
         }
 
 
+def resize_uploaded_image(image, max_width=100, max_height=50):
+    size = (max_width, max_height)
+
+    # Uploaded file is in memory
+    if isinstance(image, InMemoryUploadedFile):
+        # memory_image = BytesIO(image.read())
+        pil_image = PilImage.open(image)
+        img_format = os.path.splitext(image.name)[1][1:].upper()
+        img_format = 'JPEG' if img_format == 'JPG' else img_format
+
+        if pil_image.width > max_width or pil_image.height > max_height:
+            pil_image.thumbnail(size)
+
+        new_image = BytesIO()
+        pil_image.save(new_image, format=img_format)
+
+        new_image = ContentFile(new_image.getvalue())
+        return InMemoryUploadedFile(new_image, None, image.name, image.content_type, None, None)
+
+
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -42,6 +68,15 @@ class ProfileForm(forms.ModelForm):
             # 'avatar': forms.FileInput(),
             'is_invisible': forms.CheckboxInput(attrs={'class': 'form-check'}),
         }
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        obj.save()
+        if 'avatar' in self.files:
+            image_uploaded = self.files['avatar']
+            obj.avatar_thumbnail = resize_uploaded_image(image_uploaded)
+            obj.save(update_fields=["avatar_thumbnail"])
+        return obj
 
 
 class PasswordChangeCustomForm(PasswordChangeForm):

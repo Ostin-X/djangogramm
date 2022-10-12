@@ -84,13 +84,6 @@ class UserRegisterView(NotLoggedAllow, DataMixin, CreateView):
         return {**context, **c_def}
 
     def form_valid(self, form):
-        # form.save()
-        # username = self.request.POST['username']
-        # password = self.request.POST['password1']
-        # user = authenticate(username=username, password=password)
-        # login(self.request, user)
-        # return HttpResponseRedirect(form.instance.profile.get_absolute_url())
-
         user = form.save(commit=False)
         user.is_active = False
         user.save()
@@ -121,7 +114,6 @@ class UserActivationView(DataMixin, TemplateView):
 
     def get(self, request, uidb64, token, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        # return self.render_to_response(context)
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=uid)
@@ -365,7 +357,6 @@ class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Templa
     def get_context_data(self, **kwargs):
         context = super(ImageUpdateView, self).get_context_data(**kwargs)
         post_object = Post.objects.get(pk=self.kwargs['pk'])
-        # post_object.make_first(Post.objects.get(pk=self.kwargs['pk']).image_set.get(pk=1))
         c_def = self.get_user_context(
             title=f"Редагувати зображення поста {Post.objects.get(pk=self.kwargs['pk']).title}", object=post_object)
         return {**context, **c_def}

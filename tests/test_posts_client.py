@@ -16,7 +16,7 @@ class PostViewsTestCase(TestCase):
         self.posts_number = 8
         self.likes_number = 20
         # self.tags_number = 20
-        self.images_number = 10
+        self.images_number = 0
 
         create_users_table(self.users_number)
         create_posts_table(self.posts_number)
@@ -152,12 +152,12 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(old_image_count + 1, Image.objects.count())
         self.assertEqual(2, self.post_ostin.image_set.count())
         self.assertEqual(2, self.user_ostin.image_set.count())
-        self.assertEqual(f'images/images_{self.post_ostin.pk}.jpg', self.post_ostin.image_set.first().image)
-        self.assertEqual(f'images/images_{self.post_ostin.pk}_thumbnail.jpg',
-                         self.post_ostin.image_set.first().image_thumbnail)
+        self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.first().image))
+        # self.assertEqual(f'images/images_{self.post_ostin.pk}_thumbnail.jpg',
+        #                  self.post_ostin.image_set.first().image_thumbnail)
         self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image))
-        self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image_thumbnail))
-        self.assertIn('_thumbnail.jpg', str(self.post_ostin.image_set.last().image_thumbnail))
+        # self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image_thumbnail))
+        # self.assertIn('_thumbnail.jpg', str(self.post_ostin.image_set.last().image_thumbnail))
 
     def test_image_delete_DELETE(self):
         self.client.force_login(self.user_ostin)
@@ -185,7 +185,7 @@ class PostViewsTestCase(TestCase):
 
         response2 = self.client.get(reverse('post_list'))
 
-        self.assertContains(response2, Post.objects.get(pk=self.post_ostin.pk).first_image.image_thumbnail)
+        self.assertContains(response2, Post.objects.get(pk=self.post_ostin.pk).first_image.image)
 
     def test_like_POST(self):
         self.client.force_login(self.user_ostin)
