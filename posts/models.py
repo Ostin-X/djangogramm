@@ -1,4 +1,4 @@
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+# from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
@@ -17,15 +17,13 @@ def path_and_rename(instance, filename):
         inst_pk = instance.post_id
     ext = filename.split('.')[-1]
     filename = f'{upload_to[:-1]}_{inst_pk}.{ext}'
-    # if upload_to == 'avatars/' and os.path.exists(os.path.join(settings.MEDIA_ROOT, upload_to, filename)):
-    #     os.remove(os.path.join(settings.MEDIA_ROOT, upload_to, filename))
     return os.path.join(upload_to, filename)
 
 
 def path_and_rename_thumbnail(instance, filename):
     filepath_list = path_and_rename(instance, filename).split('.')
     filepath_list[0] += '_thumbnail'
-    return ''.join(filepath_list)
+    return '.'.join(filepath_list)
 
 
 class Profile(models.Model):

@@ -168,7 +168,7 @@ class PostViewsTestCase(TestCase):
         self.assertTrue(self.user_ostin.profile.bio)
         self.assertFalse(Profile.objects.filter(bio='Нова БбІо').exists())
         self.assertFalse(self.user_ostin.profile.avatar)
-        # self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
+        self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
 
         with open(self.image_path, 'rb') as fp:
             response = self.client.post(reverse('profile_update', kwargs={'pk': self.user_ostin.pk}),
@@ -187,9 +187,9 @@ class PostViewsTestCase(TestCase):
 
         self.assertTrue(self.user_ostin.profile.avatar)
         self.assertIn(f'avatars/avatars_{self.user_ostin.pk}', str(self.user_ostin.profile.avatar))
-        # self.assertTrue(self.user_ostin.profile.avatar_thumbnail)
-        # self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}_thumbnail.jpg',
-        #                  self.user_ostin.profile.avatar_thumbnail)
+        self.assertTrue(self.user_ostin.profile.avatar_thumbnail)
+        self.assertEqual(f'avatars/avatars_{self.user_ostin.pk}_thumbnail.jpg',
+                         self.user_ostin.profile.avatar_thumbnail.name)
 
         response2 = self.client.post(reverse('profile_update', kwargs={'pk': self.user_ostin.pk}),
                                      {'avatar-clear': True})
@@ -200,7 +200,7 @@ class PostViewsTestCase(TestCase):
         self.assertEqual(user_query_count, User.objects.count())
         self.assertEqual(profile_query_count, Profile.objects.count())
         self.assertFalse(self.user_ostin.profile.avatar)
-        # self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
+        self.assertFalse(self.user_ostin.profile.avatar_thumbnail)
 
     def test_user_delete_DELETE(self):
         self.client.force_login(self.user_ostin)

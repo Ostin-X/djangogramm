@@ -3,13 +3,11 @@ from django.test import TestCase, Client, override_settings
 import tempfile
 from django.urls import reverse
 
-import pytest
-
 from posts.views_create_db import create_users_table, create_posts_table, create_likes_table, create_images_table
 from posts.models import Post, Profile, Like, Tag, User, Image
 
 
-@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp(), DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
 class PostViewsTestCase(TestCase):
     def setUp(self):
         self.users_number = 5
@@ -33,7 +31,8 @@ class PostViewsTestCase(TestCase):
         self.image_path = 'Lewis_Hamilton_2016_Malaysia_2.jpg'
         self.add_image = SimpleUploadedFile(name='test_image.jpg', content=open(self.image_path, 'rb').read(),
                                             content_type='image/jpeg')
-        Image.objects.create(post=self.post_ostin, user=self.user_ostin, image=self.add_image)
+        Image.objects.create(post=self.post_ostin, user=self.user_ostin, image=self.add_image,
+                             image_thumbnail=self.add_image)
 
         self.client = Client()
 
@@ -147,17 +146,18 @@ class PostViewsTestCase(TestCase):
 
         with open(self.image_path, 'rb') as fp:
             response = self.client.post(reverse('image_create', kwargs={'pk': self.post_ostin.pk}), {'image': fp})
-
+        # assert 4 == self.post_ostin.image_set.first().image_thumbnail
         self.assertEqual(302, response.status_code)
         self.assertEqual(old_image_count + 1, Image.objects.count())
         self.assertEqual(2, self.post_ostin.image_set.count())
         self.assertEqual(2, self.user_ostin.image_set.count())
         self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.first().image))
-        # self.assertEqual(f'images/images_{self.post_ostin.pk}_thumbnail.jpg',
-        #                  self.post_ostin.image_set.first().image_thumbnail)
+        self.assertTrue(self.post_ostin.image_set.last().image_thumbnail)
+        self.assertEqual(f'images/images_{self.post_ostin.pk}_thumbnail.jpg',
+                         self.post_ostin.image_set.first().image_thumbnail)
         self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image))
-        # self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image_thumbnail))
-        # self.assertIn('_thumbnail.jpg', str(self.post_ostin.image_set.last().image_thumbnail))
+        self.assertIn(f'images/images_{self.post_ostin.pk}', str(self.post_ostin.image_set.last().image_thumbnail))
+        self.assertIn('_thumbnail', str(self.post_ostin.image_set.last().image_thumbnail))
 
     def test_image_delete_DELETE(self):
         self.client.force_login(self.user_ostin)

@@ -1,5 +1,4 @@
 import os
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.core.files.base import ContentFile
@@ -116,10 +115,6 @@ class ImageForm(forms.ModelForm):
         model = Image
         fields = ['image']
 
-        # widgets = {
-        #     'image': forms.ImageField,
-        #     'post': forms.Select(attrs={'class': 'form-control'}),
-        # }
         labels = {
             'image': 'Картинка'
         }
@@ -129,11 +124,7 @@ class ImageForm(forms.ModelForm):
         obj.save()
         if 'image' in self.files:
             image_uploaded = self.files['image']
-            print(image_uploaded)
-            print(resize_uploaded_image(image_uploaded))
             obj.image_thumbnail = resize_uploaded_image(image_uploaded)
-            print(obj.image_thumbnail)
-            print(obj.__dict__)
             obj.save(update_fields=["image_thumbnail"])
         elif not obj.image and obj.image_thumbnail:
             obj.image_thumbnail = ''
