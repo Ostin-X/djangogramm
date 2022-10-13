@@ -168,12 +168,6 @@ class ProfileUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
         return super().get_queryset().filter(pk=self.request.user.pk)
 
 
-def add_thumbnail_to_name(path):
-    path_splited = path.split('.')
-    path_splited[-2] += '_thumbnail'
-    return '.'.join(path_splited)
-
-
 class UserDeleteView(LoginRequiredMixin, DataMixin, DeleteView):
     model = User
     success_url = reverse_lazy('user_list')
