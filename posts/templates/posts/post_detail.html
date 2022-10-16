@@ -34,39 +34,26 @@
                                                                                               aria-hidden="true"></i></a>
     {% endif %}
     <br/><br/>
-    {#    <form method="POST">#}
-    {#        {% csrf_token %}#}
-    {#        {% if like_exists %}#}
-    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-primary bt-sm">like#}
-    {#                - {{ post.total_likes }}</button>#}
-    {#        {% else %}#}
-    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-outline-primary">like#}
-    {#                - {{ post.total_likes }}</button>#}
-    {#        {% endif %}#}
-    {#    </form>#}
 
-    <br/><br/>
     <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>
 {% endblock %}
 
 {% block scripts %}
     <script>
-        // AJAX CALL
         $('.likin').click(function () {
             $.ajax({
                 type: "POST",
                 url: "{% url 'post_detail' post.pk %}",
                 data: {
-                    {#'post_id': $(this).attr('name'),#}
                     'operation': 'like_submit',
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 dataType: "json",
                 success: function (response) {
-                    selector = document.getElementsByName(response.post_id);
+                    selector = $('.likin');
                     if (response.liked == true) {
                         $(selector).css("color", "blue");
-                    } else if (response.liked == false) {
+                    } else {
                         $(selector).css("color", "black");
                     }
                 }

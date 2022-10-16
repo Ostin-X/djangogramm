@@ -251,7 +251,7 @@ class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
             except Like.DoesNotExist:
                 Like.objects.create(user=user_object, post=post_object)
                 liked = True
-            ctx = {"liked": liked, "post_id": post_object.pk}
+            ctx = {"liked": liked}
             return HttpResponse(json.dumps(ctx), content_type='application/json')
         return self.get(request, *args, **kwargs)
 

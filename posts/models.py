@@ -34,7 +34,7 @@ class Profile(models.Model):
     avatar_thumbnail = models.ImageField(upload_to=path_and_rename_thumbnail, null=True, blank=True,
                                          verbose_name='Тамбнейл')
 
-    following = models.ManyToManyField('Profile', symmetrical=False, null=True, blank=True, related_name='followers')
+    following = models.ManyToManyField('Profile', symmetrical=False, blank=True, related_name='followers')
 
     is_invisible = models.BooleanField(default=False, verbose_name="Сором'язлива дупа")
 
