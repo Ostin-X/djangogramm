@@ -27,14 +27,27 @@
     {#    <button class="btn btn-primary bt-sm" onclick="getLike()">like - {{ post.total_likes }}</button>#}
     <br/><br/>
     {% if like_exists %}
-        <a name="{{ post.id }}" style="font-size:48px;color: blue;" class="likin" id="co"><i class="fa fa-thumbs-up"
-                                                                                             aria-hidden="true"></i></a>
+        {#        <a style="font-size:48px;color: blue;" class="likin" id="co"><i class="bi bi-hand-thumbs-up-fill"#}
+        {#                                                                                             aria-hidden="true">{{ post.total_likes }}</i></a>#}
+        <a style="font-size:48px;color: blue;" class="likin" id="co"><i class="bi bi-hand-thumbs-up-fill"
+                                                                        aria-hidden="true">{{ post.total_likes }}</i></a>
     {% else %}
-        <a name="{{ post.id }}" style="font-size:48px;color: black;" class="likin" id="co"><i class="fa fa-thumbs-up"
-                                                                                              aria-hidden="true"></i></a>
+        <a style="font-size:48px;color: black;" class="likin" id="co"><i class="bi bi-hand-thumbs-up-fill"
+                                                                         aria-hidden="true">{{ post.total_likes }}</i></a>
     {% endif %}
     <br/><br/>
+    {#    <form method="POST">#}
+    {#        {% csrf_token %}#}
+    {#        {% if like_exists %}#}
+    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-primary bt-sm">like#}
+    {#                - {{ post.total_likes }}</button>#}
+    {#        {% else %}#}
+    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-outline-primary">like#}
+    {#                - {{ post.total_likes }}</button>#}
+    {#        {% endif %}#}
+    {#    </form>#}
 
+    <br/><br/>
     <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>
 {% endblock %}
 
