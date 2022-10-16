@@ -24,24 +24,26 @@
     </div>
     <br/><br/>
     <hr>
-{#    <button class="btn btn-primary bt-sm" onclick="getLike()">like - {{ post.total_likes }}</button>#}
+    {#    <button class="btn btn-primary bt-sm" onclick="getLike()">like - {{ post.total_likes }}</button>#}
     <br/><br/>
-        {% if like_exists %}
-        <a name="{{ post.id }}" style="font-size:48px;color: blue;" class="likin" id="co"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-        {% else %}
-        <a name="{{ post.id }}" style="font-size:48px;color: black;" class="likin" id="co"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+    {% if like_exists %}
+        <a name="{{ post.id }}" style="font-size:48px;color: blue;" class="likin" id="co"><i class="fa fa-thumbs-up"
+                                                                                             aria-hidden="true"></i></a>
+    {% else %}
+        <a name="{{ post.id }}" style="font-size:48px;color: black;" class="likin" id="co"><i class="fa fa-thumbs-up"
+                                                                                              aria-hidden="true"></i></a>
     {% endif %}
-        <br/><br/>
-    <form method="POST">
-        {% csrf_token %}
-        {% if like_exists %}
-            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-primary bt-sm">like
-                - {{ post.total_likes }}</button>
-        {% else %}
-            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-outline-primary">like
-                - {{ post.total_likes }}</button>
-        {% endif %}
-    </form>
+    <br/><br/>
+    {#    <form method="POST">#}
+    {#        {% csrf_token %}#}
+    {#        {% if like_exists %}#}
+    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-primary bt-sm">like#}
+    {#                - {{ post.total_likes }}</button>#}
+    {#        {% else %}#}
+    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-outline-primary">like#}
+    {#                - {{ post.total_likes }}</button>#}
+    {#        {% endif %}#}
+    {#    </form>#}
 
     <br/><br/>
     <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>
@@ -49,31 +51,26 @@
 
 {% block scripts %}
     <script>
-// AJAX CALL
-$('.likin').click(function(){
-    $.ajax({
-             type: "POST",
-             url: "{% url 'post_detail' post.pk %}",
-             data: {
-                 'post_id': $(this).attr('name'),
-                 'operation':'like_submit',
-                 'csrfmiddlewaretoken': '{{ csrf_token }}'
-             },
-             dataType: "json",
-             success: function(response) {
-              selector = document.getElementsByName(response.post_id);
-                    if(response.liked==true){
-                      $(selector).css("color","blue");
+        // AJAX CALL
+        $('.likin').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'post_detail' post.pk %}",
+                data: {
+                    'post_id': $(this).attr('name'),
+                    'operation': 'like_submit',
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                dataType: "json",
+                success: function (response) {
+                    selector = document.getElementsByName(response.post_id);
+                    if (response.liked == true) {
+                        $(selector).css("color", "blue");
+                    } else if (response.liked == false) {
+                        $(selector).css("color", "black");
                     }
-                    else if(response.liked==false){
-                      $(selector).css("color","black");
-                    }
-
-
-              }
-
-        });
-
-  })
-</script>
+                }
+            });
+        })
+    </script>
 {% endblock %}

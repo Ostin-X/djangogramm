@@ -242,16 +242,15 @@ class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
         post_object = self.get_object()
         user_object = request.user
         if request.POST.get("operation") == "like_submit" and is_ajax(request):
-            post_id = request.POST.get("post_id", None)
-            post = get_object_or_404(Post, pk=post_id)
-            print(post)
+            # post_id = request.POST.get("post_id", None)
+            # post = get_object_or_404(Post, pk=post_id)
             try:
-                Like.objects.get(user=user_object, post=post).delete()
+                Like.objects.get(user=user_object, post=post_object).delete()
                 liked = False
             except Like.DoesNotExist:
                 Like.objects.create(user=user_object, post=post_object)
                 liked = True
-            ctx = {"liked": liked, "post_id": post_id}
+            ctx = {"liked": liked, "post_id": post_object.pk}
             return HttpResponse(json.dumps(ctx), content_type='application/json')
 
         # if 'post_pk' in request.POST:
