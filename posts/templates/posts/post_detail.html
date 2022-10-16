@@ -57,7 +57,7 @@
                 type: "POST",
                 url: "{% url 'post_detail' post.pk %}",
                 data: {
-                    'post_id': $(this).attr('name'),
+                    {#'post_id': $(this).attr('name'),#}
                     'operation': 'like_submit',
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
