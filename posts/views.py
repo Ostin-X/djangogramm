@@ -18,7 +18,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .utils import DataMixin, NotLoggedAllow
 
 from .models import Post, Image, Tag, User, Profile, Like
-from .forms import PostForm, ImageForm, CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm
+from .forms import PostForm, ImageForm, CustomUserCreationForm, UserForm, ProfileForm, PasswordChangeCustomForm, \
+    ImageFormSet
 
 
 class LoginCustomView(DataMixin, LoginView):
@@ -251,7 +252,7 @@ class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
             except Like.DoesNotExist:
                 Like.objects.create(user=user_object, post=post_object)
                 liked = True
-            ctx = {"liked": liked}
+            ctx = {"liked": liked, 'total_likes': post_object.total_likes}
             return HttpResponse(json.dumps(ctx), content_type='application/json')
         return self.get(request, *args, **kwargs)
 
@@ -263,6 +264,10 @@ class PostCreateView(LoginRequiredMixin, DataMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(PostCreateView, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title='Новий пост')
+        if self.request.POST:
+            c_def['image'] = ImageFormSet(self.request.POST)
+        else:
+            c_def['image'] = ImageFormSet()
         return {**context, **c_def}
 
     def form_valid(self, form):

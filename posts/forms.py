@@ -1,5 +1,6 @@
 import os
 from django import forms
+from django.forms import formset_factory, modelformset_factory, inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -130,3 +131,6 @@ class ImageForm(forms.ModelForm):
             obj.image_thumbnail = ''
             obj.save(update_fields=["image_thumbnail"])
         return obj
+
+
+ImageFormSet = inlineformset_factory(Post, Image, form=ImageForm, extra=2)

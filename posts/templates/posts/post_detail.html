@@ -24,18 +24,17 @@
     </div>
     <br/><br/>
     <hr>
-    {#    <button class="btn btn-primary bt-sm" onclick="getLike()">like - {{ post.total_likes }}</button>#}
     <br/><br/>
-    {% if like_exists %}
-        {#        <a style="font-size:48px;color: blue;" class="likin" id="co"><i class="bi bi-hand-thumbs-up-fill"#}
-        {#                                                                                             aria-hidden="true">{{ post.total_likes }}</i></a>#}
-        <a style="font-size:48px;color: blue;" class="likin" id="co"><i class="bi bi-hand-thumbs-up-fill"
-                                                                        aria-hidden="true">{{ post.total_likes }}</i></a>
-    {% else %}
-        <a style="font-size:48px;color: black;" class="likin" id="co"><i class="bi bi-hand-thumbs-up-fill"
-                                                                         aria-hidden="true">{{ post.total_likes }}</i></a>
-    {% endif %}
+
+    <button type="button" class="btn bt-sm likin {% if like_exists %} btn-primary {% else %} btn-secondary {% endif %}">
+        <i class="bi bi-hand-thumbs-up-fill" aria-hidden="true"></i>
+        <span>
+            {{ post.total_likes }}
+        </span>
+    </button>
+
     <br/><br/>
+
     {#    <form method="POST">#}
     {#        {% csrf_token %}#}
     {#        {% if like_exists %}#}
@@ -65,9 +64,13 @@
                 success: function (response) {
                     selector = $('.likin');
                     if (response.liked == true) {
-                        $(selector).css("color", "blue");
+                        $('.likin span').text(response.total_likes)
+                        $(selector).removeClass('btn-secondary')
+                        $(selector).addClass('btn-primary')
                     } else {
-                        $(selector).css("color", "black");
+                        $('.likin span').text(response.total_likes)
+                        $(selector).removeClass('btn-primary')
+                        $(selector).addClass('btn-secondary')
                     }
                 }
             });
