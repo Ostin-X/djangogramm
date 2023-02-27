@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['djangogramm-ostin.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['djangogramm-ostin.herokuapp.com', '127.0.0.1', 'http://djangogramm.eu-central-1.elasticbeanstalk.com/']
 
 # Application definition
 
