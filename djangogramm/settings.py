@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'http://dg4-django-env.eba-d4ym38m2.us-west-2.elasticbeanstalk.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'http://django-env.eba-xudhmhdn.eu-central-1.elasticbeanstalk.com/']
 
 # Application definition
 
@@ -71,7 +71,7 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        'HOST': 'djangogramm.c30xmxezx7tv.eu-central-1.rds.amazonaws.com',
+        'HOST': 'dgramm-db.cbatqvrqg7ua.us-west-2.rds.amazonaws.com',
         'PORT': '',
     }
 }
