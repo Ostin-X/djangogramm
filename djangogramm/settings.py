@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'http://db-env.eba-6db4s5mx.us-west-2.elasticbeanstalk.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'db-env.eba-6db4s5mx.us-west-2.elasticbeanstalk.com']
 
 # Application definition
 
