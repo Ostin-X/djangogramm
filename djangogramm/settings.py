@@ -71,7 +71,7 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        'HOST': 'dgramm-db.cbatqvrqg7ua.us-west-2.rds.amazonaws.com',
+        'HOST': 'dgramm-db-12.cbatqvrqg7ua.us-west-2.rds.amazonaws.com',
         'PORT': '',
     }
 }
