@@ -1,5 +1,5 @@
-import './helper1';
-import './helper2';
+import './like';
+
 // import '../styles/button-styles.css';
 // import 'bootstrap';
 // import 'bootstrap-icons';

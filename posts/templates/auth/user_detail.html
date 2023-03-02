@@ -11,20 +11,12 @@
     {% endif %}
     <br/>
     <br/>
-    <form method="POST">
-        {% csrf_token %}
-        {% if profile == user %}
-            <a href="{% url 'sub_list' user.pk %}" class="btn btn-primary btn-sm">Followers - {{ object.profile.followers.count }}</a>
-        {% else %}
-            {% if sub_exists %}
-                <button type="submit" name="user_pk" value="{{ object.profile.pk }}"
-                        class="btn btn-primary btn-sm">Following- {{ object.profile.followers.count }}</button>
-            {% else %}
-                <button type="submit" name="user_pk" value="{{ object.profile.pk }}"
-                        class="btn btn-outline-primary btn-sm">Follow- {{ object.profile.followers.count }}</button>
-            {% endif %}
-        {% endif %}
-    </form>
+    <button type="button" data-token="{{ csrf_token }}"
+            class="btn bt-sm likin {% if sub_exists %} btn-primary {% else %} btn-secondary {% endif %}">Following -
+        <span>
+            {{ object.profile.followers.count }}
+        </span>
+    </button>
     <body>
     {% if object.avatar %}
         <img src="{{ object.avatar.url }}" align="left" height="500">

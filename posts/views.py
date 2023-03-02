@@ -58,10 +58,16 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
     def post(self, request, *args, **kwargs):
         profile_followed_object = self.get_object().profile
         profile_follower_object = request.user.profile
-        if profile_follower_object.sub_exists(profile_followed_object):
-            profile_follower_object.following.remove(profile_followed_object)
-        else:
-            profile_follower_object.following.add(profile_followed_object)
+
+        if request.POST.get("operation") == "like_submit" and is_ajax(request):
+            if profile_follower_object.sub_exists(profile_followed_object):
+                profile_follower_object.following.remove(profile_followed_object)
+                liked = False
+            else:
+                profile_follower_object.following.add(profile_followed_object)
+                liked = True
+            ctx = {"liked": liked, 'total_likes': profile_followed_object.followers.count()}
+            return HttpResponse(json.dumps(ctx), content_type='application/json')
         return self.get(request, *args, **kwargs)
 
 
