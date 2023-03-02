@@ -6,7 +6,7 @@ from posts.views_create_db import create_all_db
 
 
 urlpatterns = [
-                  path('create_db', create_all_db),
+                  # path('create_db', create_all_db),
                   path('admin/', admin.site.urls),
                   path('', include('posts.urls')),
                   path('users/', include('django.contrib.auth.urls')),
