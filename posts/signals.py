@@ -41,7 +41,6 @@ def auto_create_profile(sender, instance, created, **kwargs):
     # except IntegrityError:
     #     pass
 
-
 # @receiver(pre_save, sender=Profile)
 # def auto_create_thumbnail(sender, instance, **kwargs):
 #     '''
@@ -56,13 +55,13 @@ def auto_create_profile(sender, instance, created, **kwargs):
 #     print(instance.avatar._committed)
 #     instance.avatar_thumbnail = f'avatar_thumbnail_{instance.user.pk}.jpg', ContentFile(instance.avatar.read()
 #     print(instance.__dict__)
-    # print(instance.avatar_thumbnail)
-    # if avatar:
-    #     with urllib.request.urlopen(avatar.url) as url:
-    #         add_thumbnail = SimpleUploadedFile(name=f'avatar_thumbnail_{instance.user.pk}.jpg', content=url.read())
-    #     instance.avatar_thumbnail = add_thumbnail
-    #     # Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail='media/avatars/' + add_thumbnail.name)
-    #     instance.save()
+# print(instance.avatar_thumbnail)
+# if avatar:
+#     with urllib.request.urlopen(avatar.url) as url:
+#         add_thumbnail = SimpleUploadedFile(name=f'avatar_thumbnail_{instance.user.pk}.jpg', content=url.read())
+#     instance.avatar_thumbnail = add_thumbnail
+#     # Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail='media/avatars/' + add_thumbnail.name)
+#     instance.save()
 #         # Profile.objects.filter(pk=instance.pk).update(avatar_thumbnail=add_thumbnail)
 #         print(instance.avatar_thumbnail.url)
 #     #         thumbnail_path = add_thumbnail_to_name(avatar.path)
