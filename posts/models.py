@@ -104,7 +104,7 @@ class Post(models.Model):
 
 
 class Image(models.Model):
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(auto_now_add=True)
 
     image = models.ImageField(upload_to=path_and_rename, verbose_name='Зображення')
     image_thumbnail = models.ImageField(upload_to=path_and_rename_thumbnail, null=True, blank=True,

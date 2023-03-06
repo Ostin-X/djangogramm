@@ -1,11 +1,11 @@
-import random
+# import random
 import re
-import urllib
+# import urllib
 
-from PIL import Image as ImagePIL
-from django.core.files.base import ContentFile
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db import IntegrityError
+# from PIL import Image as ImagePIL
+# from django.core.files.base import ContentFile
+# from django.core.files.uploadedfile import SimpleUploadedFile
+# from django.db import IntegrityError
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from faker import Faker
@@ -31,15 +31,12 @@ def auto_fill_tags(sender, instance, **kwargs):
 
 @receiver(post_save, sender=User)
 def auto_create_profile(sender, instance, created, **kwargs):
-    '''
+    """
     Create Profile object
     when User is created
-    '''
-    # try:
+    """
     if created:
         Profile.objects.create(user=instance)  # , bio=fake.text()
-    # except IntegrityError:
-    #     pass
 
 # @receiver(pre_save, sender=Profile)
 # def auto_create_thumbnail(sender, instance, **kwargs):
