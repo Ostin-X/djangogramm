@@ -73,11 +73,7 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
 
 class TokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
-        import six
-        return (
-                six.text_type(user.pk) + six.text_type(timestamp) +
-                six.text_type(user.is_active)
-        )
+        return (f'{user.pk}{timestamp}{user.is_active}')
 
 
 account_activation_token = TokenGenerator()
@@ -248,6 +244,7 @@ class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
     def post(self, request, *args, **kwargs):
         post_object = self.get_object()
         user_object = request.user
+
         if request.POST.get("operation") == "like_submit" and is_ajax(request):
             try:
                 Like.objects.get(user=user_object, post=post_object).delete()
@@ -377,7 +374,7 @@ class ImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, DataMixin, Templa
         context = super(ImageUpdateView, self).get_context_data(**kwargs)
         post_object = Post.objects.get(pk=self.kwargs['pk'])
         c_def = self.get_user_context(
-            title=f"Редагувати зображення поста {Post.objects.get(pk=self.kwargs['pk']).title}", object=post_object)
+            title=f"Редагувати зображення поста {post_object.title}", object=post_object)
         return {**context, **c_def}
 
     def post(self, request, *args, **kwargs):
