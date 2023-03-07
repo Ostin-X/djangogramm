@@ -38,55 +38,10 @@
 
     <br/><br/>
 
-    {#    <form method="POST">#}
-    {#        {% csrf_token %}#}
-    {#        {% if like_exists %}#}
-    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-primary bt-sm">like#}
-    {#                - {{ post.total_likes }}</button>#}
-    {#        {% else %}#}
-    {#            <button type="submit" name="post_pk" value="{{ post.pk }}" class="btn btn-outline-primary">like#}
-    {#                - {{ post.total_likes }}</button>#}
-    {#        {% endif %}#}
-    {#    </form>#}
 
     <br/><br/>
     <a href="{% url 'post_list' %}" class="btn btn-secondary">Назад</a>
 {% endblock %}
 
 {% block scripts %}
-    {#    <script src="{% static 'index.js' %}"></script>#}
-
-
-{#    <div id="post" data-url="{% url 'post_detail' post.pk %}">...</div>#}
-
-{#    <script>#}
-{##}
-{##}
-{##}
-{#        const post_url = $('.likin').data('url')#}
-{##}
-{#        $('.likin').click(function () {#}
-{#            $.ajax({#}
-{#                type: "POST",#}
-{#                url: post_url,#}
-{#                data: {#}
-{#                    'operation': 'like_submit',#}
-{#                    'csrfmiddlewaretoken': '{{ csrf_token }}'#}
-{#                },#}
-{#                dataType: "json",#}
-{#                success: function (response) {#}
-{#                    selector = $('.likin');#}
-{#                    if (response.liked == true) {#}
-{#                        $('.likin span').text(response.total_likes)#}
-{#                        $(selector).removeClass('btn-secondary')#}
-{#                        $(selector).addClass('btn-primary')#}
-{#                    } else {#}
-{#                        $('.likin span').text(response.total_likes)#}
-{#                        $(selector).removeClass('btn-primary')#}
-{#                        $(selector).addClass('btn-secondary')#}
-{#                    }#}
-{#                }#}
-{#            });#}
-{#        })#}
-{#    </script>#}
 {% endblock %}

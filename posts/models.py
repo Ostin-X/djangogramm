@@ -76,7 +76,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_image = models.ForeignKey('Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
 
-    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return f'{self.title} | {str(self.user)}'
