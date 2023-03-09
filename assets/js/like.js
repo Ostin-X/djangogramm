@@ -13,6 +13,8 @@ $statusButton.click(function () {
         dataType: "json",
         success: function (response) {
             newButtonStatus = response.button_status
+            // А все в кашу не треба, напевно? Краще 2 строки тут?
+            // $statusButton.attr('button_status', newButtonStatus).toggleClass('btn-primary').toggleClass('btn-secondary')
             $statusButton.attr('button_status', newButtonStatus)
             $statusButton.toggleClass('btn-primary').toggleClass('btn-secondary')
             $('[button_status] span').text(response.button_value)

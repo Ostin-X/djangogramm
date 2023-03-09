@@ -51,7 +51,6 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
     context_object_name = 'profile'
 
     def get_context_data(self, *, object_list=None, **kwargs):
-
         context = super(UserDetailView, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['profile'],
                                       sub_exists=self.request.user.profile.sub_exists(self.object.profile))
