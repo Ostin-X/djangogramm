@@ -4,6 +4,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.views import PasswordChangeView, TemplateView, LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.db import IntegrityError
 from django.db.models import Count
 
 from django.http import HttpResponse
@@ -60,14 +61,15 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
         profile_followed_object = self.get_object().profile
         profile_follower_object = request.user.profile
 
-        if request.POST.get("operation") == "like_submit" and is_ajax(request):
-            if profile_follower_object.sub_exists(profile_followed_object):
-                profile_follower_object.following.remove(profile_followed_object)
-                liked = False
-            else:
+        if is_ajax(request):
+            if request.POST.get("operation") == "activate":
                 profile_follower_object.following.add(profile_followed_object)
-                liked = True
-            ctx = {"liked": liked, 'total_likes': profile_followed_object.followers.count()}
+                subbed = 'active'
+            else:
+                profile_follower_object.following.remove(profile_followed_object)
+                subbed = 'inactive'
+
+            ctx = {"button_status": subbed, 'button_value': profile_followed_object.followers.count()}
             return HttpResponse(json.dumps(ctx), content_type='application/json')
         return self.get(request, *args, **kwargs)
 
@@ -251,17 +253,21 @@ class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
         post_object = self.get_object()
         user_object = request.user
 
-        if request.POST.get("operation") == "like_submit" and is_ajax(request):
-            try:
-                Like.objects.get(user=user_object, post=post_object).delete()
-                liked = False
-            except Like.MultipleObjectsReturned:
-                Like.objects.filter(user=user_object, post=post_object).all().delete()
-                liked = False
-            except Like.DoesNotExist:
-                Like.objects.create(user=user_object, post=post_object)
-                liked = True
-            ctx = {"liked": liked, 'total_likes': post_object.total_likes}
+        if is_ajax(request):
+            if request.POST.get("operation") == "activate":
+                try:
+                    Like.objects.create(user=user_object, post=post_object)
+                    liked = 'active'
+                except IntegrityError as e:
+                    if 'constraint "like_exists"' in e.args[0]:
+                        pass
+                    else:
+                        raise e
+            elif request.POST.get("operation") == "inactivate":
+                Like.objects.filter(user=user_object, post=post_object).delete()
+                liked = 'inactive'
+
+            ctx = {"button_status": liked, 'button_value': post_object.total_likes}
             return HttpResponse(json.dumps(ctx), content_type='application/json')
         return self.get(request, *args, **kwargs)
 

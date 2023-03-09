@@ -70,8 +70,9 @@ class ProfileForm(forms.ModelForm):
         }
 
     def save(self, commit=True):
+        print(self.instance)
         obj = super().save(commit=False)
-        obj.save()
+        # obj.save()
         if 'avatar' in self.files:
             image_uploaded = self.files['avatar']
             obj.avatar_thumbnail = resize_uploaded_image(image_uploaded)

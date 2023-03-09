@@ -45,7 +45,10 @@ class Profile(models.Model):
         return reverse('user_detail', kwargs={'pk': self.user.pk})
 
     def sub_exists(self, user_object):
-        return self.following.contains(user_object)
+        if self.following.contains(user_object):
+            return 'active'
+        else:
+            return 'inactive'
 
     class Meta:
         verbose_name = 'Профіль'
@@ -71,7 +74,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(default=timezone.now)  # auto_now_add=True
+    date = models.DateTimeField(auto_now_add=True)  # auto_now_add=True
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_image = models.ForeignKey('Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
@@ -95,7 +98,10 @@ class Post(models.Model):
                 self.save()
 
     def like_exists(self, user_object):
-        return Like.objects.filter(post=self, user=user_object).exists()
+        if Like.objects.filter(post=self, user=user_object).exists():
+            return 'active'
+        else:
+            return 'inactive'
 
     class Meta:
         verbose_name = 'Пост'
@@ -126,7 +132,7 @@ class Image(models.Model):
 
 
 class Like(models.Model):
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(auto_now_add=True)  # default=timezone.now
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -138,3 +144,10 @@ class Like(models.Model):
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
         ordering = ['id']
+        # unique_together = [['post', 'user']]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['post', 'user'],
+                name='like_exists',
+            )
+        ]

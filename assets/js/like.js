@@ -1,24 +1,21 @@
-$('.likin').click(function () {
-    const token = $('.likin').data('token')
+const $statusButton = $('[button_status]')
+$statusButton.click(function () {
+    const currentButtonStatus = $(this).attr('button_status')
+    const token = $statusButton.data('token')
+    let newButtonStatus = currentButtonStatus === 'inactive' ? 'activate' : 'inactivate'
 
     $.ajax({
         type: "POST",
         data: {
-            'operation': 'like_submit',
+            'operation': newButtonStatus,
             'csrfmiddlewaretoken': token
         },
         dataType: "json",
         success: function (response) {
-            selector = $('.likin');
-            if (response.liked == true) {
-                $('.likin span').text(response.total_likes)
-                $(selector).removeClass('btn-secondary')
-                $(selector).addClass('btn-primary')
-            } else {
-                $('.likin span').text(response.total_likes)
-                $(selector).removeClass('btn-primary')
-                $(selector).addClass('btn-secondary')
-            }
+            newButtonStatus = response.button_status
+            $statusButton.attr('button_status', newButtonStatus)
+            $statusButton.toggleClass('btn-primary').toggleClass('btn-secondary')
+            $('[button_status] span').text(response.button_value)
         }
     });
 })

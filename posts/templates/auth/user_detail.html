@@ -11,8 +11,8 @@
     {% endif %}
     <br/>
     <br/>
-    <button type="button" data-token="{{ csrf_token }}"
-            class="btn bt-sm likin {% if sub_exists %} btn-primary {% else %} btn-secondary {% endif %}">Following -
+    <button button_status="{{ sub_exists }}" type="button" data-token="{{ csrf_token }}"
+            class="btn bt-sm {% if sub_exists == 'active' %}btn-primary{% else %}btn-secondary{% endif %}">Following -
         <span>
             {{ object.profile.followers.count }}
         </span>
