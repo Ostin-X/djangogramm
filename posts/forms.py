@@ -71,25 +71,27 @@ class ProfileForm(forms.ModelForm):
 
     def save(self, commit=True):
         obj = super().save()
-        from django.utils.datastructures import MultiValueDictKeyError
-        try:
-            obj.avatar_thumbnail = resize_uploaded_image(self.files['avatar'])
-            obj.save(update_fields=["avatar_thumbnail"])
-        except MultiValueDictKeyError as e:
-            if e.args[0] == 'avatar':
-                if not obj.avatar:
-                    obj.avatar_thumbnail = ''
-                    obj.save(update_fields=["avatar_thumbnail"])
-            else:
-                raise e
 
-        # if 'avatar' in self.files:
-        #     image_uploaded = self.files['avatar']
-        #     obj.avatar_thumbnail = resize_uploaded_image(image_uploaded)
+        # from django.utils.datastructures import MultiValueDictKeyError
+        # try:
+        #     obj.avatar_thumbnail = resize_uploaded_image(self.files['avatar'])
         #     obj.save(update_fields=["avatar_thumbnail"])
-        # elif not obj.avatar:
-        #     obj.avatar_thumbnail = ''
-        #     obj.save(update_fields=["avatar_thumbnail"])
+        # except MultiValueDictKeyError as e:
+        #     if e.args[0] == 'avatar':
+        #         if not obj.avatar:
+        #             obj.avatar_thumbnail = ''
+        #             obj.save(update_fields=["avatar_thumbnail"])
+        #     else:
+        #         raise e
+
+        if 'avatar' in self.files:
+            image_uploaded = self.files['avatar']
+            obj.avatar_thumbnail = resize_uploaded_image(image_uploaded)
+            obj.save(update_fields=["avatar_thumbnail"])
+        elif not obj.avatar:
+            obj.avatar_thumbnail = ''
+            obj.save(update_fields=["avatar_thumbnail"])
+
         return obj
 
 
