@@ -11,6 +11,7 @@ urlpatterns = [
 
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# path('oauth/', include('social_django.urls', namespace='social')),  # <-- here
 
 # def pageNotFound(request, exception):
 #     return HttpResponseNotFound('<h1>Сторінка не знайдена</h1>')
