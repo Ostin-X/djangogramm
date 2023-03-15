@@ -30,7 +30,10 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'cloudinary_storage',
     'cloudinary',
-    # 'social_django',
+    'social_django',
+    'social-auth-app-django',
+    'social.apps.django_app.default',
+
 
     # own
     'posts',
