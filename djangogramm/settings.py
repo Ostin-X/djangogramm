@@ -26,9 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     "django.contrib.staticfiles",
+
     'django_cleanup.apps.CleanupConfig',
     'cloudinary_storage',
     'cloudinary',
+    'social_django',
 
     # own
     'posts',
@@ -44,6 +46,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'djangogramm.urls'
@@ -59,10 +63,27 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect',  # <-- Here
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GooglePlusAuth',
+
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.github.GithubOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
 
 WSGI_APPLICATION = 'djangogramm.wsgi.application'
 DATABASES = {
@@ -71,7 +92,7 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        'HOST': 'dgramm-db-12.cbatqvrqg7ua.us-west-2.rds.amazonaws.com',
+        'HOST': 'dgramm-db.cdeegum1njna.eu-north-1.rds.amazonaws.com',
         'PORT': '',
     }
 }

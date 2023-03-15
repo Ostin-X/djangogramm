@@ -19,10 +19,10 @@ def create_all_db(request):
         for sql in sequence_sql:
             cursor.execute(sql)
 
-    created_users = create_users_table(10)
-    created_posts = create_posts_table(30)
-    created_likes = create_likes_table(100)
-    created_images = create_images_table(1)
+    created_users = create_users_table(3)
+    created_posts = create_posts_table(10)
+    created_likes = create_likes_table(20)
+    created_images = create_images_table(5)
     # created_tags = create_tags_table(100)
 
     if created_users:
