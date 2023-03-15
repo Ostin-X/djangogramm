@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'db-env.eba-6db4s5mx.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'djangogramm.eu-north-1.elasticbeanstalk.com']
 
 # Application definition
 
@@ -30,9 +30,9 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'cloudinary_storage',
     'cloudinary',
-    # 'social_django',
-    # 'social-auth-app-django',
-    # 'social.apps.django_app.default',
+    'social_django',
+    'social-auth-app-django',
+    'social.apps.django_app.default',
 
 
     # own
