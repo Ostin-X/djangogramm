@@ -14,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'djangogramm.eu-north-1.elasticbeanstalk.com']
 
 # Application definition
 
@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     # 'social_django',
     # 'social-auth-app-django',
     # 'social.apps.django_app.default',
-
 
     # own
     'posts',
