@@ -83,10 +83,10 @@ TEMPLATES = [
 #
 #     'django.contrib.auth.backends.ModelBackend',
 # )
-#
-# LOGIN_URL = 'login'
-# LOGOUT_URL = 'logout'
-# LOGIN_REDIRECT_URL = 'home'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
 
 WSGI_APPLICATION = 'djangogramm.wsgi.application'
 DATABASES = {
