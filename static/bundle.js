@@ -16,7 +16,7 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _like__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./like */ \"./assets/js/like.js\");\n/* harmony import */ var _like__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_like__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _css_styles_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../css/styles.scss */ \"./assets/css/styles.scss\");\n/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ \"./node_modules/bootstrap/dist/js/bootstrap.esm.js\");\n\r\n// import 'bootstrap';\r\n// import 'bootstrap-icons';\r\n// import * as $ from 'jquery'\r\n// import 'jquery'\r\n\r\n// Import our custom CSS\r\n\r\n\r\n// Import all of Bootstrap's JS\r\n\n\n//# sourceURL=webpack://dg_webpack/./assets/js/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _like__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./like */ \"./assets/js/like.js\");\n/* harmony import */ var _like__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_like__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _css_styles_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../css/styles.scss */ \"./assets/css/styles.scss\");\n/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ \"./node_modules/bootstrap/dist/js/bootstrap.esm.js\");\n\r\n\r\n// Import our custom CSS\r\n\r\n\r\n// Import all of Bootstrap's JS\r\n\n\n//# sourceURL=webpack://dg_webpack/./assets/js/index.js?");
 
 /***/ }),
 
