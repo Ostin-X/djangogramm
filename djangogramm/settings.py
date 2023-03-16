@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     # 'social-auth-app-django',
     # 'social.apps.django_app.default',
 
-
     # own
     'posts',
 ]
@@ -96,6 +95,7 @@ DATABASES = {
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
         'HOST': 'dgramm-db.cdeegum1njna.eu-north-1.rds.amazonaws.com',
+        # 'HOST': 'dgramm-db2.cdeegum1njna.eu-north-1.rds.amazonaws.com',
         'PORT': '',
     }
 }
