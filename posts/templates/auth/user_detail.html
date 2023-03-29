@@ -8,6 +8,12 @@
         <small><a href="{% url 'user_update' object.pk %}">(Edit User)</a></small>
         | <small><a href="{% url 'profile_update' object.profile.pk %}">(Edit Profile)</a></small>
         | <small><a href="{% url 'user_delete' object.pk %}">(Delete)</a></small>
+        {% if not google_auth %}
+        | <a href="{% url "social:begin" "google-oauth2" %}">Add Google</a>
+        {% endif %}
+        {% if not github_auth %}
+        | <a href="{% url "social:begin" "github" %}">Add GitHub</a>
+        {% endif %}
     {% endif %}
     <br/>
     <br/>

@@ -5,21 +5,26 @@
 {#{% endblock %}#}
 
 {% block content %}
-    <h1>{{ title }}</h1>
+<h1>{{ title }}</h1>
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="mb-3">
-            <input type="text" class="form-control" name="username" placeholder="Ім'я користувача">
-        </div>
-        <div class="mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Пароль">
-        </div>
-        <button type="submit" class="btn btn-secondary">Увійти</button>
-    </form>
-    <br/>
+<a href="{% url "social:begin" "google-oauth2" %}">Google</a>
+<a href="{% url "social:begin" "github" %}">GitHub</a>
+
+<br/>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <input type="text" class="form-control" name="username" placeholder="Ім'я користувача">
+    </div>
+    <div class="mb-3">
+        <input type="password" class="form-control" name="password" placeholder="Пароль">
+    </div>
+    <button type="submit" class="btn btn-secondary">Увійти</button>
+</form>
+<br/>
 
 
-    Зареєструйся <a href="{% url 'register' %}">тут</a>
+Зареєструйся <a href="{% url 'register' %}">тут</a>
 {% endblock %}
 

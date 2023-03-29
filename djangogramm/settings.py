@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'cloudinary_storage',
     'cloudinary',
-    # 'social_django',
+    'social_django',
     # 'social-auth-app-django',
     # 'social.apps.django_app.default',
 
@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # 'social_django.middleware.SocialAuthExceptionMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'djangogramm.urls'
@@ -66,49 +66,64 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                # 'social_django.context_processors.backends',  # <-- Here
-                # 'social_django.context_processors.login_redirect',  # <-- Here
+                'social_django.context_processors.backends',  # <-- Here
+                'social_django.context_processors.login_redirect',  # <-- Here
             ],
         },
     },
 ]
 
-# AUTHENTICATION_BACKENDS = (
-#     'social_core.backends.google.GooglePlusAuth',
-#
-#     'social_core.backends.facebook.FacebookOAuth2',
-#     'social_core.backends.twitter.TwitterOAuth',
-#     'social_core.backends.github.GithubOAuth2',
-#
-#     'django.contrib.auth.backends.ModelBackend',
-# )
+# social app custom settings
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'user_list'
+LOGIN_REDIRECT_URL = 'user_list'
+LOGOUT_REDIRECT_URL = 'user_list'
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'posts.models.see_kwargs',
+    'social_core.pipeline.social_auth.social_uid',
+    'posts.models.see_kwargs',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'posts.models.see_kwargs',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'posts.models.see_kwargs',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'posts.models.see_kwargs',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '208418452077-13o5ct7p8192e0sroelbkaic76o921ei.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIAL_AUTH_GITHUB_KEY = '79bdd4ab5f131f436feb'
+SOCIAL_AUTH_GITHUB_SECRET = '24564024b7d8677a601a719f4d37970b63bed637'
 
 WSGI_APPLICATION = 'djangogramm.wsgi.application'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        'HOST': 'dgramm-db.cdeegum1njna.eu-north-1.rds.amazonaws.com',
-        # 'HOST': 'dgramm-db2.cdeegum1njna.eu-north-1.rds.amazonaws.com',
+        # 'HOST': 'dg-db.cdeegum1njna.eu-north-1.rds.amazonaws.com',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DATABASE_NAME'),
-#         'USER': env('DATABASE_USER'),
-#         'PASSWORD': env('DATABASE_PASS'),
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
@@ -155,10 +170,6 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'user_list'
-LOGOUT_REDIRECT_URL = 'user_list'
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
@@ -173,8 +184,3 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# cloudinary.config(
-#     cloud_name=env('CLOUD_NAME'),
-#     api_key=env('API_KEY'),
-#     api_secret=env('API_SECRET')
-# )
