@@ -52,11 +52,8 @@ class UserDetailView(LoginRequiredMixin, DataMixin, DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         user_social_auths = self.object.social_auth.all().values_list('provider', flat=True)
-        google_auth = github_auth = False
-        if 'google-oauth2' in user_social_auths:
-            google_auth = True
-        if 'github' in user_social_auths:
-            github_auth = True
+        google_auth = 'google-oauth2' in user_social_auths
+        github_auth = 'github' in user_social_auths
 
         context = super(UserDetailView, self).get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['profile'], google_auth=google_auth, github_auth=github_auth,
