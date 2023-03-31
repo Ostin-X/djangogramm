@@ -45,7 +45,7 @@ def create_all_db():
     else:
         images_return_text = ''
 
-    return f'DB created{users_return_text}{posts_return_text}{likes_return_text}{images_return_text}'[:-1]
+    return f'DB created{users_return_text}{posts_return_text}{likes_return_text}{images_return_text}'
 
 
 def create_users_table(number_of_users):
