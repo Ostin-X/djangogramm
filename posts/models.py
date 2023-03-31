@@ -8,13 +8,6 @@ import os
 from django.contrib.auth.models import User
 
 
-def see_kwargs(backend, user, response, *args, **kwargs):
-    print(user)
-    print(args)
-    print(kwargs)
-    print('-------')
-
-
 def path_and_rename(instance, filename):
     if isinstance(instance, Profile):
         upload_to = 'avatars/'
