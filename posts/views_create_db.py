@@ -1,7 +1,7 @@
 # import urllib.request
 import urllib
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.http import HttpResponse
+# from django.http import HttpResponse
 import random
 import pytz as pytz
 from django.core.management.color import no_style
@@ -45,12 +45,7 @@ def create_all_db():
     else:
         images_return_text = ''
 
-    # if created_tags:
-    #     tags_return_text = f' {created_tags} tags,'
-    # else:
-    #     tags_return_text = ''
-
-    return HttpResponse(f'DB created{users_return_text}{posts_return_text}{likes_return_text}{images_return_text}'[:-1])
+    return f'DB created{users_return_text}{posts_return_text}{likes_return_text}{images_return_text}'[:-1]
 
 
 def create_users_table(number_of_users):
