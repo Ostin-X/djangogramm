@@ -1,5 +1,5 @@
-import urllib.request
-
+# import urllib.request
+import urllib
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 import random
@@ -11,7 +11,7 @@ from posts.models import Post, Image, Like, Tag, User, Profile
 from posts.signals import fake
 
 
-def create_all_db(request):
+def create_all_db():
     User.objects.all().delete()
 
     sequence_sql = connection.ops.sequence_reset_sql(no_style(), [User, Profile, Post, Image, Like, Tag])
