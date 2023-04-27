@@ -114,7 +114,7 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        # 'HOST': 'dg-db.cdeegum1njna.eu-north-1.rds.amazonaws.com',
+        # 'HOST': 'database-1.cdeegum1njna.eu-north-1.rds.amazonaws.com',
         'HOST': 'localhost',
         'PORT': '',
     }

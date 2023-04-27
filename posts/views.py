@@ -39,6 +39,7 @@ class UserListView(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserListView, self).get_context_data(**kwargs)
+        print(context)
         c_def = self.get_user_context(title='Користувачі')
         return {**context, **c_def}
 
@@ -291,47 +292,6 @@ class PostCreateView(LoginRequiredMixin, DataMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(PostCreateView, self).form_valid(form)
-
-
-# class PostUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
-#     model = Post
-#     form_class = PostForm
-#     second_form_class = ImageForm
-#
-#     def get_queryset(self, *args, **kwargs):
-#         return super().get_queryset().filter(user=self.request.user)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(PostUpdateView, self).get_context_data(**kwargs)
-#         obj = get_object_or_404(Post, id=self.request.resolver_match.kwargs['pk'])
-#         # print(obj.image_set)
-#         # print(self.request.resolver_match.kwargs['pk'])
-#         image_set = obj.image_set.all()
-#         if image_set:
-#             for image in image_set:
-#                 form2 = ImageForm(self.request.FILES or None,
-#                                   instance=image)  # , instance=self.request.image_set self.request.Post or None,
-#         else:
-#             form2 = ImageForm(self.request.FILES or None)
-#         c_def = self.get_user_context(title='Редагувати пост', form2=form2)
-#         return {**context, **c_def}
-#
-#     def post(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         form2 = self.second_form_class(request.FILES)
-#         print(request.FILES.__dict__)
-#         if 'image' in request.FILES:
-#             print(request.FILES['image'])
-#             form2.instance.user = self.request.user
-#             form2.instance.post = Post.objects.get(pk=self.object.pk)
-#             form2.instance.image = request.FILES['image'].get()
-#             # form2.instance.image =
-#             print(form2.instance.__dict__)
-#             print(form2.instance.image)
-#             if form2.is_valid():
-#                 print('--------------VALID_--------')
-#                 form2.save()
-#         return super().post(request, *args, **kwargs)
 
 
 class PostUpdateView(LoginRequiredMixin, DataMixin, UpdateView):
