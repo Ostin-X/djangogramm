@@ -39,7 +39,6 @@ class UserListView(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(UserListView, self).get_context_data(**kwargs)
-        print(context)
         c_def = self.get_user_context(title='Користувачі')
         return {**context, **c_def}
 
@@ -256,7 +255,6 @@ class PostDetailView(LoginRequiredMixin, DataMixin, DetailView):
     def post(self, request, *args, **kwargs):
         post_object = self.get_object()
         user_object = request.user
-
         if is_ajax(request):
             if request.POST.get("operation") == "activate":
                 try:
