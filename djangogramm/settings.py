@@ -100,11 +100,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '208418452077-13o5ct7p8192e0sroelbkaic76o921ei.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
-SOCIAL_AUTH_GITHUB_KEY = '79bdd4ab5f131f436feb'
-SOCIAL_AUTH_GITHUB_SECRET = '24564024b7d8677a601a719f4d37970b63bed637'
+SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
 
 WSGI_APPLICATION = 'djangogramm.wsgi.application'
 
@@ -114,14 +114,14 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        # 'HOST': 'database-1.cdeegum1njna.eu-north-1.rds.amazonaws.com',
-        'HOST': 'localhost',
+        'HOST': 'dg-db.cdeegum1njna.eu-north-1.rds.amazonaws.com',
+        # 'HOST': 'localhost',
         'PORT': '',
     }
 }
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 # Password validation
 

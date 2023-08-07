@@ -1,0 +1,11 @@
+/.idea/
+djangogramm/.env
+/node_modules/
+/eb-virt/
+/venv/
+
+# Elastic Beanstalk Files
+#.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
